@@ -3,7 +3,9 @@ import { NavLink } from 'react-router-dom/dist';
 import { useAuth } from '../../hooks/useAuth';
 
 export const Header = () => {
-  const { isLoggedIn } = useAuth();
+  const { user, isLoggedIn } = useAuth();
+  // const firstLetter = user.email = null ? user.email[0].toUpperCase() : '';
+  console.log(isLoggedIn);
 
 //   const isTabletOrDesktop = useMediaQuery({ query: '(min-width: 834px)' });
   const isMobile = useMediaQuery({ query: '(max-width: 833px)' });
@@ -13,15 +15,11 @@ export const Header = () => {
       <header>
         <div className="container">
           <NavLink to="/">Misage</NavLink>
-          {isLoggedIn && isMobile && <HeaderMobMenuBtn />}
+          {isLoggedIn && isMobile && <button>menu</button>}
           {isLoggedIn && 
-          <div >
+            <div >
                 <p>{user.email}</p>
-                {user.avatarURL.includes('www.gravatar.com') ? (
-                <div>{firstLetter}</div>
-                ) : (
-                <img src={user.avatarURL}></img>
-                )}
+                <img src={user.avatarURL} alt={"user's avatar"}></img>
             </div>}
           {!isLoggedIn &&     
           <div>
