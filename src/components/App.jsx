@@ -25,7 +25,7 @@ export const App = () => {
     <b>Refreshing user...</b>
   ) : (
     <Routes>
-      <Route path="/" element={<Layout />}>
+      <Route path="/furniture-production-frontend" element={<Layout />}>
         <Route index element={<HomePage />} />
         <Route
           path="/register"
@@ -54,7 +54,7 @@ export const App = () => {
         <Route 
           path="*" 
           element={
-            <Navigate to="/furniture-production-frontend/" />
+            <Navigate to="/furniture-production-frontend" />
           } 
         />
       </Route>
