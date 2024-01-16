@@ -54,7 +54,7 @@ export const App = () => {
         <Route 
           path="*" 
           element={
-            <Navigate to="/" />
+            <Navigate to="/furniture-production-frontend/" />
           } 
         />
       </Route>
