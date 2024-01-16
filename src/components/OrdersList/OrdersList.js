@@ -6,12 +6,14 @@ import css from './OrdersList.module.css';
 export const OrdersList = () => {
   const orders = useSelector(selectAllOrders);
 
+  console.log(orders.allOrdersArray)
+
   return (
     <>
         {orders.length !== 0 ? 
             <ul className={css.list}>
-                {orders.orders.map(({ name, number }) => (
-                <li key={number}>
+                {orders.allOrdersArray.map(({ size, name, number }) => (
+                <li key={`${name}${size}${number}`}>
                 <Order  
                  name={name} />
                 </li>

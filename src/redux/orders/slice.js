@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { logOut } from '../auth/operations';
-import { fetchMebtownOrders } from './operations';
+import { fetchAllOrders } from './operations';
 
 const handlePending = state => {
   state.isLoading = true;
@@ -20,13 +20,13 @@ const ordersSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-      .addCase(fetchMebtownOrders.pending, handlePending)
-      .addCase(fetchMebtownOrders.fulfilled, (state, action) => {
+      .addCase(fetchAllOrders.pending, handlePending)
+      .addCase(fetchAllOrders.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = null;
         state.items = action.payload;
       })
-      .addCase(fetchMebtownOrders.rejected, handleRejected)
+      .addCase(fetchAllOrders.rejected, handleRejected)
       .addCase(logOut.fulfilled, state => {
         state.items = [];
         state.error = null;
