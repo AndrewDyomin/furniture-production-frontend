@@ -1,0 +1,16 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.number {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.discription {
+    display: flex;
+    justify-content: space-between;
+}

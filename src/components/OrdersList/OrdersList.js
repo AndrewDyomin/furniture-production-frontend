@@ -9,18 +9,20 @@ export const OrdersList = () => {
   console.log(orders.allOrdersArray)
 
   return (
-    <>
+    <div className={css.container}>
         {orders.length !== 0 ? 
             <ul className={css.list}>
-                {orders.allOrdersArray.map(({ size, name, number }) => (
-                <li key={`${name}${size}${number}`}>
+                {orders.allOrdersArray.map(({ size, name, number, dealer }) => (
+                <li key={`${name}${size}${number}`} className={css.item}>
                 <Order  
-                 name={name} />
+                 name={name}
+                 number={number}
+                 dealer={dealer} />
                 </li>
             ))}
             </ul> : 
             <p>Orders is not loaded</p>
         }
-    </>
+    </div >
   );
 };

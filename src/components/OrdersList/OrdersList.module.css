@@ -1,0 +1,15 @@
+
+.list {
+    list-style: none;
+}
+
+.item {
+    box-shadow: 0 0 5px 0 rgba(0,0,0,0.2);
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.item:first-child {
+    margin-top: 0;
+}
