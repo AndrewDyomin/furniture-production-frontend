@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux';
 import { Order } from '../Order/Order';
 import { selectAllOrders } from '../../redux/orders/selectors';
 import css from './OrdersList.module.css';
+import { nanoid } from 'nanoid'
 
 export const OrdersList = () => {
   const orders = useSelector(selectAllOrders);
@@ -12,12 +13,13 @@ export const OrdersList = () => {
     <div className={css.container}>
         {orders.length !== 0 ? 
             <ul className={css.list}>
-                {orders.allOrdersArray.map(({ size, name, number, dealer }) => (
-                <li key={`${name}${size}${number}`} className={css.item}>
+                {orders.allOrdersArray.map(({ name, number, dealer, plannedDeadline }) => (
+                <li key={nanoid()} className={css.item}>
                 <Order  
                  name={name}
                  number={number}
-                 dealer={dealer} />
+                 dealer={dealer}
+                 plannedDeadline={plannedDeadline} />
                 </li>
             ))}
             </ul> : 
