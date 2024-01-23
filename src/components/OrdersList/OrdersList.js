@@ -13,7 +13,7 @@ export const OrdersList = () => {
             <ul className={css.list}>
                 {orders.allOrdersArray.map(({ _id }) => (
                 <li key={_id} className={css.item}>
-                  <Link to={`${_id}`}>
+                  <Link to={`${_id}`} className={css.orderLink}>
                     <Order  
                     id={_id} />
                   </Link>
