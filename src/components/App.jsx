@@ -11,7 +11,8 @@ const HomePage = lazy(() => import('../pages/Home'));
 const RegisterPage = lazy(() => import('../pages/Register'));
 const LoginPage = lazy(() => import('../pages/Login'));
 const TasksPage = lazy(() => import('../pages/Tasks'));
-const OrdersPage = lazy(() => import('../pages/Orders'))
+const OrdersPage = lazy(() => import('../pages/Orders'));
+const OrderDetailsPage = lazy(() => import('../pages/OrderDetails'));
 
 export const App = () => {
   const dispatch = useDispatch();
@@ -49,6 +50,12 @@ export const App = () => {
           path="/orders"
           element={
             <PrivateRoute redirectTo="/login" component={<OrdersPage />} />
+          }
+        />
+        <Route 
+          path="/orders/:orderId" 
+          element={
+            <PrivateRoute redirectTo="/login" component={<OrderDetailsPage />} />
           }
         />
         <Route 

@@ -1,25 +1,22 @@
 import { useSelector } from 'react-redux';
+import { Link } from "react-router-dom";
 import { Order } from '../Order/Order';
 import { selectAllOrders } from '../../redux/orders/selectors';
 import css from './OrdersList.module.css';
-import { nanoid } from 'nanoid'
 
 export const OrdersList = () => {
   const orders = useSelector(selectAllOrders);
-
-  console.log(orders.allOrdersArray)
 
   return (
     <div className={css.container}>
         {orders.length !== 0 ? 
             <ul className={css.list}>
-                {orders.allOrdersArray.map(({ name, number, dealer, plannedDeadline }) => (
-                <li key={nanoid()} className={css.item}>
-                <Order  
-                 name={name}
-                 number={number}
-                 dealer={dealer}
-                 plannedDeadline={plannedDeadline} />
+                {orders.allOrdersArray.map(({ _id }) => (
+                <li key={_id} className={css.item}>
+                  <Link to={`${_id}`}>
+                    <Order  
+                    id={_id} />
+                  </Link>
                 </li>
             ))}
             </ul> : 
