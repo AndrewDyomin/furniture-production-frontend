@@ -1,11 +1,10 @@
 import css from './OrderInfo.module.css';
 import { useSelector } from 'react-redux';
-import { selectAllOrders } from '../../redux/orders/selectors';
+import { selectActiveOrder } from '../../redux/orders/selectors';
 
 export const OrderInfo = ({ id }) => {
 
-  const orders = useSelector(selectAllOrders);
-  const order = orders.allOrdersArray.find((el) => {return(el._id === id)});
+  const order = useSelector(selectActiveOrder);
   const date = new Date(order.plannedDeadline);
 
   return (

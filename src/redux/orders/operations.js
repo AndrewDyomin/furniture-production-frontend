@@ -13,5 +13,14 @@ export const fetchAllOrders = createAsyncThunk(
   }
 );
 
-
+export const setActiveOrder = createAsyncThunk(
+  'orders/setActiveOrder',
+  async (order, thunkAPI) => {
+    try {
+      return order;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
 
