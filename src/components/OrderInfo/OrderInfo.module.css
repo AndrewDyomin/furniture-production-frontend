@@ -1,0 +1,18 @@
+.orderNumber {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.description {
+    margin-top: 10px;
+}
+
+.orderName {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.orderFabric {
+    margin-top: 5px;
+}

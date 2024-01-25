@@ -7,17 +7,19 @@ export const OrderInfo = ({ id }) => {
   const orders = useSelector(selectAllOrders);
   const order = orders.allOrdersArray.find((el) => {return(el._id === id)});
   const date = new Date(order.plannedDeadline);
-  console.log(order)
 
   return (
     <div className={css.wrapper}>
-      <p className={css.number}>{order.number}</p>
+      <p className={css.orderNumber}>{order.number}</p>
       <div className={css.description}>
-        <p>{order.name}</p>
-        <p>{order.fabric}</p>
+        <p className={css.orderName}>{order.group} {order.name}</p>
+        <p className={css.orderSize}>{order.size}</p>
+        <p className={css.orderFabric}>{order.fabric}</p>
         <p>{order.description}</p>
         <p>{`${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`}</p>
         <p>{order.dealer}</p>
+        <p className={css.orderAdress}>Adress: {order.adress}</p>
+        <p className={css.orderRest}>Rest: {order.rest}</p>
       </div>
     </div>
   );

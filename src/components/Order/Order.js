@@ -12,9 +12,9 @@ export const Order = ({ id }) => {
     <div className={css.wrapper}>
       <p className={css.number}>{order.number}</p>
       <div className={css.discription}>
-        <p>{order.name}</p>
-        <p>{`${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`}</p>
-        <p>{order.dealer}</p>
+        <p className={css.orderName}>{order.name}</p>
+        <p className={css.orderDeadline}>{`${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`}</p>
+        <p className={css.orderDealer}>{order.dealer}</p>
       </div>
     </div>
   );

@@ -12,5 +12,19 @@
 
 .discription {
     display: flex;
-    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.orderName {
+    width: calc(100%/3);
+}
+
+.orderDeadline {
+    width: calc(100%/3);
+    text-align: center;
+}
+
+.orderDealer {
+    width: calc(100%/3);
+    text-align: right;
 }
