@@ -27,8 +27,8 @@ export const MobileMenuBtn = () => {
         },
         content: {
           top: '60px',
-          left: '50%',
-          right: 'auto',
+          left: 'auto',
+          right: '-135px',
           bottom: 'auto',
           transform: 'translateX(-50%)',
           width: '300px',
@@ -37,7 +37,7 @@ export const MobileMenuBtn = () => {
           borderRadius: '12px',
           border: '2px solid black',
           backgroundColor: 'FFF',
-          boxShadow: '0px 4px 14px 0px rgba(227, 255, 168, 0.20)',
+        //   boxShadow: '0px 4px 14px 0px rgba(227, 255, 168, 0.20)',
           transition: 'top 0.3s ease-in-out',
           position: 'absolute',
         },
@@ -61,7 +61,7 @@ export const MobileMenuBtn = () => {
                         <use href={`${svgIcons}#icon-close-circle`}></use>
                     </svg>
                 </button>
-                {isLoggedIn ? <UserMenu /> : <AuthNav />}
+                {isLoggedIn ? <UserMenu /> : <AuthNav close={closeMenu}/>}
             </Modal>
         </>
     )

@@ -10,10 +10,8 @@
     color: #e84a5f;
   }
   
-  .mobileLink {
-    display: inline;
-    text-decoration: none;
-    padding: 12px;
-    font-weight: 700;
-    color: #2a363b;
+  .mobileLinkBlock {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
   }

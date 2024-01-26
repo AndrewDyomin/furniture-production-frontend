@@ -17,10 +17,12 @@ const OrderDetailsPage = lazy(() => import('../pages/OrderDetails'));
 export const App = () => {
   const dispatch = useDispatch();
   const { isRefreshing } = useAuth();
+  const { isLoggedIn } = useAuth();
 
   useEffect(() => {
-    dispatch(refreshUser());
-  }, [dispatch]);
+    if (isLoggedIn) {
+    dispatch(refreshUser())};
+  }, [dispatch, isLoggedIn]);
 
   return isRefreshing ? (
     <b>Refreshing user...</b>
