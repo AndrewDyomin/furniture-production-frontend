@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
+import PulseLoader from "react-spinners/PulseLoader";
 import { Link } from "react-router-dom";
 import { Order } from '../Order/Order';
 import { selectAllOrders } from '../../redux/orders/selectors';
@@ -24,7 +25,14 @@ export const OrdersList = () => {
                 </li>
             ))}
             </ul> : 
-            <p>Orders is not loaded</p>
+            <PulseLoader 
+              color="#c8c19b"
+              cssOverride={{
+                position: 'absolute',
+                top: '20%',
+                left: '50%'
+              }}
+            />
         }
     </div >
   );
