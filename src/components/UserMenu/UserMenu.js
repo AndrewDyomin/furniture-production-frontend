@@ -14,9 +14,14 @@ export const UserMenu = ({ close }) => {
     <div className={isMobile ? css.mobileWrapper : css.wrapper}>
       <p className={css.username}>{user.email}</p>
       {isLoggedIn && isMobile && (
-        <Link className={css.link} to="/orders" onClick={close}>
-          Orders
-        </Link>
+        <div className={css.mobileMenuLinks}>
+          <Link className={css.link} to="/orders" onClick={close}>
+            Orders
+          </Link>
+          {user.subscription === "administrator" && (
+            <Link className={css.link} to="/room" onClick={close}>My room</Link>
+          )}
+        </div>
       )}
       <button type="button" onClick={() => dispatch(logOut())} className={isMobile ? css.logoutButtonMob : css.logoutButton}>
         Logout
