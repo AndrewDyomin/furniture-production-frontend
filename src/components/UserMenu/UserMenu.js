@@ -1,16 +1,24 @@
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { useMediaQuery } from 'react-responsive';
 import { logOut } from '../../redux/auth/operations';
 import { useAuth } from 'hooks';
 import css from './UserMenu.module.css';
 
-export const UserMenu = () => {
+export const UserMenu = ({ close }) => {
   const dispatch = useDispatch();
-  const { user } = useAuth();
+  const { user, isLoggedIn } = useAuth();
+  const isMobile = useMediaQuery({ query: '(max-width: 833px)' });
 
   return (
-    <div className={css.wrapper}>
+    <div className={isMobile ? css.mobileWrapper : css.wrapper}>
       <p className={css.username}>{user.email}</p>
-      <button type="button" onClick={() => dispatch(logOut())}>
+      {isLoggedIn && isMobile && (
+        <Link className={css.link} to="/orders" onClick={close}>
+          Orders
+        </Link>
+      )}
+      <button type="button" onClick={() => dispatch(logOut())} className={isMobile ? css.logoutButtonMob : css.logoutButton}>
         Logout
       </button>
     </div>

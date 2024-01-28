@@ -3,8 +3,25 @@
     align-items: center;
     gap: 12px;
   }
+
+  .mobileWrapper {
+    flex-direction: column;
+  }
   
   .username {
     font-weight: 700;
   }
+
+  .logoutButtonMob {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+  }
   
+  .link {
+    display: inline-block;
+    text-decoration: none;
+    padding: 12px;
+    font-weight: 700;
+    color: #2a363b;
+  }

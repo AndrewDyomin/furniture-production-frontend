@@ -61,7 +61,7 @@ export const MobileMenuBtn = () => {
                         <use href={`${svgIcons}#icon-close-circle`}></use>
                     </svg>
                 </button>
-                {isLoggedIn ? <UserMenu /> : <AuthNav close={closeMenu}/>}
+                {isLoggedIn ? <UserMenu close={closeMenu}/> : <AuthNav close={closeMenu}/>}
             </Modal>
         </>
     )
