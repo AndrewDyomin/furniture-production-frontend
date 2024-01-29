@@ -9,14 +9,12 @@ import css from './AppBar.module.css';
 export const AppBar = () => {
   const { isLoggedIn } = useAuth();
 
-  // const isDesktop = useMediaQuery({ query: '(min-width: 834px)' });
   const isMobile = useMediaQuery({ query: '(max-width: 833px)' });
 
   return (
     <header className={css.header}>
       <Navigation />
       {isMobile ? <MobileMenuBtn /> : isLoggedIn ? <UserMenu /> : <AuthNav />}
-      {/* {isLoggedIn ? <UserMenu /> : <AuthNav />} */}
     </header>
   );
 };
