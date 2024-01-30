@@ -1,0 +1,17 @@
+.wrapper {
+    width: 100%;
+    min-height: 335px;
+    position: relative;
+    border-radius: 8px;
+}
+
+.title {
+    font-size: 25px;
+    text-decoration: none;
+    position: absolute;
+    bottom: 10px;
+    top: auto;
+    left: 10px;
+    right: auto;
+    color: #fff;
+}
