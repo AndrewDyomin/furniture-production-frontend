@@ -1,10 +1,20 @@
+.navBlock {
+  display: flex;
+  align-items: center;
+}
+
 .link {
     display: inline-block;
     text-decoration: none;
+    text-align: center;
     font-weight: 700;
     color: #2a363b;
   }
 
-  .logo {
-    max-height: 50px;
-  }
+.link:nth-child(n + 2) {
+  margin-left: 30px;
+}
+
+.logo {
+  max-height: 50px;
+}

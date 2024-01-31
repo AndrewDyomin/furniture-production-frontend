@@ -9,7 +9,7 @@ export const Navigation = () => {
   const isMobile = useMediaQuery({ query: '(max-width: 833px)' });
 
   return (
-    <nav>
+    <nav className={css.navBlock}>
       <NavLink className={css.link} to="/">
         <img src={logo} alt='logo' className={css.logo}/>
       </NavLink>

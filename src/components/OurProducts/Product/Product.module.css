@@ -1,17 +1,31 @@
 .wrapper {
-    max-width: 100%;
+    border: 1px solid #444444;
+    border-radius: 0px 0px 8px 8px;
+    box-shadow: 0px 1px 6px rgba(46, 47, 66, 0.08),
+        0px 1px 1px rgba(46, 47, 66, 0.16),
+        0px 2px 1px rgba(46, 47, 66, 0.08);
     height: 335px;
-    border: 2px solid #000;
-    border-radius: 9px;
+    width: 335px;
+    border: 1px solid #cecece;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
 }
 
 .image {
     max-width: 100%;
-    height: 90%;
 }
 
 .name {
-    font-size: 15px;
-    text-decoration: none;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
     color: #000;
+}
+
+.size {
+    color: #000;
+    text-align: center;
 }

@@ -23,6 +23,49 @@
     padding: 0;
 }
 
-.categoriesItem:nth-child(n + 2) {
-    margin-top: 25px;
+@media screen and (max-width: 767px) {
+    .categoriesItem:nth-child(n + 2) {
+        margin-top: 25px;
+    }    
+}
+
+@media screen and (min-width: 768px) and (max-width: 1199px) {
+    .categoriesList {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .categoriesItem {
+        width: 355px;
+    }
+
+    .categoriesItem:nth-child(n + 3) {
+        margin-top: 25px;
+    }
+
+    .categoriesItem:nth-child(2n) {
+        margin-left: 25px;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .categoriesList {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .categoriesItem {
+        width: 300px;
+    }
+
+    .categoriesItem:nth-child(n + 4) {
+        margin-top: 25px;
+    }
+
+    .categoriesItem:nth-child(4n + 2),
+    .categoriesItem:nth-child(4n + 3) {
+        margin-left: 25px;
+}
 }

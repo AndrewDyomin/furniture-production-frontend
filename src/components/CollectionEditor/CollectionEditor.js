@@ -8,7 +8,7 @@ export const CollectionEditor = () => {
 
   return (
     <div className={css.wrapper}>
-        <h2>Collection Editor</h2>
+        <h2 className={css.title}>Collection Editor</h2>
         <Formik
         initialValues={{
             group: '',
@@ -31,78 +31,92 @@ export const CollectionEditor = () => {
             }
         }}
         >
-        <Form>
-            <label htmlFor="group">Group</label>
-            <Field id="group" name="group" placeholder="Sofa" />
-
-            <label htmlFor="name">Name</label>
-            <Field id="name" name="name" placeholder="Faynee mini" />
-
+        <Form className={css.formWrapper}>
+            <div className={css.formItem}>
+                <label htmlFor="group">Group</label>
+                <Field className={css.field} id="group" name="group" placeholder="Sofa" />
+            </div>
+            <div className={css.formItem}>
+                <label htmlFor="name">Name</label>
+                <Field className={css.field} id="name" name="name" placeholder="Faynee mini" />
+            </div>
+            <div className={css.formItem}>
             <label htmlFor="dimensions.width">Width</label>
-            <Field id="dimensions.width" name="dimensions.width" placeholder="Width"/>
-
-            <label htmlFor="dimensions.height">Height</label>
-            <Field id="dimensions.height" name="dimensions.height" placeholder="Height"/>
-
-            <label htmlFor="dimensions.depth">Depth</label>
-            <Field id="dimensions.depth" name="dimensions.depth" placeholder="Depth"/>
-
-            <label htmlFor="subscription">Subscription</label>
-            <Field id="subscription" name="subscription" placeholder="Subscription" />
-
-            <FieldArray
-                name="images"
-                render={(arrayHelpers) => (
-                    <div>
-                    {arrayHelpers.form.values.images.map((image, index) => (
-                        <div key={index}>
-                        <Field name={`images.${index}`} placeholder="images"/>
-                        <button
-                            type="button"
-                            onClick={() => arrayHelpers.remove(index)}
-                        >
-                            -
-                        </button>
-                        {index === arrayHelpers.form.values.images.length - 1 && (
+            <Field className={css.field} id="dimensions.width" name="dimensions.width" placeholder="Width"/>
+            </div>
+            <div className={css.formItem}>
+                <label htmlFor="dimensions.height">Height</label>
+                <Field className={css.field} id="dimensions.height" name="dimensions.height" placeholder="Height"/>
+            </div>
+            <div className={css.formItem}>
+                <label htmlFor="dimensions.depth">Depth</label>
+                <Field className={css.field} id="dimensions.depth" name="dimensions.depth" placeholder="Depth"/>
+            </div>
+            <div className={css.formItem}>
+                <label htmlFor="subscription">Subscription</label>
+                <Field className={css.field} id="subscription" name="subscription" placeholder="Subscription" />
+            </div>
+            <div className={css.formItem}>
+                <FieldArray
+                    name="images"
+                    render={(arrayHelpers) => (
+                        <div>
+                        {arrayHelpers.form.values.images.map((image, index) => (
+                            <div key={index} className={css.inputArray}>
+                            <Field className={css.field} name={`images.${index}`} placeholder="images"/>
                             <button
-                            type="button"
-                            onClick={() => arrayHelpers.push('')}
+                                className={css.minBtn}
+                                type="button"
+                                onClick={() => arrayHelpers.remove(index)}
                             >
-                            +
+                                -
                             </button>
-                        )}
+                            {index === arrayHelpers.form.values.images.length - 1 && (
+                                <button
+                                    className={css.minBtn}
+                                type="button"
+                                onClick={() => arrayHelpers.push('')}
+                                >
+                                +
+                                </button>
+                            )}
+                            </div>
+                        ))}
                         </div>
-                    ))}
-                    </div>
-                )}
-            />
-            <FieldArray
-                name="components"
-                render={(arrayHelpers) => (
-                    <div>
-                    {arrayHelpers.form.values.components.map((component, index) => (
-                        <div key={index}>
-                        <Field name={`components.${index}`} placeholder="components"/>
-                        <button
-                            type="button"
-                            onClick={() => arrayHelpers.remove(index)}
-                        >
-                            -
-                        </button>
-                        {index === arrayHelpers.form.values.components.length - 1 && (
+                    )}
+                />
+            </div>
+            <div className={css.formItem}>
+                <FieldArray
+                    name="components"
+                    render={(arrayHelpers) => (
+                        <div>
+                        {arrayHelpers.form.values.components.map((component, index) => (
+                            <div key={index} className={css.inputArray}>
+                            <Field className={css.field} name={`components.${index}`} placeholder="components"/>
                             <button
-                            type="button"
-                            onClick={() => arrayHelpers.push('')}
+                                className={css.minBtn}
+                                type="button"
+                                onClick={() => arrayHelpers.remove(index)}
                             >
-                            +
+                                -
                             </button>
-                        )}
+                            {index === arrayHelpers.form.values.components.length - 1 && (
+                                <button
+                                    className={css.minBtn}
+                                type="button"
+                                onClick={() => arrayHelpers.push('')}
+                                >
+                                +
+                                </button>
+                            )}
+                            </div>
+                        ))}
                         </div>
-                    ))}
-                    </div>
-                )}
-            />
-            <button type="submit">Submit</button>
+                    )}
+                />  
+            </div>
+            <button type="submit" className={css.btn}>Submit</button>
         </Form>
         </Formik>
     </div>
