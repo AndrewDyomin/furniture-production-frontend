@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import { selectAllProducts } from '../../../redux/products/selectors';
 import css from "./ProductDetails.module.css"
@@ -23,7 +22,7 @@ export const ProductDetails = () => {
                 onSlideChange={() => console.log('slide change')}
                 onSwiper={(swiper) => console.log(swiper)}
                 >
-                {product.images.map((image) => (<SwiperSlide><img src={image} key={image} className={css.image}/></SwiperSlide>))}
+                {product.images.map((image) => (<SwiperSlide><img src={image} key={image} alt={product.group} className={css.image}/></SwiperSlide>))}
                 {/* <SwiperSlide key='1'>Slide 1</SwiperSlide>
                 <SwiperSlide key='2'>Slide 2</SwiperSlide>
                 <SwiperSlide key='3'>Slide 3</SwiperSlide>
