@@ -1,8 +1,19 @@
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { HeroPage } from 'components/HeroPage/HeroPage';
 import { OurProducts } from 'components/OurProducts/OurProducts';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchAllProducts } from '../redux/products/operations';
+
   
   export default function Home() {
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+      dispatch(fetchAllProducts());
+    }, [dispatch]);
+
     return (
     <HelmetProvider>
       <div>

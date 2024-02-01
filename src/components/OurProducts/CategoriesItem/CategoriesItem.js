@@ -11,9 +11,9 @@ export const CategoriesItem = ({ image, title }) => {
     }
 
     return (
-        <Link to='/products'>
+        <Link to={`/products/${title}`}>
             <div className={css.wrapper} style={backgroundStyle}>
-                <p className={css.title}>{title}</p>
+                <p className={css.title}>{`${title.charAt(0).toUpperCase()}${title.slice(1)}s`}</p>
             </div>
         </Link>
     )

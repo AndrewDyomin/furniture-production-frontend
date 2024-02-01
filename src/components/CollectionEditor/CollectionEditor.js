@@ -19,6 +19,7 @@ export const CollectionEditor = () => {
                 depth: ''
             },
             subscription: '',
+            basePrice: '',
             images: [''],
             components: [''],
         }}
@@ -57,8 +58,8 @@ export const CollectionEditor = () => {
                 <Field className={css.field} id="subscription" name="subscription" placeholder="Subscription" />
             </div>
             <div className={css.formItem}>
-                <label htmlFor="price">Base price</label>
-                <Field className={css.field} id="price" name="price" placeholder="12500" />
+                <label htmlFor="basePrice">Base price</label>
+                <Field className={css.field} id="basePrice" name="basePrice" placeholder="12500" />
             </div>
             <div className={css.formItem}>
                 <FieldArray
