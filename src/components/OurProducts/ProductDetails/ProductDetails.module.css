@@ -12,3 +12,17 @@
 .image {
     width: 90%;
 }
+
+.baseInfoTitle {
+    font-size: 20px;
+    color: #9f9f9f;
+}
+
+.baseInfoTitle:nth-child(n + 2) {
+    margin-top: 15px;
+}
+
+.price {
+    font-size: 25px;
+    font-weight: 600;
+}

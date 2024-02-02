@@ -1,17 +1,29 @@
 import { Formik, Field, Form, FieldArray } from 'formik';
 import axios from 'axios';
 import css from './CollectionEditor.module.css';
+import { useEffect, useState } from 'react';
+import Select from 'react-select';
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
 
+const groups = [
+    { value: 'sofa', label: 'Sofa' },
+    { value: 'bed', label: 'Bed' },
+  ];
+
 export const CollectionEditor = () => {
+
+    const [selectedGroup, setSelectedGroup] = useState('sofa');
+
+    useEffect(() => {}, 
+    [selectedGroup])
 
   return (
     <div className={css.wrapper}>
         <h2 className={css.title}>Collection Editor</h2>
         <Formik
         initialValues={{
-            group: '',
+            group: selectedGroup,
             name: '',
             dimensions: {
                 width: '',
@@ -35,7 +47,15 @@ export const CollectionEditor = () => {
         <Form className={css.formWrapper}>
             <div className={css.formItem}>
                 <label htmlFor="group">Group</label>
-                <Field className={css.field} id="group" name="group" placeholder="Sofa" />
+                {/* <Field className={css.field} id="group" name="group" placeholder="Sofa" /> */}
+                <Select
+                        className={css.field}
+                        id="group"
+                        name="group"
+                        defaultValue={selectedGroup}
+                        onChange={setSelectedGroup}
+                        options={groups}
+                    />
             </div>
             <div className={css.formItem}>
                 <label htmlFor="name">Name</label>

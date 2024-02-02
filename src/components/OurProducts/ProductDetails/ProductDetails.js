@@ -4,7 +4,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 import { selectAllProducts } from '../../../redux/products/selectors';
 import css from "./ProductDetails.module.css";
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Select from 'react-select';
 
 const bedSizes = [
@@ -16,11 +16,12 @@ const bedSizes = [
 
 export const ProductDetails = () => {
 
-    const [selectedBedSize, setSelectedBedSize] = useState('160');
+    const [selectedBedSize, setSelectedBedSize] = useState({ value: '160', label: '160 x 200(190)' });
 
     const { id } = useParams();
     const products = useSelector(selectAllProducts);
     const product = products.array.find((el) => (el._id === id));
+    const differenceInWidth = product.dimensions.width - 160;
     const price = product.basePrice;
 
     return(
@@ -34,19 +35,25 @@ export const ProductDetails = () => {
                 ))}
             </Carousel>
             {product.group === 'bed' ? 
-                <div>
-                    <p>Sleeping area:</p>
+                <div className={css.baseInfoWrapper}>
+                    <p className={css.baseInfoTitle}>Sleeping area:</p>
                     <Select
                         defaultValue={selectedBedSize}
                         onChange={setSelectedBedSize}
                         options={bedSizes}
                     />
-                    <p>Overall size:</p>
-                    <p>HZ</p>
-                    <p>Price:</p>
-                    <p>{price}</p>
-                </div> : <></>}
-            <p>Description:</p>
+                    <p className={css.baseInfoTitle}>Overall size:</p>
+                    <p>{Number(selectedBedSize.value) + Number(differenceInWidth)} x {product.dimensions.depth}({product.dimensions.depth-10})</p>
+                    <p className={css.baseInfoTitle}>Price:</p>
+                    <p className={css.price}>{price} ₴</p>
+                </div> : 
+                <div className={css.baseInfoWrapper}>
+                    <p className={css.baseInfoTitle}>Overall size:</p>
+                    <p>{product.dimensions.depth} x {product.dimensions.width} x {product.dimensions.height}</p>
+                    <p className={css.baseInfoTitle}>Price:</p>
+                    <p className={css.price}>{product.basePrice} ₴</p>
+                </div>}
+            <p className={css.baseInfoTitle}>Description:</p>
             <p>{product.subscription}</p>
         </div>
     )
