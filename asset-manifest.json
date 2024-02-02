@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/furniture-production-frontend/static/css/main.e6d92b48.css",
-    "main.js": "/furniture-production-frontend/static/js/main.74a265f8.js",
+    "main.js": "/furniture-production-frontend/static/js/main.023b6e88.js",
     "static/css/231.37cb0e25.chunk.css": "/furniture-production-frontend/static/css/231.37cb0e25.chunk.css",
     "static/js/231.4db77df9.chunk.js": "/furniture-production-frontend/static/js/231.4db77df9.chunk.js",
     "static/css/40.1e05f24e.chunk.css": "/furniture-production-frontend/static/css/40.1e05f24e.chunk.css",
@@ -17,12 +17,12 @@
     "static/css/913.be3d3a79.chunk.css": "/furniture-production-frontend/static/css/913.be3d3a79.chunk.css",
     "static/js/913.7c4cde3d.chunk.js": "/furniture-production-frontend/static/js/913.7c4cde3d.chunk.js",
     "static/css/818.ccce4b73.chunk.css": "/furniture-production-frontend/static/css/818.ccce4b73.chunk.css",
-    "static/js/818.d100355f.chunk.js": "/furniture-production-frontend/static/js/818.d100355f.chunk.js",
-    "static/css/860.164b40bf.chunk.css": "/furniture-production-frontend/static/css/860.164b40bf.chunk.css",
-    "static/js/860.223ba55e.chunk.js": "/furniture-production-frontend/static/js/860.223ba55e.chunk.js",
-    "static/js/50.8d125085.chunk.js": "/furniture-production-frontend/static/js/50.8d125085.chunk.js",
+    "static/js/818.192f1ca3.chunk.js": "/furniture-production-frontend/static/js/818.192f1ca3.chunk.js",
+    "static/css/339.ade15f06.chunk.css": "/furniture-production-frontend/static/css/339.ade15f06.chunk.css",
+    "static/js/339.c26873ad.chunk.js": "/furniture-production-frontend/static/js/339.c26873ad.chunk.js",
+    "static/js/50.810551f1.chunk.js": "/furniture-production-frontend/static/js/50.810551f1.chunk.js",
     "static/js/705.5edb5425.chunk.js": "/furniture-production-frontend/static/js/705.5edb5425.chunk.js",
-    "static/js/861.71df99af.chunk.js": "/furniture-production-frontend/static/js/861.71df99af.chunk.js",
+    "static/js/980.0925029d.chunk.js": "/furniture-production-frontend/static/js/980.0925029d.chunk.js",
     "static/media/scandinavian-interior-mockup-wall-decal-background 1.jpg": "/furniture-production-frontend/static/media/scandinavian-interior-mockup-wall-decal-background 1.18aa65deac475ec0860e.jpg",
     "static/media/002-01-min-900x675.jpg": "/furniture-production-frontend/static/media/002-01-min-900x675.2c7d957c05209cdb3ec6.jpg",
     "static/media/feelee002-min-900x675.jpg": "/furniture-production-frontend/static/media/feelee002-min-900x675.84b754d65bf843884626.jpg",
@@ -30,7 +30,7 @@
     "static/media/icons.svg": "/furniture-production-frontend/static/media/icons.ec3e48179206795402cc3ef5ff26775e.svg",
     "index.html": "/furniture-production-frontend/index.html",
     "main.e6d92b48.css.map": "/furniture-production-frontend/static/css/main.e6d92b48.css.map",
-    "main.74a265f8.js.map": "/furniture-production-frontend/static/js/main.74a265f8.js.map",
+    "main.023b6e88.js.map": "/furniture-production-frontend/static/js/main.023b6e88.js.map",
     "231.37cb0e25.chunk.css.map": "/furniture-production-frontend/static/css/231.37cb0e25.chunk.css.map",
     "231.4db77df9.chunk.js.map": "/furniture-production-frontend/static/js/231.4db77df9.chunk.js.map",
     "40.1e05f24e.chunk.css.map": "/furniture-production-frontend/static/css/40.1e05f24e.chunk.css.map",
@@ -46,15 +46,15 @@
     "913.be3d3a79.chunk.css.map": "/furniture-production-frontend/static/css/913.be3d3a79.chunk.css.map",
     "913.7c4cde3d.chunk.js.map": "/furniture-production-frontend/static/js/913.7c4cde3d.chunk.js.map",
     "818.ccce4b73.chunk.css.map": "/furniture-production-frontend/static/css/818.ccce4b73.chunk.css.map",
-    "818.d100355f.chunk.js.map": "/furniture-production-frontend/static/js/818.d100355f.chunk.js.map",
-    "860.164b40bf.chunk.css.map": "/furniture-production-frontend/static/css/860.164b40bf.chunk.css.map",
-    "860.223ba55e.chunk.js.map": "/furniture-production-frontend/static/js/860.223ba55e.chunk.js.map",
-    "50.8d125085.chunk.js.map": "/furniture-production-frontend/static/js/50.8d125085.chunk.js.map",
+    "818.192f1ca3.chunk.js.map": "/furniture-production-frontend/static/js/818.192f1ca3.chunk.js.map",
+    "339.ade15f06.chunk.css.map": "/furniture-production-frontend/static/css/339.ade15f06.chunk.css.map",
+    "339.c26873ad.chunk.js.map": "/furniture-production-frontend/static/js/339.c26873ad.chunk.js.map",
+    "50.810551f1.chunk.js.map": "/furniture-production-frontend/static/js/50.810551f1.chunk.js.map",
     "705.5edb5425.chunk.js.map": "/furniture-production-frontend/static/js/705.5edb5425.chunk.js.map",
-    "861.71df99af.chunk.js.map": "/furniture-production-frontend/static/js/861.71df99af.chunk.js.map"
+    "980.0925029d.chunk.js.map": "/furniture-production-frontend/static/js/980.0925029d.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e6d92b48.css",
-    "static/js/main.74a265f8.js"
+    "static/js/main.023b6e88.js"
   ]
 }
