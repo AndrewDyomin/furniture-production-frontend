@@ -14,6 +14,12 @@ const groups = [
 export const CollectionEditor = () => {
 
     const [selectedGroup, setSelectedGroup] = useState('sofa');
+    const [selectedFiles, setSelectedFiles] = useState([]);
+
+    const handleFileChange = (event) => {
+        setSelectedFiles([...event.target.files]);
+        console.log('ok');
+    };
 
     useEffect(() => {}, 
     [selectedGroup])
@@ -37,7 +43,22 @@ export const CollectionEditor = () => {
         }}
         onSubmit={async (values, { resetForm }) => {
             try {
-                await axios.post('/collections/add', values);
+                const formData = new FormData();
+                formData.append('group', values.group);
+                formData.append('name', values.name);
+                formData.append('dimensions', values.dimensions);
+                formData.append('subscription', values.subscription);
+                formData.append('basePrice', values.basePrice);
+                formData.append('components', values.components);
+                selectedFiles.forEach((file, index) => {
+                    formData.append(`image${index}`, file);
+                });
+
+                await axios.post('/collections/add', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
                 resetForm();
             } catch(error) {
                 console.log(error);
@@ -88,7 +109,11 @@ export const CollectionEditor = () => {
                         <div>
                         {arrayHelpers.form.values.images.map((image, index) => (
                             <div key={index} className={css.inputArray}>
-                            <Field className={css.field} name={`images.${index}`} placeholder="images"/>
+                            <Field className={css.field} 
+                                name={`images.${index}`} 
+                                placeholder="images" type="file" 
+                                multiple 
+                                onChange={handleFileChange}/>
                             {arrayHelpers.form.values.images.length > 1 ? <button
                                 className={css.minBtn}
                                 type="button"
