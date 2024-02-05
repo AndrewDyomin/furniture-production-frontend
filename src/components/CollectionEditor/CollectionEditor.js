@@ -14,11 +14,11 @@ const groups = [
 export const CollectionEditor = () => {
 
     const [selectedGroup, setSelectedGroup] = useState('sofa');
+
     const [selectedFiles, setSelectedFiles] = useState([]);
 
     const handleFileChange = (event) => {
         setSelectedFiles([...event.target.files]);
-        console.log('ok');
     };
 
     useEffect(() => {}, 
@@ -50,15 +50,17 @@ export const CollectionEditor = () => {
                 formData.append('subscription', values.subscription);
                 formData.append('basePrice', values.basePrice);
                 formData.append('components', values.components);
-                selectedFiles.forEach((file, index) => {
-                    formData.append(`image${index}`, file);
-                });
+                formData.append('files', selectedFiles);
+                // selectedFiles.forEach((file, index) => {
+                //     formData.append(`files`, file);
+                // });
 
-                await axios.post('/collections/add', formData, {
+                const response = await axios.post('/collections/add', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
                 });
+                console.log(response);
                 resetForm();
             } catch(error) {
                 console.log(error);
@@ -103,8 +105,9 @@ export const CollectionEditor = () => {
                 <Field className={css.field} id="basePrice" name="basePrice" placeholder="12500" />
             </div>
             <div className={css.formItem}>
-                <FieldArray
-                    name="images"
+                <Field className={css.field} id="files" name="files" type="file" multiple onChange={handleFileChange}/>
+                {/* <FieldArray
+                    name="files"
                     render={(arrayHelpers) => (
                         <div>
                         {arrayHelpers.form.values.images.map((image, index) => (
@@ -134,7 +137,7 @@ export const CollectionEditor = () => {
                         ))}
                         </div>
                     )}
-                />
+                /> */}
             </div>
             <div className={css.formItem}>
                 <FieldArray
