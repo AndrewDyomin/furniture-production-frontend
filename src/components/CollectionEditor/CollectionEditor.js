@@ -15,10 +15,10 @@ export const CollectionEditor = () => {
 
     const [selectedGroup, setSelectedGroup] = useState('sofa');
 
-    const [selectedFiles, setSelectedFiles] = useState([]);
+    const [selectedFiles, setSelectedFiles] = useState('');
 
     const handleFileChange = (event) => {
-        setSelectedFiles([...event.target.files]);
+        setSelectedFiles(event.target.files);
     };
 
     useEffect(() => {}, 
@@ -46,14 +46,15 @@ export const CollectionEditor = () => {
                 const formData = new FormData();
                 formData.append('group', values.group);
                 formData.append('name', values.name);
-                formData.append('dimensions', values.dimensions);
+                formData.append('dimensions[width]', values.dimensions.width);
+                formData.append('dimensions[height]', values.dimensions.height);
+                formData.append('dimensions[depth]', values.dimensions.depth);
                 formData.append('subscription', values.subscription);
                 formData.append('basePrice', values.basePrice);
-                formData.append('components', values.components);
-                formData.append('files', selectedFiles);
-                // selectedFiles.forEach((file, index) => {
-                //     formData.append(`files`, file);
-                // });
+                values.components.forEach((component, index) => {
+                    formData.append(`components[${index}]`, component);
+                });
+                formData.append('file', selectedFiles[0]);
 
                 const response = await axios.post('/collections/add', formData, {
                     headers: {
@@ -70,7 +71,6 @@ export const CollectionEditor = () => {
         <Form className={css.formWrapper}>
             <div className={css.formItem}>
                 <label htmlFor="group">Group</label>
-                {/* <Field className={css.field} id="group" name="group" placeholder="Sofa" /> */}
                 <Select
                         className={css.field}
                         id="group"
@@ -105,7 +105,7 @@ export const CollectionEditor = () => {
                 <Field className={css.field} id="basePrice" name="basePrice" placeholder="12500" />
             </div>
             <div className={css.formItem}>
-                <Field className={css.field} id="files" name="files" type="file" multiple onChange={handleFileChange}/>
+                <Field className={css.field} id="files" name="files" type="file" onChange={handleFileChange}/>
                 {/* <FieldArray
                     name="files"
                     render={(arrayHelpers) => (
