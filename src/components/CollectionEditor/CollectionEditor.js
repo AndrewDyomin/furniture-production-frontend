@@ -1,7 +1,7 @@
 import { Formik, Field, Form, FieldArray } from 'formik';
 import axios from 'axios';
 import css from './CollectionEditor.module.css';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Select from 'react-select';
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
@@ -20,9 +20,6 @@ export const CollectionEditor = () => {
     const handleFileChange = (event) => {
         setSelectedFiles(event.target.files);
     };
-
-    useEffect(() => {}, 
-    [selectedGroup])
 
   return (
     <div className={css.wrapper}>
@@ -106,38 +103,6 @@ export const CollectionEditor = () => {
             </div>
             <div className={css.formItem}>
                 <Field className={css.field} id="files" name="files" type="file" onChange={handleFileChange}/>
-                {/* <FieldArray
-                    name="files"
-                    render={(arrayHelpers) => (
-                        <div>
-                        {arrayHelpers.form.values.images.map((image, index) => (
-                            <div key={index} className={css.inputArray}>
-                            <Field className={css.field} 
-                                name={`images.${index}`} 
-                                placeholder="images" type="file" 
-                                multiple 
-                                onChange={handleFileChange}/>
-                            {arrayHelpers.form.values.images.length > 1 ? <button
-                                className={css.minBtn}
-                                type="button"
-                                onClick={() => arrayHelpers.remove(index)}
-                            >
-                                -
-                            </button> : <></>}
-                            {index === arrayHelpers.form.values.images.length - 1 && (
-                                <button
-                                    className={css.minBtn}
-                                type="button"
-                                onClick={() => arrayHelpers.push('')}
-                                >
-                                +
-                                </button>
-                            )}
-                            </div>
-                        ))}
-                        </div>
-                    )}
-                /> */}
             </div>
             <div className={css.formItem}>
                 <FieldArray
