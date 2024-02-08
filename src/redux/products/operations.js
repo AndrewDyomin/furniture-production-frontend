@@ -37,7 +37,11 @@ export const deleteProduct = createAsyncThunk(
   'products/deleteProduct',
   async (credentials, thunkAPI) => {
     try {
-      const del = await axios.delete('/collections/remove', credentials);
+      const del = await axios.delete('/collections/remove', {
+        data: credentials,
+        headers: {
+          'Content-Type': 'application/json'
+        }});
       console.log(del, credentials);
       const dispatch = useDispatch();
       const res = dispatch(fetchAllProducts);
