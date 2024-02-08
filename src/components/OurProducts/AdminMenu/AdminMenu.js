@@ -6,7 +6,7 @@ export const AdminMenu = ({ id }) => {
     const dispatch = useDispatch();
 
     const handleDelete = () => {
-        dispatch(deleteProduct({ id }));
+        dispatch(deleteProduct({ id: id }));
         console.log(id)
     }
 
