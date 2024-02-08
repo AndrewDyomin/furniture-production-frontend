@@ -26,10 +26,10 @@ export const setActiveProduct = createAsyncThunk(
 
 export const deleteProduct = createAsyncThunk(
   'products/deleteProduct',
-  async (id, thunkAPI) => {
+  async (credentials, thunkAPI) => {
     try {
-      const del = await axios.delete('/collections/remove', id);
-      console.log(del, id);
+      const del = await axios.delete('/collections/remove', credentials);
+      console.log(del, credentials);
       const res = await axios.get('/collections/all');
       return res.data;
     } catch(error) {
