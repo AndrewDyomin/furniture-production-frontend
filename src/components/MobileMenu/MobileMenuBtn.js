@@ -37,7 +37,6 @@ export const MobileMenuBtn = () => {
           borderRadius: '12px',
           border: '2px solid black',
           backgroundColor: 'FFF',
-        //   boxShadow: '0px 4px 14px 0px rgba(227, 255, 168, 0.20)',
           transition: 'top 0.3s ease-in-out',
           position: 'absolute',
         },
