@@ -1,5 +1,14 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
+
+axios.interceptors.request.use(request => {
+  console.log('Request:', request);
+  return request;
+}, error => {
+  console.error('Request error:', error);
+  return Promise.reject(error);
+});
 
 export const fetchAllProducts = createAsyncThunk(
   'products/fetchAllProducts',
@@ -30,8 +39,9 @@ export const deleteProduct = createAsyncThunk(
     try {
       const del = await axios.delete('/collections/remove', credentials);
       console.log(del, credentials);
-      const res = await axios.get('/collections/all');
-      return res.data;
+      const dispatch = useDispatch();
+      const res = dispatch(fetchAllProducts);
+      return res;
     } catch(error) {
       return thunkAPI.rejectWithValue(error.message);
     }

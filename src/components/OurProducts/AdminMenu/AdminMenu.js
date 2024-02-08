@@ -1,13 +1,12 @@
 import { useDispatch } from "react-redux";
 import { deleteProduct } from "../../../redux/products/operations";
 
-export const AdminMenu = ({ id }) => {
+export const AdminMenu = (id) => {
 
     const dispatch = useDispatch();
 
     const handleDelete = () => {
-        dispatch(deleteProduct({ id: id }));
-        console.log(id)
+        dispatch(deleteProduct(id));
     }
 
     return (
