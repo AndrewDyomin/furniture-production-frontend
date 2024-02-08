@@ -23,3 +23,17 @@ export const setActiveProduct = createAsyncThunk(
     }
   }
 );
+
+export const deleteProduct = createAsyncThunk(
+  'products/deleteProduct',
+  async (id, thunkAPI) => {
+    try {
+      await axios.delete('collections/remove', id);
+      console.log("oper:", id);
+      const res = await axios.get('/collections/all');
+      return res.data;
+    } catch(error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);

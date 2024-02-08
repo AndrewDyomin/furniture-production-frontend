@@ -2,10 +2,12 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
-import { selectAllProducts } from '../../../redux/products/selectors';
+import { selectActiveProduct } from '../../../redux/products/selectors';
 import css from "./ProductDetails.module.css";
 import { useState } from 'react';
 import Select from 'react-select';
+import { useAuth } from "hooks";
+import { AdminMenu } from "../AdminMenu/AdminMenu";
 
 const bedSizes = [
   { value: '140', label: '140 x 200(190)' },
@@ -16,11 +18,10 @@ const bedSizes = [
 
 export const ProductDetails = () => {
 
+    const { user, isLoggedIn } = useAuth();
     const [selectedBedSize, setSelectedBedSize] = useState({ value: '160', label: '160 x 200(190)' });
-
     const { id } = useParams();
-    const products = useSelector(selectAllProducts);
-    const product = products.array.find((el) => (el._id === id));
+    const product = useSelector(selectActiveProduct);
     const differenceInWidth = product.dimensions.width - 160;
     const price = product.basePrice;
 
@@ -55,6 +56,10 @@ export const ProductDetails = () => {
                 </div>}
             <p className={css.baseInfoTitle}>Description:</p>
             <p>{product.subscription}</p>
+            {isLoggedIn ? 
+                (user.subscription === "administrator" && (
+            <AdminMenu id={id}/>
+            )) : <></>}
         </div>
     )
 }

@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { logOut } from '../auth/operations';
 import { fetchAllProducts } from './operations';
 import { setActiveProduct } from './operations';
+import { deleteProduct } from './operations';
 
 const handlePending = state => {
   state.isLoading = true;
@@ -32,6 +33,13 @@ const productsSlice = createSlice({
       .addCase(setActiveProduct.fulfilled, (state, action) => {
         state.activeItem = action.payload;
       })
+      .addCase(deleteProduct.pending, handlePending)
+      .addCase(deleteProduct.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        state.items = action.payload;
+      })
+      .addCase(deleteProduct.rejected, handleRejected)
       .addCase(logOut.fulfilled, state => {
         state.items = [];
         state.activeItem = {};
