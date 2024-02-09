@@ -44,8 +44,8 @@ export const AdminMenu = (id) => {
 
     return (
         <div>
-            <button onClick={openDeleteModal}>Delete</button>
-            <button className={css.menuButton} onClick={openEditModal}>Edit</button>
+            <button onClick={openDeleteModal} className={css.btn}>Delete</button>
+            <button className={css.btn} onClick={openEditModal}>Edit</button>
             <PopUp 
                 isOpen={isModalEditOpen}
                 close={closeEditModal}
@@ -140,8 +140,10 @@ export const AdminMenu = (id) => {
                 body={
                     <>
                         <p>Are you sure???</p>
-                        <button onClick={closeDeleteModal}>Cancel</button>
-                        <button onClick={handleDelete}>Delete</button>
+                        <div className={css.delModalWrapper}>
+                            <button onClick={closeDeleteModal} className={css.btn}>Cancel</button>
+                            <button onClick={handleDelete} className={`${css.btn} ${css.delBtn}`}>Delete</button>
+                        </div>
                     </>}
             />
         </div>

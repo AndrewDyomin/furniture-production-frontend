@@ -18,6 +18,9 @@ export const UserMenu = ({ close }) => {
           <Link className={css.link} to="/orders" onClick={close}>
             Orders
           </Link>
+          <Link className={css.link} to="/products" onClick={close}>
+            All products
+          </Link>
           {user.subscription === "administrator" && (
             <Link className={css.link} to="/room" onClick={close}>My room</Link>
           )}

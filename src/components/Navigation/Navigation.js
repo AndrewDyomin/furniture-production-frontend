@@ -14,9 +14,14 @@ export const Navigation = () => {
         <img src={logo} alt='logo' className={css.logo}/>
       </NavLink>
       {isLoggedIn && !isMobile && (
-        <NavLink className={css.link} to="/orders">
-          Orders
-        </NavLink>
+        <>
+          <NavLink className={css.link} to="/orders">
+            Orders
+          </NavLink>
+          <NavLink className={css.link} to="/products">
+            All products
+          </NavLink>
+        </>
       )}
     </nav>
   );

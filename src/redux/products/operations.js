@@ -1,5 +1,4 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { useDispatch } from 'react-redux';
 import axios from 'axios';
 
 export const fetchAllProducts = createAsyncThunk(
@@ -34,8 +33,7 @@ export const deleteProduct = createAsyncThunk(
         headers: {
           'Content-Type': 'application/json'
         }});
-      const dispatch = useDispatch();
-      const res = dispatch(fetchAllProducts);
+      const res = thunkAPI.dispatch(fetchAllProducts());
       return res;
     } catch(error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -47,13 +45,9 @@ export const updateProduct = createAsyncThunk(
   'products/updateProduct',
   async (credentials, thunkAPI) => {
     try {
-      await axios.post('/collections/update', {
-        data: credentials,
-        headers: {
-          'Content-Type': 'application/json'
-        }});
-      const dispatch = useDispatch();
-      const res = dispatch(fetchAllProducts);
+      const updated = await axios.post('/collections/update', credentials);
+      thunkAPI.dispatch(setActiveProduct(updated.data));
+      const res = thunkAPI.dispatch(fetchAllProducts());
       return res;
     } catch(error) {
       return thunkAPI.rejectWithValue(error.message);

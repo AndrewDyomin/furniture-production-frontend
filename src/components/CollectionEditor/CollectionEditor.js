@@ -1,7 +1,7 @@
 import { Formik, Field, Form, FieldArray } from 'formik';
 import axios from 'axios';
 import css from './CollectionEditor.module.css';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Select from 'react-select';
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
@@ -14,11 +14,6 @@ const groups = [
 export const CollectionEditor = () => {
 
     const [selectedGroup, setSelectedGroup] = useState('sofa');
-
-    useEffect(() => {
-        console.log(selectedGroup)
-    }
-    ,[selectedGroup])
 
     const [selectedFiles, setSelectedFiles] = useState('');
 
@@ -58,12 +53,11 @@ export const CollectionEditor = () => {
                 });
                 formData.append('file', selectedFiles[0]);
 
-                const response = await axios.post('/collections/add', formData, {
+                await axios.post('/collections/add', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
                 });
-                console.log(response);
                 resetForm();
             } catch(error) {
                 console.log(error);
