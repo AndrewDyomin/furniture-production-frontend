@@ -28,7 +28,7 @@ export const ProductDetails = () => {
     return(
         <div className={css.section}>
             <h1 className={css.title}>{product.name}</h1>
-            <Carousel>
+            <Carousel showIndicators={false}>
                 {product.images.map((link) => (
                     <div key={link}>
                         <img src={link} alt={product.name}/>

@@ -1,7 +1,7 @@
 import { Formik, Field, Form, FieldArray } from 'formik';
 import axios from 'axios';
 import css from './CollectionEditor.module.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Select from 'react-select';
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
@@ -14,6 +14,11 @@ const groups = [
 export const CollectionEditor = () => {
 
     const [selectedGroup, setSelectedGroup] = useState('sofa');
+
+    useEffect(() => {
+        console.log(selectedGroup)
+    }
+    ,[selectedGroup])
 
     const [selectedFiles, setSelectedFiles] = useState('');
 
@@ -73,7 +78,7 @@ export const CollectionEditor = () => {
                         id="group"
                         name="group"
                         defaultValue={selectedGroup}
-                        onChange={setSelectedGroup}
+                        onChange={e => setSelectedGroup(e.value)}
                         options={groups}
                     />
             </div>
