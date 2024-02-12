@@ -14,8 +14,8 @@ import { tasksReducer } from './tasks/slice';
 import { ordersReducer } from './orders/slice';
 import { authReducer } from './auth/slice';
 import { productsReducer } from './products/slice';
+import { componentsReducer } from './components/slice';
 
-// Persisting token field from auth slice to localstorage
 const authPersistConfig = {
   key: 'auth',
   storage,
@@ -34,6 +34,7 @@ export const store = configureStore({
     tasks: tasksReducer,
     orders: ordersReducer,
     products: persistReducer(productsPersistConfig, productsReducer),
+    components: componentsReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
