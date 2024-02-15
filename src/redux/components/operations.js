@@ -17,7 +17,7 @@ export const addComponent = createAsyncThunk(
   'components/addComponent',
   async (data, thunkAPI) => {
     try {
-      await axios.post('/components/add', { data });
+      await axios.post('/components/add', data);
       const response = thunkAPI.dispatch(fetchAllComponents());
       return response.data;
     } catch (error) {
@@ -30,7 +30,7 @@ export const updateComponent = createAsyncThunk(
   'components/update',
   async (data, thunkAPI) => {
     try {
-      await axios.post('/components/remove', { data });
+      await axios.post('/components/update', data);
       const response = thunkAPI.dispatch(fetchAllComponents());
       return response.data;
     } catch (error) {
@@ -43,7 +43,12 @@ export const deleteComponent = createAsyncThunk(
   'components/delete',
   async (id, thunkAPI) => {
     try {
-      await axios.delete('/components/remove', { id });
+      console.log({id})
+      await axios.delete('/components/remove', {
+        data: {id},
+        headers: {
+          'Content-Type': 'application/json'
+        }});
       const response = thunkAPI.dispatch(fetchAllComponents());
       return response.data;
     } catch (error) {

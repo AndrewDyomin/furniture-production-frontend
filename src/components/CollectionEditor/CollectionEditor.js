@@ -1,8 +1,10 @@
 import { Formik, Field, Form, FieldArray } from 'formik';
+import { selectAllComponents } from "../../redux/components/selectors";
 import axios from 'axios';
 import css from './CollectionEditor.module.css';
 import { useState } from 'react';
 import Select from 'react-select';
+import { useSelector } from 'react-redux';
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
 
@@ -13,9 +15,16 @@ const groups = [
 
 export const CollectionEditor = () => {
 
-    const [selectedGroup, setSelectedGroup] = useState('sofa');
+    const components = useSelector(selectAllComponents).array;
+    let componentList = [];
 
+    components.forEach((component) => {
+        componentList.push({value: component._id, label: `${component.name}/${component.units}`})
+    })
+
+    const [selectedGroup, setSelectedGroup] = useState({ value: 'sofa', label: 'Sofa' });
     const [selectedFiles, setSelectedFiles] = useState('');
+    const [selectedComponents, setSelectedComponents] = useState([]);
 
     const handleFileChange = (event) => {
         setSelectedFiles(event.target.files);
@@ -26,7 +35,7 @@ export const CollectionEditor = () => {
         <h2 className={css.title}>Collection Editor</h2>
         <Formik
         initialValues={{
-            group: selectedGroup,
+            group: selectedGroup.value,
             name: '',
             dimensions: {
                 width: '',
@@ -41,23 +50,25 @@ export const CollectionEditor = () => {
         onSubmit={async (values, { resetForm }) => {
             try {
                 const formData = new FormData();
-                formData.append('group', values.group);
+                formData.append('group', selectedGroup.value);
                 formData.append('name', values.name);
                 formData.append('dimensions[width]', values.dimensions.width);
                 formData.append('dimensions[height]', values.dimensions.height);
                 formData.append('dimensions[depth]', values.dimensions.depth);
                 formData.append('subscription', values.subscription);
                 formData.append('basePrice', values.basePrice);
-                values.components.forEach((component, index) => {
+                selectedComponents.forEach((component, index) => {
                     formData.append(`components[${index}]`, component);
                 });
                 formData.append('file', selectedFiles[0]);
-
                 await axios.post('/collections/add', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
                 });
+                // formData.forEach((value, key) => {
+                //     console.log(key + ': ' + value);
+                // });
                 resetForm();
             } catch(error) {
                 console.log(error);
@@ -67,14 +78,14 @@ export const CollectionEditor = () => {
         <Form className={css.formWrapper}>
             <div className={css.formItem}>
                 <label htmlFor="group">Group</label>
-                <Select
-                        className={css.field}
-                        id="group"
-                        name="group"
-                        defaultValue={selectedGroup}
-                        onChange={e => setSelectedGroup(e.value)}
-                        options={groups}
-                    />
+                <Field component={Select} 
+                    name="group" 
+                    id="group"
+                    onChange={e => setSelectedGroup(e)}
+                    options={groups}
+                    defaultValue={selectedGroup.value}
+                    >
+                </Field>
             </div>
             <div className={css.formItem}>
                 <label htmlFor="name">Name</label>
@@ -110,7 +121,17 @@ export const CollectionEditor = () => {
                         <div>
                         {arrayHelpers.form.values.components.map((component, index) => (
                             <div key={index} className={css.inputArray}>
-                            <Field className={css.field} name={`components.${index}`} placeholder="components"/>
+                            {/* <Field className={css.field} name={`components.${index}`} placeholder="components"/> */}
+                            <Field component={Select} 
+                                name={`components.${index}`} 
+                                onChange={e => setSelectedComponents(prevState => {
+                                    const updatedComponents = [...prevState];
+                                    updatedComponents[index] = e.value;
+                                    return updatedComponents;
+                                  })}
+                                options={componentList}
+                                >
+                            </Field>
                             {arrayHelpers.form.values.components.length > 1 ? <button
                                 className={css.minBtn}
                                 type="button"

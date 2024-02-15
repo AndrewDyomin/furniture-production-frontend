@@ -8,6 +8,7 @@ import { useState } from 'react';
 import Select from 'react-select';
 import { useAuth } from "hooks";
 import { AdminMenu } from "../AdminMenu/AdminMenu";
+import { ProductComponents } from "../ProductComponents/ProductComponents";
 
 const bedSizes = [
   { value: '140', label: '140 x 200(190)' },
@@ -58,7 +59,10 @@ export const ProductDetails = () => {
             <p>{product.subscription}</p>
             {isLoggedIn ? 
                 (user.subscription === "administrator" && (
-            <AdminMenu id={id}/>
+            <div>
+                <ProductComponents components={product.components}/>
+                <AdminMenu id={id}/>
+            </div>
             )) : <></>}
         </div>
     )
