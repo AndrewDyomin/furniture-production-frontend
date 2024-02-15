@@ -16,12 +16,15 @@ export const AdminMenu = (id) => {
     const dispatch = useDispatch();
     const product = useSelector(selectActiveProduct);
     const components = useSelector(selectAllComponents).array;
-    const initialComponents = product.components;
+    const initialComponents = product.components.length >= 1 ? product.components : [''];
     let componentList = [];
 
+    try {
     components.forEach((component) => {
         componentList.push({value: component._id, label: `${component.name}/${component.units}`})
-    })
+    })} catch(err) {
+        console.log(err)
+    }
 
     const [isModalEditOpen, setIsModalEditOpen] = useState(false);
     const [selectedComponents, setSelectedComponents] = useState([ ...initialComponents ]);
@@ -81,7 +84,6 @@ export const AdminMenu = (id) => {
                             subscription: product.subscription,
                             basePrice: product.basePrice,
                             components: selectedComponents,
-                            // components: product.components,
                         }}
                         onSubmit={async (values) => {
                             try {
@@ -139,7 +141,10 @@ export const AdminMenu = (id) => {
                                             {arrayHelpers.form.values.components.length > 1 ? <button
                                                 className={css.minBtn}
                                                 type="button"
-                                                onClick={() => arrayHelpers.remove(index)}
+                                                onClick={() => {
+                                                    arrayHelpers.remove(index);
+                                                    setSelectedComponents(selectedComponents.filter((_, i) => i !== index))
+                                                }}
                                             >
                                                 -
                                             </button> : <></>}
