@@ -46,6 +46,7 @@ export const CollectionEditor = () => {
             basePrice: '',
             images: [''],
             components: [''],
+            quantity: [''],
         }}
         onSubmit={async (values, { resetForm }) => {
             try {
@@ -58,8 +59,11 @@ export const CollectionEditor = () => {
                 formData.append('subscription', values.subscription);
                 formData.append('basePrice', values.basePrice);
                 selectedComponents.forEach((component, index) => {
-                    formData.append(`components[${index}]`, component);
-                });
+                    const componentId = selectedComponents[index];
+                    const quantity = values.quantity[index];
+                    formData.append(`components[${index}][id]`, componentId);
+                    formData.append(`components[${index}][quantity]`, quantity);
+                })
                 formData.append('file', selectedFiles[0]);
                 await axios.post('/collections/add', formData, {
                     headers: {
@@ -69,6 +73,7 @@ export const CollectionEditor = () => {
                 // formData.forEach((value, key) => {
                 //     console.log(key + ': ' + value);
                 // });
+                setSelectedComponents([]);
                 resetForm();
             } catch(error) {
                 console.log(error);
@@ -121,8 +126,8 @@ export const CollectionEditor = () => {
                         <div>
                         {arrayHelpers.form.values.components.map((component, index) => (
                             <div key={index} className={css.inputArray}>
-                            {/* <Field className={css.field} name={`components.${index}`} placeholder="components"/> */}
                             <Field component={Select} 
+                                className={css.selectComponent}
                                 name={`components.${index}`} 
                                 onChange={e => setSelectedComponents(prevState => {
                                     const updatedComponents = [...prevState];
@@ -132,10 +137,12 @@ export const CollectionEditor = () => {
                                 options={componentList}
                                 >
                             </Field>
+                            <Field className={`${css.field} ${css.quantityField}`} name={`quantity.${index}`} placeholder="Quantity" />
                             {arrayHelpers.form.values.components.length > 1 ? <button
                                 className={css.minBtn}
                                 type="button"
-                                onClick={() => arrayHelpers.remove(index)}
+                                onClick={() => {arrayHelpers.remove(index);
+                                arrayHelpers.form.values.quantity.splice(index, 1)}}
                             >
                                 -
                             </button> : <></>}
@@ -143,7 +150,8 @@ export const CollectionEditor = () => {
                                 <button
                                     className={css.minBtn}
                                 type="button"
-                                onClick={() => arrayHelpers.push('')}
+                                onClick={() => {arrayHelpers.push('');
+                                arrayHelpers.form.values.quantity.push('')}}
                                 >
                                 +
                                 </button>
