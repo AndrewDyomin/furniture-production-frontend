@@ -7,7 +7,7 @@
     max-width: 500px;
 }
 
-.formItem {
+/* .formItem {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -15,6 +15,10 @@
     border-radius: 10px;
     padding: 5px;
     background-color: #ffffff;
+} */
+
+.formItem {
+    margin-bottom: 15px;
 }
 
 .formItem:nth-child(n + 2) {
@@ -26,9 +30,20 @@
     outline: 2px solid #f1be44;
 }
 
-.field {
+/* .field {
     border: none;
     background-color: transparent;
+} */
+
+.label {
+    font-weight: bold;
+}
+
+.field {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
 }
 
 .field:hover,
@@ -36,11 +51,24 @@
     outline: none;
 }
 
-.inputArray:nth-child(n+2) {
+/* .inputArray:nth-child(n+2) {
     margin-top: 10px;
+} */
+
+.quantityField {
+    margin-left: 10px;
 }
 
-.minBtn {
+.inputArray {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.selectComponent{
+    min-width: 60%;
+}
+
+/* .minBtn {
     background:#B88E2F;
     padding: 2px 5px;
     color: #fff;
@@ -48,13 +76,38 @@
     border-radius: 5px;
     cursor: pointer;
     min-width: 10%;
+} */
+
+.minBtn {
+    margin-left: 10px;
+    padding: 5px 10px;
+    border: none;
+    background-color: #B88E2F;
+    color: #fff;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.btn {
+    padding: 10px 20px;
+    background-color: #B88E2F;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    min-width: calc((100% - 20px)/2);
+}
+
+.btn:hover,
+.minBtn:hover {
+    background-color: #a07c28;
 }
 
 .minBtn:nth-child(n + 3) {
     margin-left: 15px;
 }
 
-.btn {
+/* .btn {
     background:#B88E2F;
     padding: 10px 20px;
     color: #fff;
@@ -63,7 +116,7 @@
     margin-top: 30px;
     cursor: pointer;
     min-width: calc((100% - 20px)/2);
-}
+} */
 
 .delBtn {
     background: #db4d15;

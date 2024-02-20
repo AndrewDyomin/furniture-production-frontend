@@ -84,10 +84,18 @@ export const AdminMenu = (id) => {
                             subscription: product.subscription,
                             basePrice: product.basePrice,
                             components: selectedComponents,
+                            quantity: [0],
                         }}
                         onSubmit={async (values) => {
                             try {
-                                values.components = [ ...selectedComponents ]
+                                let componentsArray = [];
+                                selectedComponents.forEach((component, index) => {
+                                    const componentId = selectedComponents[index];
+                                    const quantity = values.quantity[index];
+                                    componentsArray.append(`components[${index}][id]`, componentId);
+                                    componentsArray.append(`components[${index}][quantity]`, quantity);
+                                })
+                                values.components = [ ...componentsArray ]
                                 dispatch(updateProduct({ ...id, ...values }));
                                 closeEditModal();
                             } catch(error) {
@@ -128,23 +136,23 @@ export const AdminMenu = (id) => {
                                         {arrayHelpers.form.values.components.map((component, index) => (
                                             <div key={index} className={css.inputArray}>
                                             <Field component={Select} 
+                                                className={css.selectComponent}
                                                 name={`components.${index}`} 
-                                                placeholder={getSelectLabel(component)}
                                                 onChange={e => setSelectedComponents(prevState => {
                                                     const updatedComponents = [...prevState];
                                                     updatedComponents[index] = e.value;
                                                     return updatedComponents;
                                                 })}
                                                 options={componentList}
+                                                placeholder={getSelectLabel(component)}
                                                 >
                                             </Field>
+                                            <Field className={`${css.field} ${css.quantityField}`} name={`quantity.${index}`} placeholder="Quantity" />
                                             {arrayHelpers.form.values.components.length > 1 ? <button
                                                 className={css.minBtn}
                                                 type="button"
-                                                onClick={() => {
-                                                    arrayHelpers.remove(index);
-                                                    setSelectedComponents(selectedComponents.filter((_, i) => i !== index))
-                                                }}
+                                                onClick={() => {arrayHelpers.remove(index);
+                                                arrayHelpers.form.values.quantity.splice(index, 1)}}
                                             >
                                                 -
                                             </button> : <></>}
@@ -152,7 +160,8 @@ export const AdminMenu = (id) => {
                                                 <button
                                                     className={css.minBtn}
                                                 type="button"
-                                                onClick={() => arrayHelpers.push('')}
+                                                onClick={() => {arrayHelpers.push('');
+                                                arrayHelpers.form.values.quantity.push(0)}}
                                                 >
                                                 +
                                                 </button>
