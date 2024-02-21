@@ -56,9 +56,9 @@ export const ProductDetails = () => {
                     <p className={css.price}>{product.basePrice} ₴</p>
                 </div>}
             <p className={css.baseInfoTitle}>Description:</p>
-            <p>{product.subscription}</p>
+            <p>{product.description}</p>
             {isLoggedIn ? 
-                (user.subscription === "administrator" && (
+                (user.description === "administrator" && (
             <div>
                 <ProductComponents components={product.components}/>
                 <AdminMenu id={id}/>

@@ -42,7 +42,7 @@ export const CollectionEditor = () => {
                 height: '',
                 depth: ''
             },
-            subscription: '',
+            description: '',
             basePrice: '',
             images: [''],
             components: [''],
@@ -56,7 +56,7 @@ export const CollectionEditor = () => {
                 formData.append('dimensions[width]', values.dimensions.width);
                 formData.append('dimensions[height]', values.dimensions.height);
                 formData.append('dimensions[depth]', values.dimensions.depth);
-                formData.append('subscription', values.subscription);
+                formData.append('description', values.description);
                 formData.append('basePrice', values.basePrice);
                 selectedComponents.forEach((component, index) => {
                     const componentId = selectedComponents[index];
@@ -70,9 +70,6 @@ export const CollectionEditor = () => {
                         'Content-Type': 'multipart/form-data'
                     }
                 });
-                // formData.forEach((value, key) => {
-                //     console.log(key + ': ' + value);
-                // });
                 setSelectedComponents([]);
                 resetForm();
             } catch(error) {
@@ -109,8 +106,8 @@ export const CollectionEditor = () => {
                 <Field className={css.field} id="dimensions.height" name="dimensions.height" placeholder="Height"/>
             </div>
             <div className={css.formItem}>
-                <label htmlFor="subscription">Subscription</label>
-                <Field className={css.field} id="subscription" name="subscription" placeholder="Subscription" />
+                <label htmlFor="description">Description</label>
+                <Field className={css.field} id="description" name="description" placeholder="Description" />
             </div>
             <div className={css.formItem}>
                 <label htmlFor="basePrice">Base price</label>

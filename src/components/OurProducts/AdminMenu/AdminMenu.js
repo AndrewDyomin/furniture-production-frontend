@@ -102,7 +102,7 @@ export const AdminMenu = (id) => {
                                 height: product.dimensions.height,
                                 depth: product.dimensions.depth
                             },
-                            subscription: product.subscription,
+                            description: product.description,
                             basePrice: product.basePrice,
                             components: selectedComponents,
                             quantity: selectedQuantity,
@@ -144,8 +144,8 @@ export const AdminMenu = (id) => {
                                 <Field className={css.field} id="dimensions.height" name="dimensions.height" placeholder="Height"/>
                             </div>
                             <div className={css.formItem}>
-                                <label htmlFor="subscription">Subscription</label>
-                                <Field className={css.field} id="subscription" name="subscription" placeholder="Subscription" />
+                                <label htmlFor="description">Description</label>
+                                <Field className={css.field} id="description" name="description" placeholder="Description" />
                             </div>
                             <div className={css.formItem}>
                                 <label htmlFor="basePrice">Base price</label>

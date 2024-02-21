@@ -70,7 +70,7 @@ export const ComponentList = () => {
                 <li key={component._id} className={css.item}>
                     <p>{component.name}</p>
                     <div>
-                        <p>{component.subscription}</p>
+                        <p>{component.description}</p>
                     </div>
                     <div className={css.price}>
                         <p>Price: {component.price}</p>
@@ -107,7 +107,7 @@ export const ComponentList = () => {
                 <Formik
                 initialValues={{         
                     name: '',
-                    subscription: '',
+                    description: '',
                     price: '',
                     currency: selectedCurrency.value,
                     units: selectedUnits.value, 
@@ -127,7 +127,7 @@ export const ComponentList = () => {
                         <Field className={css.field} id="name" name="name" placeholder="Name" />
                     </div>
                     <div className={css.formItem}>
-                        <Field className={css.field} id="subscription" name="subscription" placeholder="Subscription" />
+                        <Field className={css.field} id="description" name="description" placeholder="Description" />
                     </div>
                     <div className={css.formItem}>
                         <Field className={css.field} id="price" name="price" placeholder="Price" />
@@ -166,7 +166,7 @@ export const ComponentList = () => {
                             <Formik
                             initialValues={{
                                 name: editedComponent.name,
-                                subscription: editedComponent.subscription,
+                                description: editedComponent.description,
                                 price: editedComponent.price,
                                 currency: editedComponent.currency,
                                 units: editedComponent.units,
@@ -187,8 +187,8 @@ export const ComponentList = () => {
                                     <Field className={css.field} id="name" name="name"/>
                                 </div>
                                 <div className={css.formItem}>
-                                    <label htmlFor="subscription">Subscription</label>
-                                    <Field className={css.field} id="subscription" name="subscription"/>
+                                    <label htmlFor="description">Description</label>
+                                    <Field className={css.field} id="description" name="description"/>
                                 </div>
                                 <div className={css.formItem}>
                                     <label htmlFor="price">Price</label>

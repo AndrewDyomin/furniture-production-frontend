@@ -1,7 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// GET @ /tasks
 export const fetchTasks = createAsyncThunk(
   'tasks/fetchAll',
   async (_, thunkAPI) => {
@@ -14,7 +13,6 @@ export const fetchTasks = createAsyncThunk(
   }
 );
 
-// POST @ /tasks
 export const addTask = createAsyncThunk(
   'tasks/addTask',
   async (text, thunkAPI) => {
@@ -27,7 +25,6 @@ export const addTask = createAsyncThunk(
   }
 );
 
-// DELETE @ /tasks/:id
 export const deleteTask = createAsyncThunk(
   'tasks/deleteTask',
   async (taskId, thunkAPI) => {
