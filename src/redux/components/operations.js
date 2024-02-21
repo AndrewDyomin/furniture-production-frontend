@@ -1,11 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 export const fetchAllComponents = createAsyncThunk(
   'components/fetchAll',
   async (_, thunkAPI) => {
     try {
       const res = await axios.get('/components/all');
+      toast.success('All components refreshed')
       return res.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

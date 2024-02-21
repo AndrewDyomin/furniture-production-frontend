@@ -24,8 +24,8 @@ export const AdminMenu = (id) => {
     try {
     components.forEach((component) => {
         componentList.push({value: component._id, label: `${component.name}/${component.units}`})
-    })} catch(err) {
-        console.log(err)
+    })} catch {
+    
     }
 
     try {
@@ -78,9 +78,9 @@ export const AdminMenu = (id) => {
         setSelectedQuantity(prevState => [...prevState, '']);
     };
     
-    const removeComponentField = (index) => {
-        setSelectedComponents(prevState => prevState.filter((_, i) => i !== index));
-        setSelectedQuantity(prevState => prevState.filter((_, i) => i !== index));
+    const removeComponentField = (componentId) => {
+        setSelectedComponents(prevState => prevState.filter(id => id !== componentId));
+        setSelectedQuantity(prevState => prevState.filter((_, i) => selectedComponents[i] !== componentId));
     };
 
     return (
@@ -90,6 +90,7 @@ export const AdminMenu = (id) => {
             <PopUp 
                 isOpen={isModalEditOpen}
                 close={closeEditModal}
+                className={css.modalContent}
                 body={
                     <>
                         <p>Edit mode</p>
@@ -119,7 +120,6 @@ export const AdminMenu = (id) => {
                                 values.components = [ ...componentsArray ];
                                 delete values.quantity;
                                 dispatch(updateProduct({ ...id, ...values }));
-                                console.log(values)
                                 closeEditModal();
                             } catch(error) {
                                 console.log(error);
@@ -156,8 +156,8 @@ export const AdminMenu = (id) => {
                                     name="components"
                                     render={(arrayHelpers) => (
                                         <div>
-                                        {selectedComponents.map((component, index) => (
-                                            <div key={index} className={css.inputArray}>
+                                        {selectedComponents.map((componentId, index) => (
+                                            <div key={componentId} className={css.inputArray}>
                                             <Field component={Select} 
                                                 className={css.selectComponent}
                                                 name={`components.${index}`} 
@@ -167,12 +167,13 @@ export const AdminMenu = (id) => {
                                                     return updatedComponents;
                                                 })}
                                                 options={componentList}
-                                                placeholder={getSelectLabel(component)}
+                                                placeholder={getSelectLabel(componentId)}
                                                 >
                                             </Field>
                                             <Field 
                                             className={`${css.field} ${css.quantityField}`} 
                                             name={`quantity.${index}`}
+                                            value={selectedQuantity[index] || ''}
                                             onChange={e => setSelectedQuantity(prevState => {
                                                 const updatedComponents = [...prevState];
                                                 updatedComponents[index] = e.target.value;
@@ -182,7 +183,7 @@ export const AdminMenu = (id) => {
                                             {selectedComponents.length > 1 ? <button
                                                 className={css.minBtn}
                                                 type="button"
-                                                onClick={() => removeComponentField(index)}
+                                                onClick={() => removeComponentField(componentId)}
                                             >
                                                 -
                                             </button> : <></>}

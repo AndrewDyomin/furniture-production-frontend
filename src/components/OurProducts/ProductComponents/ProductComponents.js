@@ -16,8 +16,8 @@ export const ProductComponents = ({ components }) => {
             <p>Product components:</p>
             <ul>
             {components.map(component => 
-                <li key={component}>
-                    <p>{`${targetComponent(component).name} NUMBER ${targetComponent(component).units}`}</p>
+                <li key={component.id}>
+                    <p>{`${targetComponent(component.id).name} - ${component.quantity} ${targetComponent(component.id).units}`}</p>
                 </li>
             )}
             </ul>
