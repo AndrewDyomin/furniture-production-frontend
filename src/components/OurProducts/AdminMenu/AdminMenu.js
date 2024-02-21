@@ -18,6 +18,8 @@ export const AdminMenu = (id) => {
     const components = useSelector(selectAllComponents).array;
     const initialComponents = product.components.length >= 1 ? product.components : [''];
     let componentList = [];
+    let initialComponentId = [];
+    let initialComponentQuantity = [];
 
     try {
     components.forEach((component) => {
@@ -26,8 +28,16 @@ export const AdminMenu = (id) => {
         console.log(err)
     }
 
+    try {
+    initialComponents.forEach((component) => {
+        initialComponentId.push(component.id);
+        initialComponentQuantity.push(component.quantity);
+    })} catch {
+    }
+
     const [isModalEditOpen, setIsModalEditOpen] = useState(false);
-    const [selectedComponents, setSelectedComponents] = useState([ ...initialComponents ]);
+    const [selectedComponents, setSelectedComponents] = useState([ ...initialComponentId ]);
+    const [selectedQuantity, setSelectedQuantity] = useState([ ...initialComponentQuantity ]);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     const handleDelete = () => {
@@ -61,7 +71,17 @@ export const AdminMenu = (id) => {
         } catch {
             return ('Select...')
         }
-    }
+    };
+
+    const addComponentField = () => {
+        setSelectedComponents(prevState => [...prevState, '']);
+        setSelectedQuantity(prevState => [...prevState, '']);
+    };
+    
+    const removeComponentField = (index) => {
+        setSelectedComponents(prevState => prevState.filter((_, i) => i !== index));
+        setSelectedQuantity(prevState => prevState.filter((_, i) => i !== index));
+    };
 
     return (
         <div>
@@ -84,19 +104,22 @@ export const AdminMenu = (id) => {
                             subscription: product.subscription,
                             basePrice: product.basePrice,
                             components: selectedComponents,
-                            quantity: [0],
+                            quantity: selectedQuantity,
                         }}
                         onSubmit={async (values) => {
                             try {
                                 let componentsArray = [];
                                 selectedComponents.forEach((component, index) => {
-                                    const componentId = selectedComponents[index];
-                                    const quantity = values.quantity[index];
-                                    componentsArray.append(`components[${index}][id]`, componentId);
-                                    componentsArray.append(`components[${index}][quantity]`, quantity);
+                                    componentsArray.push({});
+                                    const componentId = component;
+                                    const quantity = selectedQuantity[index];
+                                    componentsArray[index].id = componentId;
+                                    componentsArray[index].quantity = quantity;
                                 })
-                                values.components = [ ...componentsArray ]
+                                values.components = [ ...componentsArray ];
+                                delete values.quantity;
                                 dispatch(updateProduct({ ...id, ...values }));
+                                console.log(values)
                                 closeEditModal();
                             } catch(error) {
                                 console.log(error);
@@ -133,7 +156,7 @@ export const AdminMenu = (id) => {
                                     name="components"
                                     render={(arrayHelpers) => (
                                         <div>
-                                        {arrayHelpers.form.values.components.map((component, index) => (
+                                        {selectedComponents.map((component, index) => (
                                             <div key={index} className={css.inputArray}>
                                             <Field component={Select} 
                                                 className={css.selectComponent}
@@ -147,21 +170,27 @@ export const AdminMenu = (id) => {
                                                 placeholder={getSelectLabel(component)}
                                                 >
                                             </Field>
-                                            <Field className={`${css.field} ${css.quantityField}`} name={`quantity.${index}`} placeholder="Quantity" />
-                                            {arrayHelpers.form.values.components.length > 1 ? <button
+                                            <Field 
+                                            className={`${css.field} ${css.quantityField}`} 
+                                            name={`quantity.${index}`}
+                                            onChange={e => setSelectedQuantity(prevState => {
+                                                const updatedComponents = [...prevState];
+                                                updatedComponents[index] = e.target.value;
+                                                return updatedComponents;
+                                            })} 
+                                            placeholder="Quantity" />
+                                            {selectedComponents.length > 1 ? <button
                                                 className={css.minBtn}
                                                 type="button"
-                                                onClick={() => {arrayHelpers.remove(index);
-                                                arrayHelpers.form.values.quantity.splice(index, 1)}}
+                                                onClick={() => removeComponentField(index)}
                                             >
                                                 -
                                             </button> : <></>}
-                                            {index === arrayHelpers.form.values.components.length - 1 && (
+                                            {index === selectedComponents.length - 1 && (
                                                 <button
                                                     className={css.minBtn}
                                                 type="button"
-                                                onClick={() => {arrayHelpers.push('');
-                                                arrayHelpers.form.values.quantity.push(0)}}
+                                                onClick={() => addComponentField()}
                                                 >
                                                 +
                                                 </button>
