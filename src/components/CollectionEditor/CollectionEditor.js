@@ -1,6 +1,7 @@
 import { Formik, Field, Form, FieldArray } from 'formik';
 import { selectAllComponents } from "../../redux/components/selectors";
 import axios from 'axios';
+import svgIcons from '../../images/icons.svg';
 import css from './CollectionEditor.module.css';
 import { useState } from 'react';
 import Select from 'react-select';
@@ -25,14 +26,28 @@ export const CollectionEditor = () => {
     const [selectedGroup, setSelectedGroup] = useState({ value: 'sofa', label: 'Sofa' });
     const [selectedFiles, setSelectedFiles] = useState('');
     const [selectedComponents, setSelectedComponents] = useState([]);
+    const [isEditorOpen, setIsEditorOpen] = useState(false);
 
     const handleFileChange = (event) => {
         setSelectedFiles(event.target.files);
     };
 
+    const handleEditorOpen = (e) => {
+        isEditorOpen ? setIsEditorOpen(false) : setIsEditorOpen(true)
+        !isEditorOpen ? e.target.classList = css.active : e.target.classList = css.notActive;
+    };
+
   return (
     <div className={css.wrapper}>
-        <h2 className={css.title}>Collection Editor</h2>
+        <div className={css.titleArea}>
+            <p className={css.title}>Collection Editor</p>
+            <button className={css.openBtn} id="isOpen" onClick={handleEditorOpen}>
+                <svg>
+                    <use className={css.openBtnIcon} href={`${svgIcons}#icon-arrow-down`} width={'32px'}/>
+                </svg>
+            </button>
+        </div>
+        {isEditorOpen ? 
         <Formik
         initialValues={{
             group: selectedGroup.value,
@@ -162,6 +177,7 @@ export const CollectionEditor = () => {
             <button type="submit" className={css.btn}>Submit</button>
         </Form>
         </Formik>
+        : <></>}
     </div>
   );
 };

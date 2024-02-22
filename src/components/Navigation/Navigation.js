@@ -5,7 +5,7 @@ import css from './Navigation.module.css';
 import logo from '../../images/logo black.png'
 
 export const Navigation = () => {
-  const { isLoggedIn } = useAuth();
+  const { user, isLoggedIn } = useAuth();
   const isMobile = useMediaQuery({ query: '(max-width: 833px)' });
 
   return (
@@ -21,6 +21,9 @@ export const Navigation = () => {
           <NavLink className={css.link} to="/products">
             All products
           </NavLink>
+          {user.description === "administrator" && (
+            <NavLink className={css.link} to="/room">My room</NavLink>
+          )}
         </>
       )}
     </nav>

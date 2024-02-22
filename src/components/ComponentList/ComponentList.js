@@ -58,10 +58,10 @@ export const ComponentList = () => {
         document.body.classList.add('modal-open');
       };
     
-      const closeEditModal = () => {
-        setIsModalEditOpen(false);
-        document.body.classList.remove('modal-open');
-      };
+    const closeEditModal = () => {
+    setIsModalEditOpen(false);
+    document.body.classList.remove('modal-open');
+    };
 
     const ComponentsArray = () => {
         try {
