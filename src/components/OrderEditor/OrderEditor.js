@@ -74,13 +74,13 @@ export const OrderEditor = () => {
                 formData.append('adress', values.adress);
                 formData.append('rest', values.rest);
                 formData.append('deadline', values.deadline);
-                // await axios.post('/orders/add', formData, {
-                //     headers: {
-                //         'Content-Type': 'multipart/form-data'
-                //     }
-                // });
                 formData.forEach((value, key) => {
                     console.log(key + ': ' + value);
+                });
+                await axios.post('/orders/add', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
                 });
                 resetForm();
             } catch(error) {
