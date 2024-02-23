@@ -13,6 +13,18 @@
     font-weight: bold;
 }
 
+.orderSize {
+    margin-top: 10px;
+}
+
 .orderFabric {
-    margin-top: 5px;
+    margin-top: 10px;
+}
+
+.orderDescription {
+    margin-top: 10px;
+}
+
+.orderDeadline {
+    margin-top: 20px;
 }

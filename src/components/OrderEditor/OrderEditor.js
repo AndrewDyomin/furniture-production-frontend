@@ -74,17 +74,15 @@ export const OrderEditor = () => {
                 formData.append('adress', values.adress);
                 formData.append('rest', values.rest);
                 formData.append('deadline', values.deadline);
-                formData.forEach((value, key) => {
-                    console.log(key + ': ' + value);
-                });
                 await axios.post('/orders/add', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
                 });
+                toast.success('Order sended');
                 resetForm();
             } catch(error) {
-                toast.error(error)
+                toast.error(`${error.response.data.message}`);
             }
         }}
         >

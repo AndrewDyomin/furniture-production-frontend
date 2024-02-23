@@ -12,10 +12,10 @@ export const OrderInfo = ({ id }) => {
       <p className={css.orderNumber}>{order.number}</p>
       <div className={css.description}>
         <p className={css.orderName}>{order.group} {order.name}</p>
-        <p className={css.orderSize}>{order.size}</p>
-        <p className={css.orderFabric}>{order.fabric}</p>
-        <p>{order.description}</p>
-        <p>{`${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`}</p>
+        <p className={css.orderSize}>Size: {order.size}</p>
+        <p className={css.orderFabric}>Fabric: {order.fabric}</p>
+        <p className={css.orderDescription}>Description: {order.description}</p>
+        <p className={css.orderDeadline}>Deadline: {`${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`}</p>
         <p>{order.dealer}</p>
         <p className={css.orderAdress}>Adress: {order.adress}</p>
         <p className={css.orderRest}>Rest: {order.rest}</p>

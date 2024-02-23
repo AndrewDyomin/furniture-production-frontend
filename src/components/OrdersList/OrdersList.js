@@ -5,35 +5,58 @@ import { Order } from '../Order/Order';
 import { selectAllOrders } from '../../redux/orders/selectors';
 import { setActiveOrder } from '../../redux/orders/operations';
 import css from './OrdersList.module.css';
+import { useState } from 'react';
+import Select from 'react-select';
 
 export const OrdersList = () => {
+
+  const [filter, setFilter] = useState('');
+
   const dispatch = useDispatch();
   const orders = useSelector(selectAllOrders);
+  let filters = [];
+  const filteredOrders = orders;
+
+  if (filteredOrders.length !== 0) {
+    orders.allOrdersArray.forEach((order, index) => {
+      if (!filters.includes())
+      filters.push({value: `${order.dealer}`, label: `${order.dealer}`})
+    })
+  }
 
   return (
     <div className={css.container}>
-        {orders.length !== 0 ? 
-            <ul className={css.list}>
-                {orders.allOrdersArray.map(({ _id }) => (
-                <li key={_id} className={css.item}>
-                  <Link to={`${_id}`} 
-                    className={css.orderLink} 
-                    onClick={() => dispatch(setActiveOrder(orders.allOrdersArray.find((el) => {return(el._id === _id)})))}>
-                    <Order  
-                    id={_id} />
-                  </Link>
-                </li>
-            ))}
-            </ul> : 
-            <PulseLoader 
-              color="#c8c19b"
-              cssOverride={{
-                position: 'absolute',
-                top: '20%',
-                left: '50%'
-              }}
-            />
-        }
+      <Select
+          className={css.filter}
+          name="filter" 
+          id="filter"
+          onChange={e => setFilter(e)}
+          options={filters}
+          defaultValue={filter}
+          placeholder='Filter'>
+      </Select>
+      {filteredOrders.length !== 0 ? 
+          <ul className={css.list}>
+              {filteredOrders.allOrdersArray.map(({ _id }) => (
+              <li key={_id} className={css.item}>
+                <Link to={`${_id}`} 
+                  className={css.orderLink} 
+                  onClick={() => dispatch(setActiveOrder(orders.allOrdersArray.find((el) => {return(el._id === _id)})))}>
+                  <Order  
+                  id={_id} />
+                </Link>
+              </li>
+          ))}
+          </ul> : 
+          <PulseLoader 
+            color="#c8c19b"
+            cssOverride={{
+              position: 'absolute',
+              top: '20%',
+              left: '45%'
+            }}
+          />
+      }
     </div >
   );
 };
