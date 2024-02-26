@@ -29,7 +29,6 @@ export const OrdersList = () => {
   }
 
   const filteredOrders = orders.allOrdersArray ? orders.allOrdersArray.filter(order => order.dealer.toLowerCase().includes(filter.toLowerCase())) : [];
-  console.log('1:', filter)
 
   return (
     <div className={css.container}>
