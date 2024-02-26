@@ -14,15 +14,17 @@ export const OrdersList = () => {
 
   const dispatch = useDispatch();
   const orders = useSelector(selectAllOrders);
-  let filters = [];
+  let dealerNames = [];
   const filteredOrders = orders;
 
-  if (filteredOrders.length !== 0) {
+  if (orders.allOrdersArray) {
     orders.allOrdersArray.forEach((order, index) => {
-      if (!filters.includes())
-      filters.push({value: `${order.dealer}`, label: `${order.dealer}`})
+      dealerNames.push({value: `${order.dealer}`, label: `${order.dealer}`})
+      console.log(filters)
     })
   }
+
+  let filters = Array.from(new Set(dealerNames));
 
   return (
     <div className={css.container}>
