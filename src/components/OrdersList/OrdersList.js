@@ -14,15 +14,22 @@ export const OrdersList = () => {
 
   const dispatch = useDispatch();
   const orders = useSelector(selectAllOrders);
-  let filters = [];
-  const filteredOrders = orders;
+  let dealerNames = [];
+  const filters = [{value: '', label: 'All'}];
 
-  if (filteredOrders.length !== 0) {
+  if (orders.allOrdersArray) {
     orders.allOrdersArray.forEach((order, index) => {
-      if (!filters.includes())
-      filters.push({value: `${order.dealer}`, label: `${order.dealer}`})
+      dealerNames.push({value: `${order.dealer}`, label: `${order.dealer}`})
     })
+    dealerNames.forEach(item => {
+      if (!filters.some(obj => obj.value.toLowerCase() === item.value.toLowerCase())) {
+          filters.push(item);
+      }
+    });
   }
+
+  const filteredOrders = orders.allOrdersArray ? orders.allOrdersArray.filter(order => order.dealer.toLowerCase().includes(filter.toLowerCase())) : [];
+  console.log('1:', filter)
 
   return (
     <div className={css.container}>
@@ -30,14 +37,14 @@ export const OrdersList = () => {
           className={css.filter}
           name="filter" 
           id="filter"
-          onChange={e => setFilter(e)}
+          onChange={e => setFilter(e.value)}
           options={filters}
           defaultValue={filter}
           placeholder='Filter'>
       </Select>
       {filteredOrders.length !== 0 ? 
           <ul className={css.list}>
-              {filteredOrders.allOrdersArray.map(({ _id }) => (
+              {filteredOrders.map(({ _id }) => (
               <li key={_id} className={css.item}>
                 <Link to={`${_id}`} 
                   className={css.orderLink} 
