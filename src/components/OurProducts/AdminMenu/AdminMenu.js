@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteProduct, updateProduct } from "../../../redux/products/operations";
 import { selectActiveProduct } from '../../../redux/products/selectors';
 import css from './AdminMenu.module.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { PopUp } from "components/PopUp/PopUp";
 import { Formik, Field, Form, FieldArray } from 'formik';
 import axios from 'axios';
@@ -16,7 +16,7 @@ export const AdminMenu = (id) => {
     const dispatch = useDispatch();
     const product = useSelector(selectActiveProduct);
     const components = useSelector(selectAllComponents).array;
-    const initialComponents = product.components.length >= 1 ? product.components : [''];
+    const initialComponents = product.components.length > 0 ? product.components : [''];
     let componentList = [];
     let initialComponentId = [];
     let initialComponentQuantity = [];
@@ -24,21 +24,24 @@ export const AdminMenu = (id) => {
     try {
     components.forEach((component) => {
         componentList.push({value: component._id, label: `${component.name}/${component.units}`})
-    })} catch {
-    
-    }
+    })} catch {}
 
     try {
     initialComponents.forEach((component) => {
         initialComponentId.push(component.id);
         initialComponentQuantity.push(component.quantity);
-    })} catch {
-    }
-
+    })} catch {}
+    
     const [isModalEditOpen, setIsModalEditOpen] = useState(false);
     const [selectedComponents, setSelectedComponents] = useState([ ...initialComponentId ]);
     const [selectedQuantity, setSelectedQuantity] = useState([ ...initialComponentQuantity ]);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+    useEffect(() => {
+        setSelectedComponents([ ...initialComponentId ]);
+        setSelectedQuantity([ ...initialComponentQuantity ]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isModalEditOpen]);
 
     const handleDelete = () => {
         dispatch(deleteProduct(id));
