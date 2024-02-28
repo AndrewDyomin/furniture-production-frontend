@@ -1,5 +1,5 @@
 .filter {
-    max-width: 30%;
+    /* max-width: 30%; */
 }
 .list {
     list-style: none;
@@ -20,4 +20,50 @@
 .orderLink {
     text-decoration: none;
     color: black;
+}
+
+.navigation {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    align-items: center;
+}
+
+.addOrderBtn {
+    margin-left: auto;
+    /* max-width: 30%; */
+    min-width: 120px;
+}
+
+.formWrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.formItem {
+    margin-bottom: 15px;
+}
+
+.label {
+    font-weight: bold;
+}
+
+.field {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.btn {
+    padding: 10px 20px;
+    background-color: #B88E2F;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #a07c28;
 }
