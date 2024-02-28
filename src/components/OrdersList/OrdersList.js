@@ -15,16 +15,20 @@ export const OrdersList = () => {
   const dispatch = useDispatch();
   const orders = useSelector(selectAllOrders);
   let dealerNames = [];
-  const filteredOrders = orders;
+  const filters = [{value: '', label: 'All'}];
 
   if (orders.allOrdersArray) {
     orders.allOrdersArray.forEach((order, index) => {
       dealerNames.push({value: `${order.dealer}`, label: `${order.dealer}`})
-      console.log(filters)
     })
+    dealerNames.forEach(item => {
+      if (!filters.some(obj => obj.value.toLowerCase() === item.value.toLowerCase())) {
+          filters.push(item);
+      }
+    });
   }
 
-  let filters = Array.from(new Set(dealerNames));
+  const filteredOrders = orders.allOrdersArray ? orders.allOrdersArray.filter(order => order.dealer.toLowerCase().includes(filter.toLowerCase())) : [];
 
   return (
     <div className={css.container}>
@@ -32,14 +36,14 @@ export const OrdersList = () => {
           className={css.filter}
           name="filter" 
           id="filter"
-          onChange={e => setFilter(e)}
+          onChange={e => setFilter(e.value)}
           options={filters}
           defaultValue={filter}
           placeholder='Filter'>
       </Select>
       {filteredOrders.length !== 0 ? 
           <ul className={css.list}>
-              {filteredOrders.allOrdersArray.map(({ _id }) => (
+              {filteredOrders.map(({ _id }) => (
               <li key={_id} className={css.item}>
                 <Link to={`${_id}`} 
                   className={css.orderLink} 
