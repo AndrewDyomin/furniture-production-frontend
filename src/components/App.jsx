@@ -1,4 +1,4 @@
-import { useEffect, lazy } from 'react';
+import { useEffect, lazy, Suspense } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { Layout } from './Layout';
@@ -30,64 +30,66 @@ export const App = () => {
   return isRefreshing ? (
     <b>Loading...</b>
   ) : (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<HomePage />} />
-        <Route
-          path="/register"
-          element={
-            <RestrictedRoute redirectTo="/" component={<RegisterPage />} />
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            <RestrictedRoute redirectTo="/" component={<LoginPage />} />
-          }
-        />
-        <Route
-          path="/tasks"
-          element={
-            <PrivateRoute redirectTo="/login" component={<TasksPage />} />
-          }
-        />
-        <Route
-          path="/orders/"
-          element={
-            <PrivateRoute redirectTo="/login" component={<OrdersPage />} />
-          }
-        />
-        <Route 
-          path="/orders/:orderId" 
-          element={
-            <PrivateRoute redirectTo="/login" component={<OrderDetailsPage />} />
-          }
-        />
-        <Route 
-          path="/products" 
-          element={<ProductsPage />}
-        />
-        <Route 
-          path="/products/:filter" 
-          element={<ProductsPage />}
-        />
-        <Route 
-          path="/product-details/:id" 
-          element={<ProductDetailsPage />}
-        />
-        <Route 
-          path="/room" 
-          element={
-            <PrivateRoute redirectTo="/login" component={<MyRoomPage />} />
-          }
-        />
-        <Route 
-          path="*" 
-          element={
-            <Navigate to="/" />
-          } 
-        />
-      </Route>
-    </Routes>
+    <Suspense>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route
+            path="/register"
+            element={
+              <RestrictedRoute redirectTo="/" component={<RegisterPage />} />
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <RestrictedRoute redirectTo="/" component={<LoginPage />} />
+            }
+          />
+          <Route
+            path="/tasks"
+            element={
+              <PrivateRoute redirectTo="/login" component={<TasksPage />} />
+            }
+          />
+          <Route
+            path="/orders/"
+            element={
+              <PrivateRoute redirectTo="/login" component={<OrdersPage />} />
+            }
+          />
+          <Route 
+            path="/orders/:orderId" 
+            element={
+              <PrivateRoute redirectTo="/login" component={<OrderDetailsPage />} />
+            }
+          />
+          <Route 
+            path="/products" 
+            element={<ProductsPage />}
+          />
+          <Route 
+            path="/products/:filter" 
+            element={<ProductsPage />}
+          />
+          <Route 
+            path="/product-details/:id" 
+            element={<ProductDetailsPage />}
+          />
+          <Route 
+            path="/room" 
+            element={
+              <PrivateRoute redirectTo="/login" component={<MyRoomPage />} />
+            }
+          />
+          <Route 
+            path="*" 
+            element={
+              <Navigate to="/" />
+            } 
+          />
+        </Route>
+      </Routes>
+    </Suspense>
   );
 };
