@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 import css from './AuthNav.module.css';
+import { LanguageSelector } from '../LanguageSelector/LanguageSelector';
 
 export const AuthNav = ({ close }) => {
 
@@ -14,6 +15,7 @@ export const AuthNav = ({ close }) => {
       <NavLink className={css.link} to="/login" onClick={close}>
         Log In
       </NavLink>
+      <LanguageSelector />
     </div>
   );
 };
