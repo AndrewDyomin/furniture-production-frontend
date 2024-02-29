@@ -134,6 +134,7 @@ export const OrdersList = () => {
                     formData.append('name', values.name);
                     formData.append('size', values.size);
                     formData.append('fabric', values.fabric);
+                    // eslint-disable-next-line
                     {selectedGroup.value === 'bed' ? 
                     formData.append('description', values.description + ` Спальное место ${selectedSleepSizes.value}`)
                     : formData.append('description', values.description)};
