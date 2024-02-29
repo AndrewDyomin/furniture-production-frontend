@@ -6,8 +6,8 @@ import { PopUp } from '../PopUp/PopUp';
 import { Formik, Field, Form } from 'formik';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { selectAllOrders } from '../../redux/orders/selectors';
-import { setActiveOrder } from '../../redux/orders/operations';
+import { selectAllOrders, selectLoading } from '../../redux/orders/selectors';
+import { setActiveOrder, fetchAllOrders } from '../../redux/orders/operations';
 import css from './OrdersList.module.css';
 import { useState } from 'react';
 import Select from 'react-select';
@@ -42,6 +42,7 @@ export const OrdersList = () => {
   const [selectedSleepSizes, setSelectedSleepSizes] = useState({ value: '160 x 200', label: '160 x 200' });
 
   const dispatch = useDispatch();
+  const isLoading = useSelector(selectLoading);
   const orders = useSelector(selectAllOrders);
   let dealerNames = [];
   const filters = [{value: '', label: 'All'}];
@@ -97,7 +98,8 @@ export const OrdersList = () => {
                 </Link>
               </li>
           ))}
-          </ul> : 
+          </ul> : <></>}
+          {isLoading ? 
           <PulseLoader 
             color="#c8c19b"
             cssOverride={{
@@ -106,13 +108,12 @@ export const OrdersList = () => {
               left: '45%'
             }}
           />
-      }
+      : <></>}
       <PopUp 
         isOpen={isModalOrderOpen}
         close={closeOrderModal}
         body={
         <>
-          {/* <p>Add order</p> */}
           <div className={css.orderModalWrapper}>
             <Formik
             initialValues={{
@@ -133,7 +134,9 @@ export const OrdersList = () => {
                     formData.append('name', values.name);
                     formData.append('size', values.size);
                     formData.append('fabric', values.fabric);
-                    formData.append('description', values.description);
+                    {selectedGroup.value === 'bed' ? 
+                    formData.append('description', values.description + ` Спальное место ${selectedSleepSizes.value}`)
+                    : formData.append('description', values.description)};
                     formData.append('number', values.number);
                     formData.append('adress', values.adress);
                     formData.append('rest', values.rest);
@@ -145,6 +148,8 @@ export const OrdersList = () => {
                     });
                     toast.success('Order sended');
                     resetForm();
+                    closeOrderModal();
+                    dispatch(fetchAllOrders());
                 } catch(error) {
                     toast.error(`${error.response.data.message}`);
                 }

@@ -83,8 +83,7 @@ export const ComponentList = () => {
                     </div>
                 </li>
             )
-        ))} catch(err) {
-            console.log(err)
+        ))} catch {
             return (<></>)
         }};
 

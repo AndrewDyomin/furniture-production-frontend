@@ -16,12 +16,14 @@ const groups = [
 
 export const CollectionEditor = () => {
 
-    const components = useSelector(selectAllComponents).array;
+    const components = useSelector(selectAllComponents);
     let componentList = [];
 
-    components.forEach((component) => {
+    try {
+    components.array.forEach((component) => {
         componentList.push({value: component._id, label: `${component.name}/${component.units}`})
     })
+    } catch {}
 
     const [selectedGroup, setSelectedGroup] = useState({ value: 'sofa', label: 'Sofa' });
     const [selectedFiles, setSelectedFiles] = useState('');
