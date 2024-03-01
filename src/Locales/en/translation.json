@@ -1,4 +1,15 @@
 {
+  "currentLanguage": "English",
+  "orders": "Orders",
+  "my room": "My room",
+  "logout": "Logout",
   "hero title": "Discover Our New Collection",
-  "hero button": "More"
+  "hero button": "More",
+  "our products": "Our products",
+  "all products": "All products",
+  "sofas": "Sofas",
+  "beds": "Beds",
+  "filter": "Filter",
+  "add order": "Add order",
+  "1": "1"
 }

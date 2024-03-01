@@ -12,10 +12,19 @@
     font-weight: 700;
   }
 
-  .logoutButtonMob {
+  .propMob {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 10px;
+    align-items: center;
     position: absolute;
-    right: 20px;
-    bottom: 20px;
+    left: 30px;
+    bottom: 75px;
+    z-index: 2;
+  }
+
+  .prop {
+    display: flex;
   }
 
   .mobileMenuLinks {

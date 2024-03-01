@@ -1,4 +1,15 @@
 {
+  "currentLanguage": "Українська",
+  "orders": "Замовлення",
+  "my room": "Кабінет",
+  "logout": "Вийти",
   "hero title": "Відкрийте для себе нашу нову колекцію",
-  "hero button": "Детальніше"
+  "hero button": "Детальніше",
+  "our products": "Каталог",
+  "all products": "Всі категорії",
+  "sofas": "Дивани",
+  "beds": "Ліжка",
+  "filter": "Фільтр",
+  "add order": "Замовити",
+  "1": "1"
 }

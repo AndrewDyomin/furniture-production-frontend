@@ -6,6 +6,7 @@ import { PopUp } from '../PopUp/PopUp';
 import { Formik, Field, Form } from 'formik';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 import { selectAllOrders, selectLoading } from '../../redux/orders/selectors';
 import { setActiveOrder, fetchAllOrders } from '../../redux/orders/operations';
 import css from './OrdersList.module.css';
@@ -36,6 +37,7 @@ const sleepSizes = [
 
 export const OrdersList = () => {
 
+  const { t } = useTranslation();
   const [filter, setFilter] = useState('');
   const [isModalOrderOpen, setIsModalOrderOpen] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState({ value: 'sofa', label: 'Sofa' });
@@ -80,10 +82,10 @@ export const OrdersList = () => {
           onChange={e => setFilter(e.value)}
           options={filters}
           defaultValue={filter}
-          placeholder='Filter'>
+          placeholder={t('filter')}>
         </Select>
         <button className={`${css.btn} ${css.addOrderBtn}`} onClick={openOrderModal}>
-          Add order
+          {t('add order')}
         </button>
       </div>
       {filteredOrders.length !== 0 ? 

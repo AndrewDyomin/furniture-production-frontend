@@ -1,10 +1,12 @@
 import { NavLink } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 import { useAuth } from 'hooks';
+import { useTranslation } from 'react-i18next';
 import css from './Navigation.module.css';
 import logo from '../../images/logo black.png'
 
 export const Navigation = () => {
+  const { t } = useTranslation();
   const { user, isLoggedIn } = useAuth();
   const isMobile = useMediaQuery({ query: '(max-width: 833px)' });
 
@@ -16,13 +18,13 @@ export const Navigation = () => {
       {isLoggedIn && !isMobile && (
         <>
           <NavLink className={css.link} to="/orders">
-            Orders
+            {t('orders')}
           </NavLink>
           <NavLink className={css.link} to="/products">
-            All products
+            {t('all products')}
           </NavLink>
           {user.description === "administrator" && (
-            <NavLink className={css.link} to="/room">My room</NavLink>
+            <NavLink className={css.link} to="/room">{t('my room')}</NavLink>
           )}
         </>
       )}

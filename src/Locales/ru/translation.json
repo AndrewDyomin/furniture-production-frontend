@@ -1,4 +1,15 @@
 {
+  "currentLanguage": "Русский",
+  "orders": "Заказы",
+  "my room": "Кабинет",
+  "logout": "Выйти",
   "hero title": "Откройте для себя нашу новую коллекцию",
-  "hero button": "Подробнее"
+  "hero button": "Подробнее",
+  "our products": "Каталог",
+  "all products": "Все категории",
+  "sofas": "Диваны",
+  "beds": "Кровати",
+  "filter": "Фильтр",
+  "add order": "Заказать",
+  "1": "1"
 }

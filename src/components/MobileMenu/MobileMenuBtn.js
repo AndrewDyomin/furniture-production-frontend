@@ -32,7 +32,7 @@ export const MobileMenuBtn = () => {
           bottom: 'auto',
           transform: 'translateX(-50%)',
           width: '300px',
-          height: '90%',
+          height: '80%',
           padding: '24px',
           borderRadius: '12px',
           border: '2px solid black',
