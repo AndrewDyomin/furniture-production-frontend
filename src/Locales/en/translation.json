@@ -13,5 +13,11 @@
   "beds": "Beds",
   "filter": "Filter",
   "add order": "Add order",
+  "size": "Size",
+  "fabric": "Fabric",
+  "description": "Description",
+  "deadline": "Deadline",
+  "adress": "Adress",
+  "rest": "Rest",
   "1": "1"
 }
