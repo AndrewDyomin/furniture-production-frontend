@@ -8,7 +8,7 @@ import css from "./OurProducts.module.css";
 export const OurProducts = () => {
 
     const { t } = useTranslation();
-    const categories = [{image: sofaImage, title:`${t('sofas')}`}, {image: bedImage, title:`${t('beds')}`}];
+    const categories = [{image: sofaImage, title:`${t('sofas')}`, value: 'sofa'}, {image: bedImage, title:`${t('beds')}`, value: 'bed'}];
     
     return (
         <div className={css.container}>
@@ -16,7 +16,7 @@ export const OurProducts = () => {
             <ul className={css.categoriesList}>
                 {categories.map((category) => (
                     <li key={category.title} className={css.categoriesItem}>
-                       <CategoriesItem image={category.image} title={category.title} /> 
+                       <CategoriesItem image={category.image} title={category.title} value={category.value}/> 
                     </li>
                 ))}
             </ul>
