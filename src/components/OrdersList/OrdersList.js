@@ -222,7 +222,7 @@ export const OrdersList = () => {
                     <Field className={css.field} id="deadline" name="deadline" placeholder="21" />
                 </div>
                 <div className={css.formItem}>
-                  <Field className={css.field} id="files" name="files" type="file" onChange={handleFileChange}/>
+                  <Field className={css.field} id="files" name="files" type="file" onChange={handleFileChange} multiple/>
                 </div>
                 <button type="submit" className={css.btn}>Submit</button>
             </Form>

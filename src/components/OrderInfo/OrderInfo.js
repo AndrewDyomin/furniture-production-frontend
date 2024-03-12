@@ -26,7 +26,7 @@ export const OrderInfo = ({ id }) => {
       <ul>
         {order.images.map((imageId) => (
           <li key={imageId}>
-            <img src={`https://drive.usercontent.google.com/download?id=${imageId}&export=view&authuser=0`} alt={imageId}/>
+            <img src={`https://drive.google.com/thumbnail?id=${imageId}&sz=w1000`} alt={imageId}/>
           </li>
         ))}
       </ul> 
