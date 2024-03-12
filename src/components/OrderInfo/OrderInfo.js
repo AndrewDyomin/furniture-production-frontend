@@ -22,6 +22,15 @@ export const OrderInfo = ({ id }) => {
         <p className={css.orderAdress}>{t('adress')}: {order.adress}</p>
         <p className={css.orderRest}>{t('rest')}: {order.rest}</p>
       </div>
+      {order.images || order.images.length !== 0 ? 
+      <ul>
+        {order.images.map((imageId) => (
+          <li key={imageId}>
+            <img src={`https://drive.usercontent.google.com/download?id=${imageId}&export=view&authuser=0`} alt={imageId}/>
+          </li>
+        ))}
+      </ul> 
+      : <></>}
     </div>
   );
 };

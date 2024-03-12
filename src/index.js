@@ -20,7 +20,7 @@ i18n
   .use(LanguageDetector)
   .init({
     fallbackLng: 'en',
-    debug: true,
+    debug: false,
     detection: {
       order: [
         'cookie', 

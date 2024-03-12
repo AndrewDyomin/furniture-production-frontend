@@ -42,6 +42,7 @@ export const OrdersList = () => {
   const [isModalOrderOpen, setIsModalOrderOpen] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState({ value: 'sofa', label: 'Sofa' });
   const [selectedSleepSizes, setSelectedSleepSizes] = useState({ value: '160 x 200', label: '160 x 200' });
+  const [selectedFiles, setSelectedFiles] = useState('');
 
   const dispatch = useDispatch();
   const isLoading = useSelector(selectLoading);
@@ -70,6 +71,10 @@ export const OrdersList = () => {
   const closeOrderModal = () => {
     setIsModalOrderOpen(false);
     document.body.classList.remove('modal-open');
+  };
+
+  const handleFileChange = (event) => {
+    setSelectedFiles(event.target.files);
   };
 
   return (
@@ -144,6 +149,7 @@ export const OrdersList = () => {
                     formData.append('adress', values.adress);
                     formData.append('rest', values.rest);
                     formData.append('deadline', values.deadline);
+                    formData.append('file', selectedFiles[0]);
                     await axios.post('/orders/add', formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data'
@@ -214,6 +220,9 @@ export const OrdersList = () => {
                 <div className={css.formItem}>
                     <label htmlFor="deadline">Deadline</label>
                     <Field className={css.field} id="deadline" name="deadline" placeholder="21" />
+                </div>
+                <div className={css.formItem}>
+                  <Field className={css.field} id="files" name="files" type="file" onChange={handleFileChange}/>
                 </div>
                 <button type="submit" className={css.btn}>Submit</button>
             </Form>
