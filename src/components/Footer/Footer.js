@@ -21,7 +21,7 @@ export const Footer = () => {
         </div>
 
       )}
-      <p>Misage Company</p>
+      <p>Misazh Company</p>
     </nav>
   );
 };

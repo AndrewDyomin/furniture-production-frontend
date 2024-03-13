@@ -151,7 +151,6 @@ export const OrdersList = () => {
                     formData.append('deadline', values.deadline);
                     for (const file in selectedFiles) {
                       if (typeof selectedFiles[file] === 'object') {
-                      console.log(selectedFiles[file]);
                       formData.append('file', selectedFiles[file]);
                       }
                     }

@@ -2,11 +2,14 @@ import css from './OrderInfo.module.css';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { selectActiveOrder } from '../../redux/orders/selectors';
+import { selectUser } from '../../redux/auth/selectors'
 
 export const OrderInfo = ({ id }) => {
 
   const { t } = useTranslation();
   const order = useSelector(selectActiveOrder);
+  const user = useSelector(selectUser);
+
   const date = new Date(order.plannedDeadline);
 
   return (
@@ -19,14 +22,19 @@ export const OrderInfo = ({ id }) => {
         <p className={css.orderDescription}>{t('description')}: {order.description}</p>
         <p className={css.orderDeadline}>{t('deadline')}: {`${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`}</p>
         <p>{order.dealer}</p>
-        <p className={css.orderAdress}>{t('adress')}: {order.adress}</p>
-        <p className={css.orderRest}>{t('rest')}: {order.rest}</p>
+        {user.description === 'seamstress' || user.description === 'carpenter' || user.description === 'upholsterer' ? <></> : 
+        <div>
+          <p className={css.orderAdress}>{t('adress')}: {order.adress}</p>
+          <p className={css.orderRest}>{t('rest')}: {order.rest}</p> 
+        </div>
+        }
       </div>
-      {order.images || order.images.length !== 0 ? 
-      <ul>
+      {order.images && order.images.length !== 0 ? 
+      <ul className={css.imagesList}>
         {order.images.map((imageId) => (
-          <li key={imageId}>
-            <img src={`https://drive.google.com/thumbnail?id=${imageId}&sz=w1000`} alt={imageId}/>
+          <li key={`${imageId}`}>
+            <img className={css.orderImage} src={`https://lh3.googleusercontent.com/d/${imageId}=w800?authuser=0`} alt={imageId}/>
+            {/* <img src={`https://drive.google.com/thumbnail?id=${imageId}&sz=w800`} alt={imageId}/> */}
           </li>
         ))}
       </ul> 
