@@ -10,7 +10,9 @@
   "our products": "Каталог",
   "all products": "Все категории",
   "sofas": "Диваны",
+  "sofa": "Диван",
   "beds": "Кровати",
+  "bed": "Кровать",
   "filter": "Фильтр",
   "add order": "Заказать",
   "size": "Размер",
@@ -19,5 +21,13 @@
   "deadline": "Срок сдачи",
   "adress": "Адрес",
   "rest": "Остаток",
+  "group": "Группа",
+  "order name": "Название",
+  "sleeping area": "Спальное место",
+  "overall size": "Габаритный размер",
+  "number": "Номер",
+  "submit": "Принять",
+  "fabric name": "Название ткани",
+  "Kiev, Kyrylivska street, 103": "Киев, ул.Кириловская, 103",
   "1": "1"
 }

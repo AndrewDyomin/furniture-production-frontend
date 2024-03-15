@@ -15,32 +15,32 @@ import Select from 'react-select';
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
 
-const groups = [
-    { value: 'sofa', label: 'Sofa' },
-    { value: 'bed', label: 'Bed' },
-  ];
-
-const sleepSizes = [
-    { value: '160 x 200', label: '160 x 200' },
-    { value: '180 x 200', label: '180 x 200' },
-    { value: '200 x 200', label: '200 x 200' },
-    { value: '160 x 190', label: '160 x 190' },
-    { value: '180 x 190', label: '180 x 190' },
-    { value: '200 x 190', label: '200 x 190' },
-    { value: '90 x 200', label: '90 x 200' },
-    { value: '120 x 200', label: '120 x 200' },
-    { value: '140 x 200', label: '140 x 200' },
-    { value: '90 x 190', label: '90 x 190' },
-    { value: '120 x 190', label: '120 x 190' },
-    { value: '140 x 190', label: '140 x 190' },
-]
-
 export const OrdersList = () => {
 
   const { t } = useTranslation();
+  const groups = [
+      { value: `${t('sofa')}`, label: `${t('sofa')}` },
+      { value: `${t('bed')}`, label: `${t('bed')}` },
+    ];
+
+  const sleepSizes = [
+      { value: '160 x 200', label: '160 x 200' },
+      { value: '180 x 200', label: '180 x 200' },
+      { value: '200 x 200', label: '200 x 200' },
+      { value: '160 x 190', label: '160 x 190' },
+      { value: '180 x 190', label: '180 x 190' },
+      { value: '200 x 190', label: '200 x 190' },
+      { value: '90 x 200', label: '90 x 200' },
+      { value: '120 x 200', label: '120 x 200' },
+      { value: '140 x 200', label: '140 x 200' },
+      { value: '90 x 190', label: '90 x 190' },
+      { value: '120 x 190', label: '120 x 190' },
+      { value: '140 x 190', label: '140 x 190' },
+  ]
+
   const [filter, setFilter] = useState('');
   const [isModalOrderOpen, setIsModalOrderOpen] = useState(false);
-  const [selectedGroup, setSelectedGroup] = useState({ value: 'sofa', label: 'Sofa' });
+  const [selectedGroup, setSelectedGroup] = useState({ value: `${t('sofa')}`, label: `${t('sofa')}` });
   const [selectedSleepSizes, setSelectedSleepSizes] = useState({ value: '160 x 200', label: '160 x 200' });
   const [selectedFiles, setSelectedFiles] = useState('');
 
@@ -170,23 +170,24 @@ export const OrdersList = () => {
             >
             <Form className={css.formWrapper}>
                 <div className={css.formItem}>
-                    <label htmlFor="group">Group</label>
+                    <label htmlFor="group">{t('group')}</label>
                     <Field component={Select} 
                         name="group" 
                         id="group"
                         onChange={e => setSelectedGroup(e)}
                         options={groups}
                         defaultValue={selectedGroup.value}
+                        placeholder={selectedGroup.label}
                         >
                     </Field>
                 </div>
                 <div className={css.formItem}>
-                    <label htmlFor="name">Name</label>
+                    <label htmlFor="name">{t('order name')}</label>
                     <Field className={css.field} id="name" name="name" placeholder="Faynee mini" />
                 </div>
-                {selectedGroup.value === 'bed' ? 
+                {selectedGroup.value === `${t('bed')}` ? 
                     <div className={css.formItem}>
-                        <label htmlFor="sleepingArea">Sleeping area</label>
+                        <label htmlFor="sleepingArea">{t('sleeping area')}</label>
                         <Field component={Select} 
                             name="sleepingArea" 
                             id="sleepingArea"
@@ -198,37 +199,37 @@ export const OrdersList = () => {
                         </Field>
                     </div> : <></>}
                 <div className={css.formItem}>
-                    <label htmlFor="size">Size</label>
-                    <Field className={css.field} id="size" name="size" placeholder={`${selectedGroup.label} size`} />
+                    <label htmlFor="size">{t('size')}</label>
+                    <Field className={css.field} id="size" name="size" placeholder={`${t('overall size')}`} />
                 </div>
                 <div className={css.formItem}>
-                    <label htmlFor="fabric">Fabric</label>
-                    <Field className={css.field} id="fabric" name="fabric" placeholder="Fabric" />
+                    <label htmlFor="fabric">{t('fabric')}</label>
+                    <Field className={css.field} id="fabric" name="fabric" placeholder={t('fabric name')} />
                 </div>
                 <div className={css.formItem}>
-                    <label htmlFor="description">Description</label>
-                    <Field className={css.field} id="description" name="description" placeholder="Description" />
+                    <label htmlFor="description">{t('description')}</label>
+                    <Field className={css.field} id="description" name="description" placeholder={t('description')} />
                 </div>
                 <div className={css.formItem}>
-                    <label htmlFor="number">Number</label>
+                    <label htmlFor="number">{t('number')}</label>
                     <Field className={css.field} id="number" name="number" placeholder="125" />
                 </div>
                 <div className={css.formItem}>
-                    <label htmlFor="adress">Adress</label>
-                    <Field className={css.field} id="adress" name="adress" placeholder="Kiev, Kyrylivska street, 103" />
+                    <label htmlFor="adress">{t('adress')}</label>
+                    <Field className={css.field} id="adress" name="adress" placeholder={t("Kiev, Kyrylivska street, 103")} />
                 </div>
                 <div className={css.formItem}>
-                    <label htmlFor="rest">Rest</label>
+                    <label htmlFor="rest">{t('rest')}</label>
                     <Field className={css.field} id="rest" name="rest" placeholder="21000" />
                 </div>
                 <div className={css.formItem}>
-                    <label htmlFor="deadline">Deadline</label>
+                    <label htmlFor="deadline">{t('deadline')}</label>
                     <Field className={css.field} id="deadline" name="deadline" placeholder="21" />
                 </div>
                 <div className={css.formItem}>
                   <Field className={css.field} id="files" name="files" type="file" onChange={handleFileChange} multiple/>
                 </div>
-                <button type="submit" className={css.btn}>Submit</button>
+                <button type="submit" className={css.btn}>{t('submit')}</button>
             </Form>
             </Formik>
           </div>

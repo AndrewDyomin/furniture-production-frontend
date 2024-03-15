@@ -15,7 +15,7 @@ export const UserMenu = ({ close }) => {
 
   return (
     <div className={isMobile ? css.mobileWrapper : css.wrapper}>
-      <p className={css.username}>{user.email}</p>
+      <p className={css.username}>{user.name}</p>
       {isLoggedIn && isMobile && (
         <div className={css.mobileMenuLinks}>
           <Link className={css.link} to="/orders" onClick={close}>

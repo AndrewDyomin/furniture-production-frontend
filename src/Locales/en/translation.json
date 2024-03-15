@@ -10,7 +10,9 @@
   "our products": "Our products",
   "all products": "All products",
   "sofas": "Sofas",
+  "sofa": "Sofa",
   "beds": "Beds",
+  "bed": "Bed",
   "filter": "Filter",
   "add order": "Add order",
   "size": "Size",
@@ -19,5 +21,13 @@
   "deadline": "Deadline",
   "adress": "Adress",
   "rest": "Rest",
+  "group": "Group",
+  "order name": "Name",
+  "sleeping area": "Sleeping area",
+  "overall size": "Overall size",
+  "number": "Number",
+  "submit": "Submit",
+  "fabric name": "Fabric name",
+  "Kiev, Kyrylivska street, 103": "Kiev, Kyrylivska street, 103",
   "1": "1"
 }

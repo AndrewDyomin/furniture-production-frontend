@@ -10,7 +10,9 @@
   "our products": "Каталог",
   "all products": "Всі категорії",
   "sofas": "Дивани",
+  "sofa": "Диван",
   "beds": "Ліжка",
+  "bed": "Ліжко",
   "filter": "Фільтр",
   "add order": "Замовити",
   "size": "Розмір",
@@ -19,5 +21,13 @@
   "deadline": "Термін здачі",
   "adress": "Адреса",
   "rest": "Залишок",
+  "group": "Група",
+  "order name": "Назва",
+  "sleeping area": "Спальне місце",
+  "overall size": "Габаритний розмір",
+  "number": "Номер",
+  "submit": "Прийняти",
+  "fabric name": "Назва тканини",
+  "Kiev, Kyrylivska street, 103": "Київ, вул.Кирилівська, 103",
   "1": "1"
 }
