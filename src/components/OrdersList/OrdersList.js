@@ -61,7 +61,7 @@ export const OrdersList = () => {
     });
   }
 
-  const filteredOrders = orders.allOrdersArray ? orders.allOrdersArray.filter(order => order.dealer.toLowerCase().includes(filter.toLowerCase())) : [];
+  const filteredOrders = orders.allOrdersArray && orders.allOrdersArray.length !== 0 ? orders.allOrdersArray.filter(order => order.dealer.toLowerCase().includes(filter.toLowerCase())) : [];
 
   const openOrderModal = () => {
     setIsModalOrderOpen(true);
