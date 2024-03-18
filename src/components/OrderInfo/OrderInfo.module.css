@@ -38,3 +38,52 @@
     max-width: 100%;
     border: 1px solid #000;
 }
+
+.btn {
+    padding: 10px 20px;
+    background-color: #B88E2F;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    min-width: calc((100% - 20px)/2);
+}
+
+.btn:hover,
+.minBtn:hover {
+    background-color: #a07c28;
+}
+
+.formWrapper {
+    margin-top: 20px;
+    max-width: 500px;
+}
+
+.formItem {
+    margin-bottom: 15px;
+}
+
+.formItem:nth-child(n + 2) {
+    margin-top: 10px;
+}
+
+.formItem:hover,
+.formItem:focus {
+    outline: 2px solid #f1be44;
+}
+
+.label {
+    font-weight: bold;
+}
+
+.field {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.field:hover,
+.field:focus {
+    outline: none;
+}
