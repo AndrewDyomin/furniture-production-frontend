@@ -1,15 +1,17 @@
 import css from './OrderInfo.module.css';
-import { useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { Formik, Field, Form, FieldArray } from 'formik';
 import { selectActiveOrder } from '../../redux/orders/selectors';
 import { selectUser } from '../../redux/auth/selectors';
+import { setActiveOrder } from '../../redux/orders/operations';
 import { PopUp } from 'components/PopUp/PopUp';
 
 export const OrderInfo = ({ id }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const order = useSelector(selectActiveOrder);
   const user = useSelector(selectUser);
 
@@ -22,16 +24,23 @@ export const OrderInfo = ({ id }) => {
     return dateString;
   }
 
-  // const date = new Date(order.plannedDeadline);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+
+  useEffect(() => {}, [selectedFiles, isModalEditOpen])
 
   const openEditModal = () => {
     setIsModalEditOpen(true);
     document.body.classList.add('modal-open');
+    setSelectedFiles([]);
   };
   const closeEditModal = () => {
     setIsModalEditOpen(false);
     document.body.classList.remove('modal-open');
+  };
+
+  const handleFileChange = (event) => {
+    setSelectedFiles([ ...event.target.files ]);
   };
 
   return (
@@ -78,7 +87,6 @@ export const OrderInfo = ({ id }) => {
                 src={`https://lh3.googleusercontent.com/d/${imageId}=w800?authuser=0`}
                 alt={imageId}
               />
-              {/* <img src={`https://drive.google.com/thumbnail?id=${imageId}&sz=w800`} alt={imageId}/> */}
             </li>
           ))}
         </ul>
@@ -128,7 +136,7 @@ export const OrderInfo = ({ id }) => {
               }}
               onSubmit={async values => {
                 try {
-                  const formData = new FormData();
+                  let formData = new FormData();
                   formData.append('group', values.group);
                   formData.append('size', values.size);
                   formData.append('name', values.name);
@@ -147,17 +155,22 @@ export const OrderInfo = ({ id }) => {
                   formData.append('plannedDeadline', values.plannedDeadline);
                   formData.append('orderStatus', values.orderStatus);
                   formData.append('_id', values._id);
-                  formData.append('images', values.images);
+                  values.images.forEach((image, index) => {
+                    formData.append(`images[${index}]`, values.images[index]);
+                  });
                   formData.append('fabricStatus', values.fabricStatus);
                   formData.append('coverStatus', values.coverStatus);
                   formData.append('frameStatus', values.frameStatus);
+                  selectedFiles.forEach(file => {
+                    formData.append('file', file);
+                  });
 
-                  await axios.post('/orders/update', formData, {
+                  const response = await axios.post('/orders/update', formData, {
                     headers: {
                       'Content-Type': 'multipart/form-data',
                     },
                   });
-                  console.log(formData);
+                  dispatch(setActiveOrder(response.data))
                   closeEditModal();
                 } catch (error) {
                   console.log(error);
@@ -234,27 +247,27 @@ export const OrderInfo = ({ id }) => {
                     render={arrayHelpers => (
                       <div>
                         {arrayHelpers.form.values.images.map(
-                          (component, index) => (
+                          (image, index) => (
                             <div key={index} className={css.inputArray}>
-                              <Field
-                                component={Select}
-                                className={css.selectComponent}
-                                name={`components.${index}`}
-                                onChange={e =>
-                                  setSelectedComponents(prevState => {
-                                    const updatedComponents = [...prevState];
-                                    updatedComponents[index] = e.value;
-                                    return updatedComponents;
-                                  })
-                                }
-                                options={componentList}
-                              ></Field>
+                              <img
+                                src={`https://lh3.googleusercontent.com/d/${image}=w200?authuser=0`}
+                                alt={image}
+                              />
+                              <button 
+                              type='button'
+                              onClick={() => arrayHelpers.remove(index)}>
+                                {t('delete')}
+                              </button>
                             </div>
                           )
                         )}
                       </div>
                     )}
                   />
+                </div>
+                <div className={css.formItem}>
+                  <label htmlFor="files">{t('add new images')}</label>
+                  <Field className={css.field} id="files" name="files" type="file" onChange={handleFileChange} multiple/>
                 </div>
                 <button
                   type="submit"
