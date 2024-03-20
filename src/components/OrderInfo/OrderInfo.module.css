@@ -46,12 +46,24 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    min-width: calc((100% - 20px)/2);
+    width: calc((100% - 30px)/4);
 }
 
 .btn:hover,
 .minBtn:hover {
     background-color: #a07c28;
+}
+
+.btn:nth-child(n + 2) {
+    margin-left: 10px;
+}
+
+.activeBtn {
+    background-color: green;
+}
+
+.activeBtn:hover {
+    background-color: rgb(5, 168, 5);
 }
 
 .formWrapper {

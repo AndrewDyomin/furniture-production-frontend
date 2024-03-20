@@ -1,7 +1,8 @@
 import css from './OrderInfo.module.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import PulseLoader from "react-spinners/PulseLoader";
 import axios from 'axios';
 import { Formik, Field, Form, FieldArray } from 'formik';
 import { selectActiveOrder } from '../../redux/orders/selectors';
@@ -26,8 +27,7 @@ export const OrderInfo = ({ id }) => {
 
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState([]);
-
-  useEffect(() => {}, [selectedFiles, isModalEditOpen])
+  const [isLoading, setIsLoading] = useState(false);
 
   const openEditModal = () => {
     setIsModalEditOpen(true);
@@ -41,6 +41,57 @@ export const OrderInfo = ({ id }) => {
 
   const handleFileChange = (event) => {
     setSelectedFiles([ ...event.target.files ]);
+  };
+
+  const sewnToggle = async (e) => {
+  
+    setIsLoading(true);
+    let orderStatus = order.orderStatus;
+    let fabricStatus = order.fabricStatus;
+    let sewnStatus = order.coverStatus;
+    let frameStatus = order.frameStatus;
+
+    if (e.target.name === 'isSewn') {
+      sewnStatus = order.coverStatus !== 'TRUE' ? 'TRUE' : '';
+    } else if (e.target.name === 'frame') {
+      frameStatus = order.frameStatus !== 'TRUE' ? 'TRUE' : '';
+    } else if (e.target.name === 'order') {
+      orderStatus = order.orderStatus !== 'TRUE' ? 'TRUE' : '';
+    }
+
+    let formData = new FormData();
+    formData.append('group', order.group);
+    formData.append('size', order.size);
+    formData.append('name', order.name);
+    formData.append('fabric', order.fabric);
+    formData.append('description', order.description);
+    formData.append('base', order.base);
+    formData.append('deliveryDate', order.deliveryDate);
+    formData.append('innerPrice', order.innerPrice);
+    formData.append('number', order.number);
+    formData.append('dealer', order.dealer);
+    formData.append('deadline', order.deadline);
+    formData.append('dateOfOrder', dateToString(order.dateOfOrder));
+    formData.append('adress', order.adress);
+    formData.append('additional', order.additional);
+    formData.append('rest', order.rest);
+    formData.append('plannedDeadline', dateToString(order.plannedDeadline));
+    formData.append('orderStatus', orderStatus);
+    formData.append('_id', order._id);
+    order.images.forEach((image, index) => {
+      formData.append(`images[${index}]`, order.images[index]);
+    });
+    formData.append('fabricStatus', fabricStatus);
+    formData.append('coverStatus', sewnStatus);
+    formData.append('frameStatus', frameStatus);
+
+    const response = await axios.post('/orders/update', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    dispatch(setActiveOrder(response.data));
+    setIsLoading(false);
   };
 
   return (
@@ -97,6 +148,33 @@ export const OrderInfo = ({ id }) => {
         <div>
           <button className={css.btn} onClick={openEditModal}>
             {t('edit')}
+          </button>
+          <button name='isSewn' className={order.coverStatus === '' ? css.btn : `${css.btn} ${css.activeBtn}`} 
+            onClick={(e) => sewnToggle(e)}>
+            {isLoading ? 
+              <PulseLoader 
+                color="#c8c19b"
+                size='10px'
+              />
+            : `${t('is sewn')}`}
+          </button>
+          <button name='frame' className={order.frameStatus === '' ? css.btn : `${css.btn} ${css.activeBtn}`} 
+            onClick={(e) => sewnToggle(e)}>
+            {isLoading ? 
+              <PulseLoader 
+                color="#c8c19b"
+                size='10px'
+              />
+            : `${t('frame is done')}`}
+          </button>
+          <button name='order' className={order.orderStatus === '' ? css.btn : `${css.btn} ${css.activeBtn}`} 
+            onClick={(e) => sewnToggle(e)}>
+            {isLoading ? 
+              <PulseLoader 
+                color="#c8c19b"
+                size='10px'
+              />
+            : `${t('order is done')}`}
           </button>
         </div>
       ) : (
@@ -229,6 +307,14 @@ export const OrderInfo = ({ id }) => {
                     className={css.field}
                     id="additional"
                     name="additional"
+                  />
+                </div>
+                <div className={css.formItem}>
+                  <label htmlFor="rest">{t('rest')}</label>
+                  <Field
+                    className={css.field}
+                    id="rest"
+                    name="rest"
                   />
                 </div>
                 <div className={css.formItem}>
