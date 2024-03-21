@@ -12,6 +12,7 @@ import { setActiveOrder, fetchAllOrders } from '../../redux/orders/operations';
 import css from './OrdersList.module.css';
 import { useState } from 'react';
 import Select from 'react-select';
+import { selectUser } from '../../redux/auth/selectors';
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
 
@@ -44,10 +45,12 @@ export const OrdersList = () => {
   const [selectedSleepSizes, setSelectedSleepSizes] = useState({ value: '160 x 200', label: '160 x 200' });
   const [selectedFiles, setSelectedFiles] = useState('');
 
+  const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const isLoading = useSelector(selectLoading);
   const orders = useSelector(selectAllOrders);
   let dealerNames = [];
+  let prefilteredOrders = orders.allOrdersArray;
   const filters = [{value: '', label: 'All'}];
 
   if (orders.allOrdersArray) {
@@ -61,7 +64,15 @@ export const OrdersList = () => {
     });
   }
 
-  const filteredOrders = orders.allOrdersArray && orders.allOrdersArray.length !== 0 ? orders.allOrdersArray.filter(order => order.dealer.toLowerCase().includes(filter.toLowerCase())) : [];
+  if (user.description === 'seamstress') {
+    prefilteredOrders = orders.allOrdersArray && orders.allOrdersArray.length !== 0 ? orders.allOrdersArray.filter(order => order.coverStatus !== 'TRUE') : [];
+  }
+
+  if (user.description === 'carpenter') {
+    prefilteredOrders = orders.allOrdersArray && orders.allOrdersArray.length !== 0 ? orders.allOrdersArray.filter(order => order.frameStatus !== 'TRUE') : [];
+  }
+
+  const filteredOrders = prefilteredOrders && prefilteredOrders.length !== 0 ? prefilteredOrders.filter(order => order.dealer.toLowerCase().includes(filter.toLowerCase())) : [];
 
   const openOrderModal = () => {
     setIsModalOrderOpen(true);
@@ -112,7 +123,8 @@ export const OrdersList = () => {
             cssOverride={{
               position: 'absolute',
               top: '20%',
-              left: '45%'
+              left: '50%',
+              transform: 'translate(50%, 50%)'
             }}
           />
       : <></>}

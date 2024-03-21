@@ -29,5 +29,17 @@
   "submit": "Submit",
   "fabric name": "Fabric name",
   "Kiev, Kyrylivska street, 103": "Kiev, Kyrylivska street, 103",
-  "1": "1"
+  "edit": "Edit",
+  "is sewn": "Is sewn",
+  "frame is done": "Frame is done",
+  "order is done": "Order is done",
+  "base": "Base",
+  "inner price": "Inner price",
+  "additional": "Additional",
+  "planned deadline": "Planned deadline",
+  "add new images": "Add new images",
+  "delete": "Delete",
+  "not ordered": "Not ordered",
+  "ordered": "Ordered",
+  "received": "Received"
 }

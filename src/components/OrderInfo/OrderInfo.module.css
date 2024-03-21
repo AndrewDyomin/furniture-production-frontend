@@ -99,3 +99,29 @@
 .field:focus {
     outline: none;
 }
+
+.inputItem {
+    display: flex;
+    align-items: center;
+}
+
+.optionWrapper {
+    margin-top: 25px;
+}
+
+@media screen and (max-width: 670px) {
+    .optionWrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-column-gap: 10px;
+        grid-row-gap: 1em;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .btn:nth-child(n + 2) {
+        margin: 0;
+    }
+}

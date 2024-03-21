@@ -29,5 +29,17 @@
   "submit": "Принять",
   "fabric name": "Название ткани",
   "Kiev, Kyrylivska street, 103": "Киев, ул.Кириловская, 103",
-  "1": "1"
+  "edit": "Редактировать",
+  "is sewn": "Пошит",
+  "frame is done": "Каркас готов",
+  "order is done": "Заказ готов",
+  "base": "Ламельный каркас",
+  "inner price": "Входящая цена",
+  "additional": "Дозагруз",
+  "planned deadline": "Плановая дата сдачи",
+  "add new images": "Добавить фото",
+  "delete": "Удалить",
+  "not ordered": "Не заказано",
+  "ordered": "Заказано",
+  "received": "Получено"
 }

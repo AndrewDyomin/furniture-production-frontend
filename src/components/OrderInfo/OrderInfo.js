@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import PulseLoader from "react-spinners/PulseLoader";
 import axios from 'axios';
+import Select from 'react-select';
 import { Formik, Field, Form, FieldArray } from 'formik';
 import { selectActiveOrder } from '../../redux/orders/selectors';
 import { selectUser } from '../../redux/auth/selectors';
@@ -15,6 +16,12 @@ export const OrderInfo = ({ id }) => {
   const dispatch = useDispatch();
   const order = useSelector(selectActiveOrder);
   const user = useSelector(selectUser);
+  const statuses = [
+    { value: '', label: `${t('not ordered')}` },
+    { value: 'ordered', label: `${t('ordered')}` },
+    { value: 'received', label: `${t('received')}` },
+  ];
+  let initialFabricStatus = { value: '', label: `${t('not ordered')}` };
 
   function dateToString(date) {
     const d = new Date(date);
@@ -28,6 +35,12 @@ export const OrderInfo = ({ id }) => {
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  if (order.fabricStatus === 'ordered') {
+    initialFabricStatus = { value: 'ordered', label: `${t('ordered')}` };
+  } else if (order.fabricStatus === 'received') {
+    initialFabricStatus = { value: 'received', label: `${t('received')}` };
+  }
 
   const openEditModal = () => {
     setIsModalEditOpen(true);
@@ -45,19 +58,27 @@ export const OrderInfo = ({ id }) => {
 
   const sewnToggle = async (e) => {
   
+    console.log(e)
     setIsLoading(true);
     let orderStatus = order.orderStatus;
     let fabricStatus = order.fabricStatus;
     let sewnStatus = order.coverStatus;
     let frameStatus = order.frameStatus;
 
-    if (e.target.name === 'isSewn') {
-      sewnStatus = order.coverStatus !== 'TRUE' ? 'TRUE' : '';
-    } else if (e.target.name === 'frame') {
-      frameStatus = order.frameStatus !== 'TRUE' ? 'TRUE' : '';
-    } else if (e.target.name === 'order') {
-      orderStatus = order.orderStatus !== 'TRUE' ? 'TRUE' : '';
+    if (e.value === '') {
+      fabricStatus = '';
+    } else if (e.value) {
+      fabricStatus = e.value;
     }
+
+    if (e.target) {
+      if (e.target.name === 'isSewn') {
+        sewnStatus = order.coverStatus !== 'TRUE' ? 'TRUE' : '';
+      } else if (e.target.name === 'frame') {
+        frameStatus = order.frameStatus !== 'TRUE' ? 'TRUE' : '';
+      } else if (e.target.name === 'order') {
+        orderStatus = order.orderStatus !== 'TRUE' ? 'TRUE' : '';
+    }}
 
     let formData = new FormData();
     formData.append('group', order.group);
@@ -145,10 +166,19 @@ export const OrderInfo = ({ id }) => {
         <></>
       )}
       {user.description === 'administrator' ? (
-        <div>
+        <div className={css.optionWrapper}>
           <button className={css.btn} onClick={openEditModal}>
             {t('edit')}
           </button>
+          <Select
+            className={css.fabricStatusSelector}
+            name="fabricStatusSelector" 
+            id="fabricStatusSelector"
+            onChange={e => sewnToggle(e)}
+            options={statuses}
+            defaultValue={initialFabricStatus}
+            placeholder={t('fabric')}>
+          </Select>
           <button name='isSewn' className={order.coverStatus === '' ? css.btn : `${css.btn} ${css.activeBtn}`} 
             onClick={(e) => sewnToggle(e)}>
             {isLoading ? 
@@ -167,6 +197,69 @@ export const OrderInfo = ({ id }) => {
               />
             : `${t('frame is done')}`}
           </button>
+          <button name='order' className={order.orderStatus === '' ? css.btn : `${css.btn} ${css.activeBtn}`} 
+            onClick={(e) => sewnToggle(e)}>
+            {isLoading ? 
+              <PulseLoader 
+                color="#c8c19b"
+                size='10px'
+              />
+            : `${t('order is done')}`}
+          </button>
+        </div>
+      ) : (
+        <></>
+      )}
+      {user.description === 'manager' ? (
+        <div className={css.optionWrapper}>
+          <button className={css.btn} onClick={openEditModal}>
+            {t('edit')}
+          </button>
+          <button name='order' className={order.orderStatus === '' ? css.btn : `${css.btn} ${css.activeBtn}`} 
+            onClick={(e) => sewnToggle(e)}>
+            {isLoading ? 
+              <PulseLoader 
+                color="#c8c19b"
+                size='10px'
+              />
+            : `${t('order is done')}`}
+          </button>
+        </div>
+      ) : (
+        <></>
+      )}
+      {user.description === 'seamstress' ? (
+        <div className={css.optionWrapper}>
+          <button name='isSewn' className={order.coverStatus === '' ? css.btn : `${css.btn} ${css.activeBtn}`} 
+            onClick={(e) => sewnToggle(e)}>
+            {isLoading ? 
+              <PulseLoader 
+                color="#c8c19b"
+                size='10px'
+              />
+            : `${t('is sewn')}`}
+          </button>
+        </div>
+      ) : (
+        <></>
+      )}
+      {user.description === 'carpenter' ? (
+        <div className={css.optionWrapper}>
+          <button name='frame' className={order.frameStatus === '' ? css.btn : `${css.btn} ${css.activeBtn}`} 
+            onClick={(e) => sewnToggle(e)}>
+            {isLoading ? 
+              <PulseLoader 
+                color="#c8c19b"
+                size='10px'
+              />
+            : `${t('frame is done')}`}
+          </button>
+        </div>
+      ) : (
+        <></>
+      )}
+      {user.description === 'upholsterer' ? (
+        <div className={css.optionWrapper}>
           <button name='order' className={order.orderStatus === '' ? css.btn : `${css.btn} ${css.activeBtn}`} 
             onClick={(e) => sewnToggle(e)}>
             {isLoading ? 
@@ -214,6 +307,7 @@ export const OrderInfo = ({ id }) => {
               }}
               onSubmit={async values => {
                 try {
+                  setIsLoading(true);
                   let formData = new FormData();
                   formData.append('group', values.group);
                   formData.append('size', values.size);
@@ -249,6 +343,7 @@ export const OrderInfo = ({ id }) => {
                     },
                   });
                   dispatch(setActiveOrder(response.data))
+                  setIsLoading(false);
                   closeEditModal();
                 } catch (error) {
                   console.log(error);
@@ -331,15 +426,16 @@ export const OrderInfo = ({ id }) => {
                   <FieldArray
                     name="images"
                     render={arrayHelpers => (
-                      <div>
+                      <div className={css.field}>
                         {arrayHelpers.form.values.images.map(
                           (image, index) => (
-                            <div key={index} className={css.inputArray}>
+                            <div key={index} className={css.inputItem}>
                               <img
                                 src={`https://lh3.googleusercontent.com/d/${image}=w200?authuser=0`}
                                 alt={image}
                               />
                               <button 
+                              className={css.btn}
                               type='button'
                               onClick={() => arrayHelpers.remove(index)}>
                                 {t('delete')}
@@ -359,7 +455,12 @@ export const OrderInfo = ({ id }) => {
                   type="submit"
                   className={`${css.btn} ${css.modalSubmitButton}`}
                 >
-                  {t('submit')}
+                  {isLoading ? 
+                  <PulseLoader 
+                      color="#c8c19b"
+                      size='10px'
+                    />
+                  : `${t('submit')}`}
                 </button>
               </Form>
             </Formik>

@@ -19,7 +19,8 @@
     width: calc(100%/3);
 }
 
-.orderDeadline {
+.orderDeadline,
+.orderFabric {
     width: calc(100%/3);
     text-align: center;
 }
@@ -27,4 +28,12 @@
 .orderDealer {
     width: calc(100%/3);
     text-align: right;
+}
+
+.backgroundBlue {
+    background-color: aqua;
+}
+
+.backgroundGreen {
+    background-color: rgb(104, 146, 104);
 }
