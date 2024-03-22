@@ -53,7 +53,6 @@ export const ComponentList = () => {
 
     const openEditModal = (component) => {
         editedComponent = component;
-        console.log(editedComponent)
         setIsModalEditOpen(true);
         document.body.classList.add('modal-open');
       };

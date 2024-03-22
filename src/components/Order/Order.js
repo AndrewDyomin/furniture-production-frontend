@@ -10,6 +10,7 @@ export const Order = ({ id }) => {
   const date = new Date(order.plannedDeadline);
   const user = useSelector(selectUser);
   let fabricClassName = css.orderFabric;
+  let wrapperClassName = css.wrapper;
 
   if (order.fabricStatus === 'ordered') {
     fabricClassName = `${css.orderFabric} ${css.backgroundBlue}`
@@ -17,8 +18,16 @@ export const Order = ({ id }) => {
     fabricClassName = `${css.orderFabric} ${css.backgroundGreen}`
   }
 
+  if (order.orderStatus === 'TRUE') {
+    wrapperClassName = `${css.wrapper} ${css.done}`;
+  } else if (order.coverStatus === 'TRUE' && order.frameStatus === 'TRUE') {
+    wrapperClassName = `${css.wrapper} ${css.twoPart}`;
+  } else if (order.coverStatus === 'TRUE' || order.frameStatus === 'TRUE') {
+    wrapperClassName = `${css.wrapper} ${css.onePart}`;
+  }  
+
   return (
-    <div className={css.wrapper}>
+    <div className={wrapperClassName}>
       <p className={css.number}>{order.number}</p>
       <div className={css.discription}>
         <p className={css.orderName}>{order.name}</p>

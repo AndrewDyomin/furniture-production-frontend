@@ -1,0 +1,49 @@
+.wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.container {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+}
+
+.logo {
+  width: 140%;
+  height: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
+
+.shine {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: radial-gradient(
+    ellipse at 50% 50%,
+    rgba(255, 255, 255, 0.925) 50%,
+    transparent 70%
+    );
+    animation: moveShine 4s linear infinite;
+}
+
+@keyframes moveShine {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg) translate(105px) rotate(-0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg) translate(105px)
+      rotate(-360deg);
+  }
+}

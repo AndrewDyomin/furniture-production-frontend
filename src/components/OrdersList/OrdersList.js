@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import PulseLoader from "react-spinners/PulseLoader";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Order } from '../Order/Order';
 import { PopUp } from '../PopUp/PopUp';
 import { Formik, Field, Form } from 'formik';
@@ -45,6 +45,7 @@ export const OrdersList = () => {
   const [selectedSleepSizes, setSelectedSleepSizes] = useState({ value: '160 x 200', label: '160 x 200' });
   const [selectedFiles, setSelectedFiles] = useState('');
 
+  const location = useLocation();
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const isLoading = useSelector(selectLoading);
@@ -104,30 +105,30 @@ export const OrdersList = () => {
           {t('add order')}
         </button>
       </div>
-      {filteredOrders.length !== 0 ? 
-          <ul className={css.list}>
-              {filteredOrders.map(({ _id }) => (
-              <li key={_id} className={css.item}>
-                <Link to={`${_id}`} 
-                  className={css.orderLink} 
-                  onClick={() => dispatch(setActiveOrder(orders.allOrdersArray.find((el) => {return(el._id === _id)})))}>
-                  <Order  
-                  id={_id} />
-                </Link>
-              </li>
-          ))}
-          </ul> : <></>}
-          {isLoading ? 
+      {isLoading ? 
           <PulseLoader 
             color="#c8c19b"
             cssOverride={{
-              position: 'absolute',
-              top: '20%',
-              left: '50%',
-              transform: 'translate(50%, 50%)'
+              marginTop: '15px',
+              display: 'flex',
+              justifyContent: 'center'
             }}
           />
       : <></>}
+      {filteredOrders.length !== 0 ? 
+        <ul className={css.list}>
+            {filteredOrders.map(({ _id }) => (
+            <li key={_id} className={css.item}>
+              <Link to={`${_id}`} 
+                state={{ from: location }}
+                className={css.orderLink} 
+                onClick={() => dispatch(setActiveOrder(orders.allOrdersArray.find((el) => {return(el._id === _id)})))}>
+                <Order  
+                id={_id} />
+              </Link>
+            </li>
+        ))}
+        </ul> : <></>}
       <PopUp 
         isOpen={isModalOrderOpen}
         close={closeOrderModal}

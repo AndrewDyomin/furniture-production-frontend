@@ -2,6 +2,20 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.onePart {
+    background: linear-gradient(110deg, rgba(0, 255, 179, 0.3) 30%, rgba(255,255,255,1) 35%);
+}
+
+.twoPart {
+    background: linear-gradient(110deg, rgba(0, 255, 179, 0.3) 60%, rgba(255,255,255,1) 65%);
+}
+
+.done {
+    background: rgba(0, 255, 179, 0.3);
 }
 
 .number {
@@ -23,6 +37,8 @@
 .orderFabric {
     width: calc(100%/3);
     text-align: center;
+    padding: 3px;
+    border-radius: 5px;
 }
 
 .orderDealer {

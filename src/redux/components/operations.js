@@ -45,7 +45,6 @@ export const deleteComponent = createAsyncThunk(
   'components/delete',
   async (id, thunkAPI) => {
     try {
-      console.log({id})
       await axios.delete('/components/remove', {
         data: {id},
         headers: {

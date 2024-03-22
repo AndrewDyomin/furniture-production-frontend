@@ -5,17 +5,21 @@ import { useTranslation } from 'react-i18next';
 import PulseLoader from "react-spinners/PulseLoader";
 import axios from 'axios';
 import Select from 'react-select';
+import svgIcons from '../../images/icons.svg';
 import { Formik, Field, Form, FieldArray } from 'formik';
 import { selectActiveOrder } from '../../redux/orders/selectors';
 import { selectUser } from '../../redux/auth/selectors';
 import { setActiveOrder } from '../../redux/orders/operations';
 import { PopUp } from 'components/PopUp/PopUp';
+import { Link, useLocation } from 'react-router-dom';
 
 export const OrderInfo = ({ id }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const order = useSelector(selectActiveOrder);
   const user = useSelector(selectUser);
+  const location = useLocation();
+  const backLinkHref = location.state?.from ?? "/orders";
   const statuses = [
     { value: '', label: `${t('not ordered')}` },
     { value: 'ordered', label: `${t('ordered')}` },
@@ -58,7 +62,6 @@ export const OrderInfo = ({ id }) => {
 
   const sewnToggle = async (e) => {
   
-    console.log(e)
     setIsLoading(true);
     let orderStatus = order.orderStatus;
     let fabricStatus = order.fabricStatus;
@@ -117,6 +120,13 @@ export const OrderInfo = ({ id }) => {
 
   return (
     <div className={css.wrapper}>
+      <Link to={backLinkHref}>
+        <button className={`${css.btn} ${css.backBtn}`}>
+          <svg className={css.backIcon}>
+              <use href={`${svgIcons}#icon-arrow-right`} width={'32px'} />
+          </svg>
+        </button>
+      </Link>
       <p className={css.orderNumber}>{order.number}</p>
       <div className={css.description}>
         <p className={css.orderName}>
@@ -215,6 +225,15 @@ export const OrderInfo = ({ id }) => {
           <button className={css.btn} onClick={openEditModal}>
             {t('edit')}
           </button>
+          <Select
+            className={css.fabricStatusSelector}
+            name="fabricStatusSelector" 
+            id="fabricStatusSelector"
+            onChange={e => sewnToggle(e)}
+            options={statuses}
+            defaultValue={initialFabricStatus}
+            placeholder={t('fabric')}>
+          </Select>
           <button name='order' className={order.orderStatus === '' ? css.btn : `${css.btn} ${css.activeBtn}`} 
             onClick={(e) => sewnToggle(e)}>
             {isLoading ? 
