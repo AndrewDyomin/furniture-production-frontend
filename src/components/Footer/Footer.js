@@ -12,15 +12,14 @@ export const Footer = () => {
     <nav className={css.navBlock}>
       {isLoggedIn && !isMobile && (
         <div>
-            <NavLink className={css.link} to="/">
-            <img src={logo} alt='logo' className={css.logo}/>
-            </NavLink>
             <NavLink className={css.link} to="/orders">
             Orders
             </NavLink>
         </div>
-
       )}
+      <NavLink className={css.link} to="/">
+        <img src={logo} alt='logo' className={css.logo}/>
+      </NavLink>
       <p>Misazh Company</p>
     </nav>
   );
