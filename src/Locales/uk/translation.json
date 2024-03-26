@@ -41,5 +41,15 @@
   "delete": "Видалити",
   "not ordered": "Не замовлено",
   "ordered": "Замовлено",
-  "received": "Отримано"
+  "received": "Отримано",
+  "price": "Ціна",
+  "edit mode": "Режим редагування",
+  "unit name": "Назва",
+  "width": "Ширина",
+  "depth": "Глибина",
+  "height": "Висота",
+  "base price": "Ціна від",
+  "are you sure": "Ви впевнені",
+  "cancel": "Скасувати",
+  "product components": "Компоненти виробу"
 }

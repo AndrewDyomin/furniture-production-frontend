@@ -41,5 +41,15 @@
   "delete": "Delete",
   "not ordered": "Not ordered",
   "ordered": "Ordered",
-  "received": "Received"
+  "received": "Received",
+  "price": "Price",
+  "edit mode": "Edit mode",
+  "unit name": "Name",
+  "width": "Width",
+  "depth": "Depth",
+  "height": "Height",
+  "base price": "Base price",
+  "are you sure": "Are you sure",
+  "cancel": "Cancel",
+  "product components": "Product components"
 }

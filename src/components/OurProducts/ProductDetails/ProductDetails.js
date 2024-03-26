@@ -5,6 +5,7 @@ import { Carousel } from 'react-responsive-carousel';
 import { selectActiveProduct } from '../../../redux/products/selectors';
 import css from "./ProductDetails.module.css";
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Select from 'react-select';
 import { useAuth } from "hooks";
 import { AdminMenu } from "../AdminMenu/AdminMenu";
@@ -23,6 +24,7 @@ export const ProductDetails = () => {
     const [selectedBedSize, setSelectedBedSize] = useState({ value: '160', label: '160 x 200(190)' });
     const { id } = useParams();
     const product = useSelector(selectActiveProduct);
+    const { t } = useTranslation();
     const differenceInWidth = product.dimensions.width - 160;
     const price = product.basePrice;
 
@@ -38,28 +40,28 @@ export const ProductDetails = () => {
             </Carousel>
             {product.group === 'bed' ? 
                 <div className={css.baseInfoWrapper}>
-                    <p className={css.baseInfoTitle}>Sleeping area:</p>
+                    <p className={css.baseInfoTitle}>{t('sleeping area')}:</p>
                     <Select
                         defaultValue={selectedBedSize}
                         onChange={setSelectedBedSize}
                         options={bedSizes}
                     />
-                    <p className={css.baseInfoTitle}>Overall size:</p>
+                    <p className={css.baseInfoTitle}>{t('overall size')}:</p>
                     <p>{Number(selectedBedSize.value) + Number(differenceInWidth)} x {product.dimensions.depth}({product.dimensions.depth-10})</p>
-                    <p className={css.baseInfoTitle}>Price:</p>
+                    <p className={css.baseInfoTitle}>{t('price')}:</p>
                     <p className={css.price}>{price} ₴</p>
                 </div> : 
                 <div className={css.baseInfoWrapper}>
-                    <p className={css.baseInfoTitle}>Overall size:</p>
+                    <p className={css.baseInfoTitle}>{t('overall size')}:</p>
                     <p>{product.dimensions.depth} x {product.dimensions.width} x {product.dimensions.height}</p>
-                    <p className={css.baseInfoTitle}>Price:</p>
+                    <p className={css.baseInfoTitle}>{t('price')}:</p>
                     <p className={css.price}>{product.basePrice} ₴</p>
                 </div>}
-            <p className={css.baseInfoTitle}>Description:</p>
+            <p className={css.baseInfoTitle}>{t('description')}:</p>
             <p>{product.description}</p>
             {isLoggedIn ? 
                 (user.description === "administrator" && (
-            <div>
+            <div className={css.adminBlock}>
                 <ProductComponents components={product.components}/>
                 <AdminMenu id={id}/>
             </div>

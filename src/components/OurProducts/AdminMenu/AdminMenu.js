@@ -3,6 +3,7 @@ import { deleteProduct, updateProduct } from "../../../redux/products/operations
 import { selectActiveProduct } from '../../../redux/products/selectors';
 import css from './AdminMenu.module.css';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { PopUp } from "components/PopUp/PopUp";
 import { Formik, Field, Form, FieldArray } from 'formik';
 import axios from 'axios';
@@ -14,6 +15,7 @@ axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
 export const AdminMenu = (id) => {
 
     const dispatch = useDispatch();
+    const { t } = useTranslation();
     const product = useSelector(selectActiveProduct);
     const components = useSelector(selectAllComponents).array;
     const initialComponents = product.components.length > 0 ? product.components : [''];
@@ -88,15 +90,15 @@ export const AdminMenu = (id) => {
 
     return (
         <div>
-            <button onClick={openDeleteModal} className={css.btn}>Delete</button>
-            <button className={css.btn} onClick={openEditModal}>Edit</button>
+            <button onClick={openDeleteModal} className={css.btn}>{t('delete')}</button>
+            <button className={css.btn} onClick={openEditModal}>{t('edit')}</button>
             <PopUp 
                 isOpen={isModalEditOpen}
                 close={closeEditModal}
                 className={css.modalContent}
                 body={
                     <>
-                        <p>Edit mode</p>
+                        <p>{t('edit mode')}</p>
                         <Formik
                         initialValues={{
                             name: product.name,
@@ -131,27 +133,27 @@ export const AdminMenu = (id) => {
                         >
                         <Form className={css.formWrapper}>
                             <div className={css.formItem}>
-                                <label htmlFor="name">Name</label>
+                                <label htmlFor="name">{t('unit name')}</label>
                                 <Field className={css.field} id="name" name="name" />
                             </div>
                             <div className={css.formItem}>
-                                <label htmlFor="dimensions.width">Width</label>
+                                <label htmlFor="dimensions.width">{t('width')}</label>
                                 <Field className={css.field} id="dimensions.width" name="dimensions.width" placeholder="Width"/>
                             </div>
                             <div className={css.formItem}>
-                                <label htmlFor="dimensions.depth">Depth</label>
+                                <label htmlFor="dimensions.depth">{t('depth')}</label>
                                 <Field className={css.field} id="dimensions.depth" name="dimensions.depth" placeholder="Depth"/>
                             </div>
                             <div className={css.formItem}>
-                                <label htmlFor="dimensions.height">Height</label>
+                                <label htmlFor="dimensions.height">{t('height')}</label>
                                 <Field className={css.field} id="dimensions.height" name="dimensions.height" placeholder="Height"/>
                             </div>
                             <div className={css.formItem}>
-                                <label htmlFor="description">Description</label>
+                                <label htmlFor="description">{t('description')}</label>
                                 <Field className={css.field} id="description" name="description" placeholder="Description" />
                             </div>
                             <div className={css.formItem}>
-                                <label htmlFor="basePrice">Base price</label>
+                                <label htmlFor="basePrice">{t('base price')}</label>
                                 <Field className={css.field} id="basePrice" name="basePrice" placeholder="12500" />
                             </div>
                             <div className={css.formItem}>
@@ -205,7 +207,7 @@ export const AdminMenu = (id) => {
                                     )}
                                 />  
                             </div>
-                            <button type="submit" className={`${css.btn} ${css.modalSubmitButton}`}>Submit</button>
+                            <button type="submit" className={`${css.btn} ${css.modalSubmitButton}`}>{t('submit')}</button>
                         </Form>
                         </Formik>
                     </>
@@ -216,10 +218,10 @@ export const AdminMenu = (id) => {
                 close={closeDeleteModal}
                 body={
                     <>
-                        <p>Are you sure???</p>
+                        <p>{t('are you sure')}???</p>
                         <div className={css.delModalWrapper}>
-                            <button onClick={closeDeleteModal} className={css.btn}>Cancel</button>
-                            <button onClick={handleDelete} className={`${css.btn} ${css.delBtn}`}>Delete</button>
+                            <button onClick={closeDeleteModal} className={css.btn}>{t('cancel')}</button>
+                            <button onClick={handleDelete} className={`${css.btn} ${css.delBtn}`}>{t('delete')}</button>
                         </div>
                     </>}
             />

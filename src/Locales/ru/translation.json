@@ -41,5 +41,15 @@
   "delete": "Удалить",
   "not ordered": "Не заказано",
   "ordered": "Заказано",
-  "received": "Получено"
+  "received": "Получено",
+  "price": "Цена",
+  "edit mode": "Режим редактирования",
+  "unit name": "Название",
+  "width": "Ширина",
+  "depth": "Глубина",
+  "height": "Высота",
+  "base price": "Цена от",
+  "are you sure": "Вы уверены",
+  "cancel": "Отмена",
+  "product components": "Компоненты изделия"
 }
