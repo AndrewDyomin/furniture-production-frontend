@@ -12,6 +12,24 @@
     text-decoration: none;
 }
 
+.btn {
+    padding: 10px 20px;
+    background-color: #fff;
+    color: #000;
+    border: 2px solid #B88E2F;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.activeBtn {
+    background-color: #B88E2F;
+    color: #fff;
+}
+
+.btn:nth-child(n + 2) {
+    margin-left: 10px;
+}
+
 @media screen and (max-width: 767px) {
     .item:nth-child(n + 2) {
         margin-top: 25px;

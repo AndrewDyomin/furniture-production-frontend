@@ -6,6 +6,7 @@ import css from './CollectionEditor.module.css';
 import { useState } from 'react';
 import Select from 'react-select';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
 
@@ -17,6 +18,7 @@ const groups = [
 export const CollectionEditor = () => {
 
     const components = useSelector(selectAllComponents);
+    const { t } = useTranslation();
     let componentList = [];
 
     try {
@@ -31,7 +33,7 @@ export const CollectionEditor = () => {
     const [isEditorOpen, setIsEditorOpen] = useState(false);
 
     const handleFileChange = (event) => {
-        setSelectedFiles(event.target.files);
+        setSelectedFiles([ ...event.target.files ]);
     };
 
     const handleEditorOpen = (e) => {
@@ -81,7 +83,9 @@ export const CollectionEditor = () => {
                     formData.append(`components[${index}][id]`, componentId);
                     formData.append(`components[${index}][quantity]`, quantity);
                 })
-                formData.append('file', selectedFiles[0]);
+                selectedFiles.forEach(file => {
+                    formData.append('file', file);
+                  });
                 await axios.post('/collections/add', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
@@ -131,8 +135,9 @@ export const CollectionEditor = () => {
                 <Field className={css.field} id="basePrice" name="basePrice" placeholder="12500" />
             </div>
             <div className={css.formItem}>
-                <Field className={css.field} id="files" name="files" type="file" onChange={handleFileChange}/>
-            </div>
+                  <label htmlFor="files">{t('add new images')}</label>
+                  <Field className={css.field} id="files" name="files" type="file" onChange={handleFileChange} multiple/>
+                </div>
             <div className={css.formItem}>
                 <FieldArray
                     name="components"

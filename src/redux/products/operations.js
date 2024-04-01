@@ -42,15 +42,19 @@ export const deleteProduct = createAsyncThunk(
 );
 
 export const updateProduct = createAsyncThunk(
-  'products/updateProduct',
-  async (credentials, thunkAPI) => {
-    try {
-      const updated = await axios.post('/collections/update', credentials);
-      thunkAPI.dispatch(setActiveProduct(updated.data));
-      const res = thunkAPI.dispatch(fetchAllProducts());
-      return res;
-    } catch(error) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
+  // 'products/updateProduct',
+  // async (credentials, thunkAPI) => {
+  //   try {
+  //     const updated = await axios.post('/collections/update', {
+  //       data: credentials,
+  //       headers: {
+  //       'Content-Type': 'multipart/form-data'
+  //     }});
+  //     thunkAPI.dispatch(setActiveProduct(updated.data));
+  //     const res = thunkAPI.dispatch(fetchAllProducts());
+  //     return res;
+  //   } catch(error) {
+  //     return thunkAPI.rejectWithValue(error.message);
+  //   }
+  // }
 );

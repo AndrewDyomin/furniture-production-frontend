@@ -44,6 +44,7 @@ export const OrdersList = () => {
   const [selectedGroup, setSelectedGroup] = useState({ value: `${t('sofa')}`, label: `${t('sofa')}` });
   const [selectedSleepSizes, setSelectedSleepSizes] = useState({ value: '160 x 200', label: '160 x 200' });
   const [selectedFiles, setSelectedFiles] = useState('');
+  const [isPending, setIsPending] = useState(false);
 
   const location = useLocation();
   const user = useSelector(selectUser);
@@ -86,7 +87,7 @@ export const OrdersList = () => {
   };
 
   const handleFileChange = (event) => {
-    setSelectedFiles(event.target.files);
+    setSelectedFiles([ ...event.target.files ]);
   };
 
   return (
@@ -149,33 +150,33 @@ export const OrdersList = () => {
             }}
             onSubmit={async (values, { resetForm }) => {
                 try {
-                    const formData = new FormData();
-                    formData.append('group', selectedGroup.value);
-                    formData.append('name', values.name);
-                    formData.append('size', values.size);
-                    formData.append('fabric', values.fabric);
-                    // eslint-disable-next-line
-                    {selectedGroup.value === 'bed' ? 
-                    formData.append('description', values.description + ` Спальное место ${selectedSleepSizes.value}`)
-                    : formData.append('description', values.description)};
-                    formData.append('number', values.number);
-                    formData.append('adress', values.adress);
-                    formData.append('rest', values.rest);
-                    formData.append('deadline', values.deadline);
-                    for (const file in selectedFiles) {
-                      if (typeof selectedFiles[file] === 'object') {
-                      formData.append('file', selectedFiles[file]);
+                  setIsPending(true)
+                  const formData = new FormData();
+                  formData.append('group', selectedGroup.value);
+                  formData.append('name', values.name);
+                  formData.append('size', values.size);
+                  formData.append('fabric', values.fabric);
+                  // eslint-disable-next-line
+                  {selectedGroup.value === 'bed' ? 
+                  formData.append('description', values.description + ` Спальное место ${selectedSleepSizes.value}`)
+                  : formData.append('description', values.description)};
+                  formData.append('number', values.number);
+                  formData.append('adress', values.adress);
+                  formData.append('rest', values.rest);
+                  formData.append('deadline', values.deadline);
+                  selectedFiles.forEach(file => {
+                    formData.append('file', file);
+                  });
+                  await axios.post('/orders/add', formData, {
+                      headers: {
+                          'Content-Type': 'multipart/form-data'
                       }
-                    }
-                    await axios.post('/orders/add', formData, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data'
-                        }
-                    });
-                    toast.success('Order sended');
-                    resetForm();
-                    closeOrderModal();
-                    dispatch(fetchAllOrders());
+                  });
+                  toast.success('Order sended');
+                  resetForm();
+                  setIsPending(false);
+                  closeOrderModal();
+                  dispatch(fetchAllOrders());
                 } catch(error) {
                     toast.error(`${error.response.data.message}`);
                 }
@@ -240,9 +241,16 @@ export const OrdersList = () => {
                     <Field className={css.field} id="deadline" name="deadline" placeholder="21" />
                 </div>
                 <div className={css.formItem}>
+                  <label htmlFor="files">{t('add new images')}</label>
                   <Field className={css.field} id="files" name="files" type="file" onChange={handleFileChange} multiple/>
                 </div>
-                <button type="submit" className={css.btn}>{t('submit')}</button>
+                <button type="submit" className={css.btn}>
+                  {isPending ? 
+                  <PulseLoader 
+                      color="#c8c19b"
+                      size='10px'
+                    />
+                  : `${t('submit')}`}</button>
             </Form>
             </Formik>
           </div>

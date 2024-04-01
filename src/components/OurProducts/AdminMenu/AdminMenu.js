@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { deleteProduct, updateProduct } from "../../../redux/products/operations";
+import { deleteProduct } from "../../../redux/products/operations";
 import { selectActiveProduct } from '../../../redux/products/selectors';
 import css from './AdminMenu.module.css';
 import { useState, useEffect } from 'react';
@@ -38,6 +38,7 @@ export const AdminMenu = (id) => {
     const [selectedComponents, setSelectedComponents] = useState([ ...initialComponentId ]);
     const [selectedQuantity, setSelectedQuantity] = useState([ ...initialComponentQuantity ]);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [selectedFiles, setSelectedFiles] = useState([]);
 
     useEffect(() => {
         setSelectedComponents([ ...initialComponentId ]);
@@ -88,6 +89,10 @@ export const AdminMenu = (id) => {
         setSelectedQuantity(prevState => prevState.filter((_, i) => selectedComponents[i] !== componentId));
     };
 
+    const handleFileChange = (event) => {
+        setSelectedFiles([ ...event.target.files ]);
+    };
+
     return (
         <div>
             <button onClick={openDeleteModal} className={css.btn}>{t('delete')}</button>
@@ -111,20 +116,38 @@ export const AdminMenu = (id) => {
                             basePrice: product.basePrice,
                             components: selectedComponents,
                             quantity: selectedQuantity,
+                            images: product.images,
                         }}
                         onSubmit={async (values) => {
                             try {
+                                let formData = new FormData();
                                 let componentsArray = [];
+                                values.images.forEach((image, index) => {
+                                    formData.append(`images[${index}]`, values.images[index]);
+                                });
+                                selectedFiles.forEach(file => {
+                                    formData.append('file', file);
+                                });
+                                formData.append('dimensions', values.dimensions);
+                                formData.append('name', values.name);
+                                formData.append('description', values.description);
+                                formData.append('basePrice', values.basePrice);
+                                formData.append('_id', id.id);
                                 selectedComponents.forEach((component, index) => {
-                                    componentsArray.push({});
                                     const componentId = component;
                                     const quantity = selectedQuantity[index];
-                                    componentsArray[index].id = componentId;
-                                    componentsArray[index].quantity = quantity;
+                                    componentsArray.push({'id': componentId, quantity});
                                 })
-                                values.components = [ ...componentsArray ];
-                                delete values.quantity;
-                                dispatch(updateProduct({ ...id, ...values }));
+                                const componentsJSON = JSON.stringify(componentsArray);
+                                formData.append('components', componentsJSON);
+                                // componentsArray.forEach((image, index) => {
+                                //     formData.append(`components[${index}]`, componentsArray[index]);
+                                // })
+                                await axios.post('/collections/update', formData, {
+                                    headers: {
+                                        'Content-Type': 'multipart/form-data'
+                                    }
+                                });
                                 closeEditModal();
                             } catch(error) {
                                 console.log(error);
@@ -155,6 +178,10 @@ export const AdminMenu = (id) => {
                             <div className={css.formItem}>
                                 <label htmlFor="basePrice">{t('base price')}</label>
                                 <Field className={css.field} id="basePrice" name="basePrice" placeholder="12500" />
+                            </div>
+                            <div className={css.formItem}>
+                                <label htmlFor="files">{t('add new images')}</label>
+                                <Field className={css.field} id="files" name="files" type="file" onChange={handleFileChange} multiple/>
                             </div>
                             <div className={css.formItem}>
                                 <FieldArray
