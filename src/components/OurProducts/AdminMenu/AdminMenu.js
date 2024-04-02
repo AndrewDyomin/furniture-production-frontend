@@ -128,7 +128,8 @@ export const AdminMenu = (id) => {
                                 selectedFiles.forEach(file => {
                                     formData.append('file', file);
                                 });
-                                formData.append('dimensions', values.dimensions);
+                                const dimensionsJSON = JSON.stringify(values.dimensions);
+                                formData.append('dimensions', dimensionsJSON);
                                 formData.append('name', values.name);
                                 formData.append('description', values.description);
                                 formData.append('basePrice', values.basePrice);
@@ -140,9 +141,6 @@ export const AdminMenu = (id) => {
                                 })
                                 const componentsJSON = JSON.stringify(componentsArray);
                                 formData.append('components', componentsJSON);
-                                // componentsArray.forEach((image, index) => {
-                                //     formData.append(`components[${index}]`, componentsArray[index]);
-                                // })
                                 await axios.post('/collections/update', formData, {
                                     headers: {
                                         'Content-Type': 'multipart/form-data'
@@ -178,6 +176,32 @@ export const AdminMenu = (id) => {
                             <div className={css.formItem}>
                                 <label htmlFor="basePrice">{t('base price')}</label>
                                 <Field className={css.field} id="basePrice" name="basePrice" placeholder="12500" />
+                            </div>
+                            <div className={css.formItem}>
+                                <FieldArray
+                                    name="images"
+                                    render={arrayHelpers => (
+                                    <div className={css.field}>
+                                        {arrayHelpers.form.values.images.map(
+                                        (image, index) => (
+                                            <div key={index} className={css.inputItem}>
+                                            <img
+                                                src={image}
+                                                alt={image}
+                                                width={'200px'}
+                                            />
+                                            <button 
+                                            className={css.btn}
+                                            type='button'
+                                            onClick={() => arrayHelpers.remove(index)}>
+                                                {t('delete')}
+                                            </button>
+                                            </div>
+                                        )
+                                        )}
+                                    </div>
+                                    )}
+                                />
                             </div>
                             <div className={css.formItem}>
                                 <label htmlFor="files">{t('add new images')}</label>

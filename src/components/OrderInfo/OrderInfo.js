@@ -1,6 +1,6 @@
 import css from './OrderInfo.module.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import PulseLoader from "react-spinners/PulseLoader";
 import axios from 'axios';
@@ -25,7 +25,9 @@ export const OrderInfo = ({ id }) => {
     { value: 'ordered', label: `${t('ordered')}` },
     { value: 'received', label: `${t('received')}` },
   ];
-  let initialFabricStatus = { value: '', label: `${t('not ordered')}` };
+  let initialFabricStatus = !order.fabricStatus ? { value: '', label: `${t('not ordered')}` } : { value: '', label: `${t(order.fabricStatus)}` };
+
+  useEffect(() => {}, [order])
 
   function dateToString(date) {
     const d = new Date(date);
