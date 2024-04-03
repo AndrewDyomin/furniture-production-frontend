@@ -50,6 +50,10 @@
     border-radius: 3px;
 }
 
+.formError {
+    border-color: red;
+}
+
 .btn {
     padding: 10px 20px;
     background-color: #B88E2F;
