@@ -6,7 +6,6 @@ import { PrivateRoute } from './PrivateRoute';
 import { RestrictedRoute } from './RestrictedRoute';
 import { refreshUser } from '../redux/auth/operations';
 import { useAuth } from 'hooks';
-import { fetchAllComponents } from '../redux/components/operations';
 import { Loading } from './Loading/Loading';
 
 
@@ -26,7 +25,6 @@ export const App = () => {
 
   useEffect(() => {
     dispatch(refreshUser());
-    dispatch(fetchAllComponents());
   }, [dispatch]);
 
   return isRefreshing ? (

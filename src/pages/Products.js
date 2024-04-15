@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { fetchAllProducts } from '../redux/products/operations';
+import { fetchAllComponents } from '../redux/components/operations';
 import { selectLoading } from '../redux/orders/selectors';
 import { ProductsList } from '../components/OurProducts/ProductList/ProductList';
 
@@ -11,6 +12,7 @@ export default function Products () {
 
   useEffect(() => {
     dispatch(fetchAllProducts());
+    dispatch(fetchAllComponents());
   }, [dispatch]);
 
   return (

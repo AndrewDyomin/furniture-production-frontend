@@ -224,9 +224,11 @@ export const OrdersList = () => {
                     formData.append('adress', values.adress);
                     formData.append('rest', values.rest);
                     formData.append('deadline', values.deadline);
-                    selectedFiles.forEach(file => {
-                      formData.append('file', file);
-                    });
+                    if (selectedFiles && selectedFiles.length !== 0) {
+                      selectedFiles.forEach(file => {
+                        formData.append('file', file);
+                      });
+                    }
                     await axios.post('/orders/add', formData, {
                       headers: {
                         'Content-Type': 'multipart/form-data',
