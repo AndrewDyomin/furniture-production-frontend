@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import toast from 'react-hot-toast';
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
 
@@ -17,6 +18,7 @@ export const register = createAsyncThunk(
     try {
       const res = await axios.post('/auth/register', credentials);
       setAuthHeader(res.data.token);
+      toast.success(`Welcome ${res.data.user.name}`)
       return res.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -30,6 +32,8 @@ export const logIn = createAsyncThunk(
     try {
       const res = await axios.post('/auth/login', credentials);
       setAuthHeader(res.data.token);
+      localStorage.setItem('auth', JSON.stringify(res.data));
+      toast.success(`Welcome ${res.data.user.name}`)
       return res.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -40,6 +44,7 @@ export const logIn = createAsyncThunk(
 export const logOut = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
   try {
     await axios.post('/auth/logout');
+    localStorage.setItem('auth', '');
     clearAuthHeader();
   } catch (error) {
     return thunkAPI.rejectWithValue(error.message);
@@ -50,10 +55,15 @@ export const refreshUser = createAsyncThunk(
   'auth/refresh',
   async (_, thunkAPI) => {
     const state = thunkAPI.getState();
-    const persistedToken = state.auth.token;
+    let persistedToken = state.auth.token;
 
     if (persistedToken === null) {
-      return thunkAPI.rejectWithValue('Unable to fetch user');
+      const savedAuth = JSON.parse(localStorage.getItem('auth'));
+      if (!savedAuth || savedAuth.length === 0) {
+        toast.error('You are not authorized');
+        return thunkAPI.rejectWithValue('Unable to fetch user');
+      }
+      persistedToken = savedAuth.token;
     }
 
     try {

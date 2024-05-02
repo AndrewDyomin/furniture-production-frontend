@@ -15,7 +15,7 @@ export const Layout = () => {
           <Outlet />
         </Suspense>
       </div>
-      <Toaster position="top-right" reverseOrder={false} />
+      <Toaster position="top-center" reverseOrder={false} />
       <Footer className={css.footer}/>
     </div>
   );

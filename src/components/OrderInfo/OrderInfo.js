@@ -9,9 +9,9 @@ import svgIcons from '../../images/icons.svg';
 import { Formik, Field, Form, FieldArray } from 'formik';
 import { selectActiveOrder } from '../../redux/orders/selectors';
 import { selectUser } from '../../redux/auth/selectors';
-import { setActiveOrder } from '../../redux/orders/operations';
+import { setActiveOrder, archiveOrder } from '../../redux/orders/operations';
 import { PopUp } from 'components/PopUp/PopUp';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 export const OrderInfo = ({ id }) => {
   const { t } = useTranslation();
@@ -19,6 +19,7 @@ export const OrderInfo = ({ id }) => {
   const order = useSelector(selectActiveOrder);
   const user = useSelector(selectUser);
   const location = useLocation();
+  const navigate = useNavigate();
   const backLinkHref = location.state?.from ?? "/orders";
   const statuses = [
     { value: '', label: `${t('not ordered')}` },
@@ -120,6 +121,13 @@ export const OrderInfo = ({ id }) => {
     setIsLoading(false);
   };
 
+  const sendToArchive = async () => {
+    console.log(order._id)
+    const res = await dispatch(archiveOrder(order._id));
+    console.log(res)
+    navigate("/orders", { replace: true });
+  }
+
   return (
     <div className={css.wrapper}>
       <Link to={backLinkHref}>
@@ -218,6 +226,15 @@ export const OrderInfo = ({ id }) => {
               />
             : `${t('order is done')}`}
           </button>
+          <button name='done' className={css.btn} 
+            onClick={sendToArchive}>
+            {isLoading ? 
+              <PulseLoader 
+                color="#c8c19b"
+                size='10px'
+              />
+            : `${t('to archive')}`}
+          </button>
         </div>
       ) : (
         <></>
@@ -244,6 +261,15 @@ export const OrderInfo = ({ id }) => {
                 size='10px'
               />
             : `${t('order is done')}`}
+          </button>
+          <button name='done' className={css.btn} 
+            onClick={sendToArchive}>
+            {isLoading ? 
+              <PulseLoader 
+                color="#c8c19b"
+                size='10px'
+              />
+            : `${t('to archive')}`}
           </button>
         </div>
       ) : (

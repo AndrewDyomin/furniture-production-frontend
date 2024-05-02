@@ -22,6 +22,8 @@ export const OrdersList = () => {
   const groups = [
     { value: `${t('sofa')}`, label: `${t('sofa')}` },
     { value: `${t('bed')}`, label: `${t('bed')}` },
+    { value: `${t('kitchen banquette')}`, label: `${t('kitchen banquette')}` },
+    { value: `${t('pouf')}`, label: `${t('pouf')}` },
   ];
 
   const sleepSizes = [
@@ -87,6 +89,13 @@ export const OrdersList = () => {
     prefilteredOrders =
       orders.allOrdersArray && orders.allOrdersArray.length !== 0
         ? orders.allOrdersArray.filter(order => order.frameStatus !== 'TRUE')
+        : [];
+  }
+
+  if (user.description === 'upholsterer') {
+    prefilteredOrders =
+      orders.allOrdersArray && orders.allOrdersArray.length !== 0
+        ? orders.allOrdersArray.filter(order => order.orderStatus !== 'TRUE')
         : [];
   }
 

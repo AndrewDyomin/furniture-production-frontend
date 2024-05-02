@@ -29,3 +29,15 @@ export const setActiveOrder = createAsyncThunk(
   }
 );
 
+export const archiveOrder = createAsyncThunk(
+  'orders/archiveOrder',
+  async (_id, thunkAPI) => {
+    try {
+      const response = await axios.post('/orders/archive', {_id});
+
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
