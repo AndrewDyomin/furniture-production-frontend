@@ -2,6 +2,7 @@ import css from './Order.module.css';
 import { useSelector } from 'react-redux';
 import { selectAllOrders } from '../../redux/orders/selectors';
 import { selectUser } from '../../redux/auth/selectors';
+import { useMediaQuery } from 'react-responsive';
 
 export const Order = ({ id }) => {
 
@@ -9,6 +10,7 @@ export const Order = ({ id }) => {
   const order = orders.allOrdersArray.find((el) => {return(el._id === id)});
   const date = new Date(order.plannedDeadline);
   const user = useSelector(selectUser);
+  const isMobile = useMediaQuery({ query: '(max-width: 833px)' });
   let fabricClassName = css.orderFabric;
   let wrapperClassName = css.wrapper;
 
@@ -33,7 +35,7 @@ export const Order = ({ id }) => {
         <p className={css.orderName}>{order.name}</p>
         {user.description === 'administrator' || user.description === 'seamstress' ? 
         <p className={fabricClassName}>{order.fabric}</p> : <></>}
-        <p className={css.orderDeadline}>{`${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`}</p>
+        {isMobile && <p className={css.orderDeadline}>{`${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`}</p>}
         <p className={css.orderDealer}>{order.dealer}</p>
       </div>
     </div>

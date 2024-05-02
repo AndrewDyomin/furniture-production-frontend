@@ -66,3 +66,18 @@
 .btn:hover {
     background-color: #a07c28;
 }
+
+@media screen and (min-width: 833px) {
+    .dateWrapper {
+        margin-top: 25px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-column-gap: 10px;
+        grid-row-gap: 10px;
+    }
+
+    .item {
+        margin: 0;
+        /* max-width: 400px; */
+    }
+}
