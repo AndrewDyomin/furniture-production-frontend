@@ -4,6 +4,7 @@
     justify-content: center;
     padding: 10px;
     border-radius: 8px;
+    height: 100%;
 }
 
 .onePart {
@@ -52,4 +53,30 @@
 
 .backgroundGreen {
     background-color: rgb(104, 146, 104);
+}
+
+@media screen and (min-width: 833px) {
+    .discription {
+        display: block;
+        margin-top: 5px;
+    }
+
+    .discription:nth-child(n + 2) {
+        margin-top: 0;
+    }
+
+    .orderName {
+        width: 100%;
+        text-align: center;
+    }
+
+    .orderFabric {
+        width: 100%;
+        margin-top: 10px;
+    }
+    
+    .orderDealer {
+        width: 100%;
+        margin-top: 10px;
+    }
 }

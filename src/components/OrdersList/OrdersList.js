@@ -159,8 +159,8 @@ export const OrdersList = () => {
       return (
         <ul className={css.list}>
           {dateArray.map((day) => (
-            <li key={day}>
-              <p>{day}</p>
+            <li key={day} className={css.dateItem}>
+              <p className={css.dayTitle}>{day}</p>
               <ul className={`${css.list} ${css.dateWrapper}`}>
               {filteredOrders.map(({ _id, plannedDeadline }) => (
                 dateToString(plannedDeadline) === day &&

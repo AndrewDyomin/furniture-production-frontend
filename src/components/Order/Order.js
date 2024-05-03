@@ -32,7 +32,7 @@ export const Order = ({ id }) => {
     <div className={wrapperClassName}>
       <p className={css.number}>{order.number}</p>
       <div className={css.discription}>
-        <p className={css.orderName}>{order.name}</p>
+        <p className={css.orderName}>{!isMobile && order.group} {order.name}</p>
         {user.description === 'administrator' || user.description === 'seamstress' ? 
         <p className={fabricClassName}>{order.fabric}</p> : <></>}
         {isMobile && <p className={css.orderDeadline}>{`${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`}</p>}
