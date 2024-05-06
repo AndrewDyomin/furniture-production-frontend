@@ -19,7 +19,7 @@ import { componentsReducer } from './components/slice';
 const authPersistConfig = {
   key: 'auth',
   storage,
-  whitelist: ['token'],
+  whitelist: ['token', 'isLoggedIn'],
 };
 
 const productsPersistConfig = {
