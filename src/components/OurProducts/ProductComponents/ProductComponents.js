@@ -11,7 +11,10 @@ export const ProductComponents = ({ components }) => {
   const [totalDollars, setTotalDollars] = useState(0);
 
   const targetComponent = useCallback((id) => {
-    return allComponentsArray.find((component) => component._id === id);
+    if (allComponentsArray && allComponentsArray.length !==0) {
+      return allComponentsArray.find((component) => component._id === id);
+    }
+    return {_id: '', name: '', price: 0, currency: 'USD', units: 'шт'}
   }, [allComponentsArray]);
 
   useEffect(() => {

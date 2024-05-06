@@ -7,9 +7,9 @@ export const fetchAllComponents = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const res = await axios.get('/components/all');
-      toast.success('All components refreshed')
       return res.data;
     } catch (error) {
+      toast.error(`${error.message}`)
       return thunkAPI.rejectWithValue(error.message);
     }
   }
