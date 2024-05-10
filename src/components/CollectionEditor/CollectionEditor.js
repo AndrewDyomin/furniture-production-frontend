@@ -13,6 +13,8 @@ axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
 const groups = [
     { value: 'sofa', label: 'Sofa' },
     { value: 'bed', label: 'Bed' },
+    { value: 'banquette', label: 'Banquette' },
+    { value: 'pouf', label: 'Pouf' },
   ];
 
 export const CollectionEditor = () => {

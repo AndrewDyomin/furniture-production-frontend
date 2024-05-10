@@ -14,7 +14,7 @@ export const ProductsList = () => {
   const products = useSelector(selectAllProducts);
   let activeProducts = products.array ? [ ...products.array ] : [];
   const { filter } = useParams();
-  const [filterArray, setFilterArray] = useState(filter !== undefined ? [filter] : ['bed', 'sofa'])  
+  const [filterArray, setFilterArray] = useState(filter !== undefined ? [filter] : ['bed', 'sofa', 'banquette', 'pouf'])  
   
   if (products.array) {
     activeProducts = products.array.filter(el => filterArray.includes(el.group));
@@ -40,6 +40,18 @@ export const ProductsList = () => {
           className={filterArray.includes('bed') ? `${css.btn} ${css.activeBtn}` : `${css.btn}`}
           >
           {t('beds')}
+        </button>
+        <button 
+          onClick = {() => filterToggle('banquette')}
+          className={filterArray.includes('banquette') ? `${css.btn} ${css.activeBtn}` : `${css.btn}`}
+          >
+          {t('banquettes')}
+        </button>
+        <button 
+          onClick = {() => filterToggle('pouf')}
+          className={filterArray.includes('pouf') ? `${css.btn} ${css.activeBtn}` : `${css.btn}`}
+          >
+          {t('poufs')}
         </button>
       </div>
         {products.length !== 0 ? 

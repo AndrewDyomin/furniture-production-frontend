@@ -3,12 +3,19 @@ import { Link } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import sofaImage from '../../images/002-01-min-900x675.jpg';
 import bedImage from '../../images/feelee002-min-900x675.jpg';
+import banquetteImage from '../../images/banquette.jpg';
+import poufImage from '../../images/pouf-mi.jpg';
 import css from "./OurProducts.module.css";
 
 export const OurProducts = () => {
 
     const { t } = useTranslation();
-    const categories = [{image: sofaImage, title:`${t('sofas')}`, value: 'sofa'}, {image: bedImage, title:`${t('beds')}`, value: 'bed'}];
+    const categories = [
+        {image: sofaImage, title:`${t('sofas')}`, value: 'sofa'}, 
+        {image: bedImage, title:`${t('beds')}`, value: 'bed'},
+        {image: banquetteImage, title:`${t('banquettes')}`, value: 'banquette'},
+        {image: poufImage, title:`${t('poufs')}`, value: 'pouf'}
+    ];
     
     return (
         <div className={css.container}>
