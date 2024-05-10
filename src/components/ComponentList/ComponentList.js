@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Formik, Field, Form } from 'formik';
 import Select from 'react-select';
 import { selectAllComponents } from "../../redux/components/selectors";
@@ -29,6 +29,16 @@ export const ComponentList = () => {
     const [selectedCurrency, setSelectedCurrency] = useState({value: 'грн', label: 'грн'});
     const [selectedUnits, setSelectedUnits] = useState({value: 'шт.', label: 'шт'});
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [filter, setFilter] = useState('');
+    const [filteredComponents, setFilteredComponents] = useState([]);
+
+    useEffect(() => {
+        if (components && components.array && components.array.length !== 0) {
+            setFilteredComponents(components.array.filter(c => c.name.toLowerCase().includes(filter.toLowerCase())));
+        } else {
+            setFilteredComponents([]);
+        }
+    }, [components, filter]);
 
     const openDeleteModal = (component) => {
       editedComponent = component;
@@ -65,7 +75,7 @@ export const ComponentList = () => {
     const ComponentsArray = () => {
         try {
             return(
-            components.array.map((component) => (
+            filteredComponents.map((component) => (
                 <li key={component._id} className={css.item}>
                     <p>{component.name}</p>
                     <div>
@@ -98,6 +108,11 @@ export const ComponentList = () => {
             </div>
             {isListOpen ? 
             <div>
+                <input 
+                    className={css.item}
+                    onChange={(e) => setFilter(e.target.value)}
+                    placeholder={'Filter'}
+                />
                 <ul className={css.list}>
                     <ComponentsArray />
                 </ul>

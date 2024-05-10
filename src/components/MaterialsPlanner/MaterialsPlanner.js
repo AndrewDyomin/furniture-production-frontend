@@ -1,7 +1,7 @@
 import axios from 'axios';
 import svgIcons from '../../images/icons.svg';
 import css from './MaterialsPlanner.module.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Select from 'react-select';
 import { selectAllComponents } from "../../redux/components/selectors";
 import { selectAllOrders } from '../../redux/orders/selectors';
@@ -25,9 +25,35 @@ export const MaterialsPlanner = () => {
         isEditorOpen ? setIsEditorOpen(false) : setIsEditorOpen(true)
         !isEditorOpen ? e.target.classList = css.active : e.target.classList = css.notActive;
     };
-    const components = useSelector(selectAllComponents).array || [];
-    const orders = useSelector(selectAllOrders).allOrdersArray || [];
-    const products = useSelector(selectAllProducts).array || [];
+
+    const [components, setComponents] = useState([]);
+    const [orders, setOrders] = useState([]);
+    const [products, setProducts] = useState([]);
+
+    const componentsArray = useSelector(selectAllComponents);
+    const ordersArray = useSelector(selectAllOrders);
+    const productsArray = useSelector(selectAllProducts);
+    
+    useEffect(() => {
+        if (componentsArray && componentsArray.array && componentsArray.array.length !== 0) {
+          setComponents(componentsArray.array);
+        } else {
+          setComponents([]);
+        }
+
+        if (ordersArray && ordersArray.allOrdersArray && ordersArray.allOrdersArray.length !== 0) {
+            setOrders(ordersArray.allOrdersArray);
+          } else {
+            setOrders([]);
+          }
+
+        if (productsArray && productsArray.array && productsArray.array.length !== 0) {
+            setProducts(productsArray.array);
+        } else {
+          setProducts([]);
+        }
+    }, [componentsArray, ordersArray, productsArray]);
+
     let date = new Date();
     let targetDate = new Date(date);
     targetDate.setDate(date.getDate() + Number(selectedTerm.value));
