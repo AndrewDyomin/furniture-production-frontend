@@ -30,6 +30,19 @@
     margin-left: 10px;
 }
 
+@media screen and (max-width: 555px) {
+    .btnWrapper {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-column-gap: 25px;
+        grid-row-gap: 25px;
+    }
+
+    .btn:nth-child(n + 2) {
+        margin: 0;
+    }  
+}
+
 @media screen and (max-width: 767px) {
     .item:nth-child(n + 2) {
         margin-top: 25px;

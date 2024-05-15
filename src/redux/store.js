@@ -15,6 +15,7 @@ import { ordersReducer } from './orders/slice';
 import { authReducer } from './auth/slice';
 import { productsReducer } from './products/slice';
 import { componentsReducer } from './components/slice';
+import refreshTokenMiddleware from './middleware/refreshTokenMiddleware';
 
 const authPersistConfig = {
   key: 'auth',
@@ -41,7 +42,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
+    }).concat(refreshTokenMiddleware),
   devTools: process.env.NODE_ENV === 'development',
 });
 

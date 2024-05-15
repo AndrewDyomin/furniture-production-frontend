@@ -28,7 +28,7 @@ export const ProductsList = () => {
 
   return (
     <div className={css.container}>
-      <div>
+      <div className={css.btnWrapper}>
         <button 
           onClick = {() => filterToggle('sofa')}
           className={filterArray.includes('sofa') ? `${css.btn} ${css.activeBtn}` : `${css.btn}`}

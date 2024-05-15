@@ -7,7 +7,7 @@ import { selectAllComponents } from "../../redux/components/selectors";
 import { selectAllOrders } from '../../redux/orders/selectors';
 import { selectAllProducts } from '../../redux/products/selectors';
 import { useSelector } from 'react-redux';
-// import toast from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
 
@@ -71,12 +71,25 @@ export const MaterialsPlanner = () => {
                 product.components.forEach((component) => {
                     const target = components.find(c => c._id === component.id);
                     if (target) {
-                        let targetComponent = { ...target, quantity: component.quantity };
-                        if (targetComponent._id !== '6602e794832f5a9bf2a2850a') {
-                            findedComponentsList.push(targetComponent);
-                        } else if (order.fabricStatus !== "received" && order.fabricStatus !== "ordered") {
-                            targetComponent.name = order.fabric;
-                            findedComponentsList.push(targetComponent);
+                        let quantity = parseFloat(component.quantity);
+                        if (isNaN(quantity)) {
+                            quantity = 0;
+                            toast.error(`Quantity of components ${component.name} not recognized`)
+                        }
+
+                        let targetComponent = { ...target, quantity };
+                        if (targetComponent._id === '6602e794832f5a9bf2a2850a') {
+                            if (order.fabricStatus !== "received" && order.fabricStatus !== "ordered") {
+                                targetComponent.name = order.fabric;
+                                findedComponentsList.push(targetComponent);
+                            }
+                        } else {
+                            let existingComponent = findedComponentsList.find(c => c._id === targetComponent._id);
+                            if (existingComponent) {
+                                existingComponent.quantity += targetComponent.quantity;
+                            } else {
+                                findedComponentsList.push(targetComponent);
+                            }
                         }
                     }
                 });

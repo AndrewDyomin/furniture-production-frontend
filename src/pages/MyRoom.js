@@ -15,11 +15,11 @@ export default function MyRoom() {
 
   useEffect(() => {
     dispatch(fetchAllComponents());
-    toast.success('All components fetched');
+    toast.success('All components fetch requested');
     dispatch(fetchAllOrders());
-    toast.success('All orders fetched');
+    toast.success('All orders fetch requested');
     dispatch(fetchAllProducts());
-    toast.success('All products fetched');
+    toast.success('All products fetch requested');
   }, [dispatch]);
 
   return (
