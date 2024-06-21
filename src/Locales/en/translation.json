@@ -57,5 +57,8 @@
   "pouf": "Pouf",
   "poufs": "Poufs",
   "banquette": "Banquette",
-  "banquettes": "Banquettes"
+  "banquettes": "Banquettes",
+  "email": "Email",
+  "password": "Password",
+  "name": "Name"
 }

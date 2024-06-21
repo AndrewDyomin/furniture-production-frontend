@@ -142,8 +142,8 @@ export const OrdersList = () => {
     adress: Yup.string(),
     rest: Yup.string(),
     deadline: Yup.number()
-      .min(10, 'Too Short!')
-      .max(60, 'Too Long!')
+      .min(10, 'Too Small!')
+      .max(60, 'Too Large!')
       .required('Required'),
   });
 
@@ -301,7 +301,7 @@ export const OrdersList = () => {
                     formData.append('fabric', values.fabric);
                     // eslint-disable-next-line
                     {
-                      selectedGroup.value === 'bed'
+                      selectedGroup.value === `${t('bed')}`
                         ? formData.append(
                             'description',
                             values.description +

@@ -1,9 +1,11 @@
 import { useDispatch } from 'react-redux';
 import { register } from '../../redux/auth/operations';
+import { useTranslation } from 'react-i18next';
 import css from './RegisterForm.module.css';
 
 export const RegisterForm = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -21,18 +23,18 @@ export const RegisterForm = () => {
   return (
     <form className={css.form} onSubmit={handleSubmit} autoComplete="off">
       <label className={css.label}>
-        Name
+        {t('name')}
         <input type="name" name="name" />
       </label>
       <label className={css.label}>
-        Email
+      {t('email')}
         <input type="email" name="email" />
       </label>
       <label className={css.label}>
-        Password
+      {t('password')}
         <input type="password" name="password" />
       </label>
-      <button type="submit" className={css.btn}>Register</button>
+      <button type="submit" className={css.btn}>{t('register')}</button>
     </form>
   );
 };

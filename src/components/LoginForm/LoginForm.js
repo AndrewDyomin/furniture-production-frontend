@@ -1,9 +1,11 @@
 import { useDispatch } from 'react-redux';
 import { logIn } from '../../redux/auth/operations';
 import css from './LoginForm.module.css';
+import { useTranslation } from 'react-i18next';
 
 export const LoginForm = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -20,14 +22,14 @@ export const LoginForm = () => {
   return (
     <form className={css.form} onSubmit={handleSubmit} autoComplete="off">
       <label className={css.label}>
-        Email
+      {t('email')}
         <input type="email" name="email" />
       </label>
       <label className={css.label}>
-        Password
+      {t('password')}
         <input type="password" name="password" />
       </label>
-      <button type="submit" className={css.btn}>Log In</button>
+      <button type="submit" className={css.btn}>{t('log in')}</button>
     </form>
   );
 };
