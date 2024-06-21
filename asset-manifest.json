@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/furniture-production-frontend/static/css/main.60f03a38.css",
-    "main.js": "/furniture-production-frontend/static/js/main.38c0e3e2.js",
+    "main.js": "/furniture-production-frontend/static/js/main.bc60a585.js",
     "static/css/391.67fa8a49.chunk.css": "/furniture-production-frontend/static/css/391.67fa8a49.chunk.css",
     "static/js/391.a4f1f993.chunk.js": "/furniture-production-frontend/static/js/391.a4f1f993.chunk.js",
     "static/css/40.28351077.chunk.css": "/furniture-production-frontend/static/css/40.28351077.chunk.css",
-    "static/js/40.52642179.chunk.js": "/furniture-production-frontend/static/js/40.52642179.chunk.js",
+    "static/js/40.1b8a247a.chunk.js": "/furniture-production-frontend/static/js/40.1b8a247a.chunk.js",
     "static/css/635.191830c9.chunk.css": "/furniture-production-frontend/static/css/635.191830c9.chunk.css",
-    "static/js/635.435feb10.chunk.js": "/furniture-production-frontend/static/js/635.435feb10.chunk.js",
+    "static/js/635.6e521e7d.chunk.js": "/furniture-production-frontend/static/js/635.6e521e7d.chunk.js",
     "static/css/803.14b06fee.chunk.css": "/furniture-production-frontend/static/css/803.14b06fee.chunk.css",
     "static/js/803.0bd18125.chunk.js": "/furniture-production-frontend/static/js/803.0bd18125.chunk.js",
     "static/css/712.02088ed6.chunk.css": "/furniture-production-frontend/static/css/712.02088ed6.chunk.css",
-    "static/js/712.5950e76a.chunk.js": "/furniture-production-frontend/static/js/712.5950e76a.chunk.js",
+    "static/js/712.6711ee3e.chunk.js": "/furniture-production-frontend/static/js/712.6711ee3e.chunk.js",
     "static/css/897.3f3b7e5c.chunk.css": "/furniture-production-frontend/static/css/897.3f3b7e5c.chunk.css",
     "static/js/897.b7d178d5.chunk.js": "/furniture-production-frontend/static/js/897.b7d178d5.chunk.js",
     "static/css/913.1c3958f7.chunk.css": "/furniture-production-frontend/static/css/913.1c3958f7.chunk.css",
@@ -34,17 +34,17 @@
     "index.html": "/furniture-production-frontend/index.html",
     "static/media/getFetch.cjs": "/furniture-production-frontend/static/media/getFetch.40f37ddea2378391108f.cjs",
     "main.60f03a38.css.map": "/furniture-production-frontend/static/css/main.60f03a38.css.map",
-    "main.38c0e3e2.js.map": "/furniture-production-frontend/static/js/main.38c0e3e2.js.map",
+    "main.bc60a585.js.map": "/furniture-production-frontend/static/js/main.bc60a585.js.map",
     "391.67fa8a49.chunk.css.map": "/furniture-production-frontend/static/css/391.67fa8a49.chunk.css.map",
     "391.a4f1f993.chunk.js.map": "/furniture-production-frontend/static/js/391.a4f1f993.chunk.js.map",
     "40.28351077.chunk.css.map": "/furniture-production-frontend/static/css/40.28351077.chunk.css.map",
-    "40.52642179.chunk.js.map": "/furniture-production-frontend/static/js/40.52642179.chunk.js.map",
+    "40.1b8a247a.chunk.js.map": "/furniture-production-frontend/static/js/40.1b8a247a.chunk.js.map",
     "635.191830c9.chunk.css.map": "/furniture-production-frontend/static/css/635.191830c9.chunk.css.map",
-    "635.435feb10.chunk.js.map": "/furniture-production-frontend/static/js/635.435feb10.chunk.js.map",
+    "635.6e521e7d.chunk.js.map": "/furniture-production-frontend/static/js/635.6e521e7d.chunk.js.map",
     "803.14b06fee.chunk.css.map": "/furniture-production-frontend/static/css/803.14b06fee.chunk.css.map",
     "803.0bd18125.chunk.js.map": "/furniture-production-frontend/static/js/803.0bd18125.chunk.js.map",
     "712.02088ed6.chunk.css.map": "/furniture-production-frontend/static/css/712.02088ed6.chunk.css.map",
-    "712.5950e76a.chunk.js.map": "/furniture-production-frontend/static/js/712.5950e76a.chunk.js.map",
+    "712.6711ee3e.chunk.js.map": "/furniture-production-frontend/static/js/712.6711ee3e.chunk.js.map",
     "897.3f3b7e5c.chunk.css.map": "/furniture-production-frontend/static/css/897.3f3b7e5c.chunk.css.map",
     "897.b7d178d5.chunk.js.map": "/furniture-production-frontend/static/js/897.b7d178d5.chunk.js.map",
     "913.1c3958f7.chunk.css.map": "/furniture-production-frontend/static/css/913.1c3958f7.chunk.css.map",
@@ -60,6 +60,6 @@
   },
   "entrypoints": [
     "static/css/main.60f03a38.css",
-    "static/js/main.38c0e3e2.js"
+    "static/js/main.bc60a585.js"
   ]
 }
