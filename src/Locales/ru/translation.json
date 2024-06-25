@@ -60,5 +60,9 @@
   "banquettes": "Кухонные уголки",
   "email": "Почта",
   "password": "Пароль",
-  "name": "Имя"
+  "name": "Имя",
+  "too small": "Слишком мало",
+  "too large": "Слишком много",
+  "required": "Обязательно",
+  "mattress": "Матрас"
 }

@@ -26,6 +26,7 @@ export const OrdersList = () => {
     { value: `${t('bed')}`, label: `${t('bed')}` },
     { value: `${t('kitchen banquette')}`, label: `${t('kitchen banquette')}` },
     { value: `${t('pouf')}`, label: `${t('pouf')}` },
+    { value: `${t('mattress')}`, label: `${t('mattress')}` },
   ];
 
   const sleepSizes = [
@@ -49,10 +50,18 @@ export const OrdersList = () => {
     value: `${t('sofa')}`,
     label: `${t('sofa')}`,
   });
+  const [enteredName, setEnteredName] = useState('');
   const [selectedSleepSizes, setSelectedSleepSizes] = useState({
     value: '160 x 200',
     label: '160 x 200',
   });
+  const [enteredSize, setEnteredSize] = useState('');
+  const [enteredFabric, setEnteredFabric] = useState('');
+  const [enteredDescription, setEnteredDescription] = useState('');
+  const [enteredNumber, setEnteredNumber] = useState('');
+  const [enteredAdress, setEnteredAdress] = useState('');
+  const [enteredRest, setEnteredRest] = useState('');
+  const [enteredDeadline, setEnteredDeadline] = useState('');
   const [selectedFiles, setSelectedFiles] = useState('');
   const [isPending, setIsPending] = useState(false);
 
@@ -133,18 +142,18 @@ export const OrdersList = () => {
   }
 
   const NewOrderSchema = Yup.object().shape({
-    group: Yup.string().required('Required'),
-    name: Yup.string().required('Required'),
-    size: Yup.string().required('Required'),
-    fabric: Yup.string().required('Required'),
-    description: Yup.string().required('Required'),
-    number: Yup.string().required('Required'),
+    group: Yup.string().required(`${t('required')}`),
+    name: Yup.string().required(`${t('required')}`),
+    size: Yup.string().required(`${t('required')}`),
+    fabric: Yup.string().required(`${t('required')}`),
+    description: Yup.string().required(`${t('required')}`),
+    number: Yup.string().required(`${t('required')}`),
     adress: Yup.string(),
     rest: Yup.string(),
     deadline: Yup.number()
-      .min(10, 'Too Small!')
-      .max(60, 'Too Large!')
-      .required('Required'),
+      .min(10, `${t('too small')}`)
+      .max(60, `${t('too large')}`)
+      .required(`${t('required')}`),
   });
 
   if (!isMobile) {
@@ -247,28 +256,6 @@ export const OrdersList = () => {
       )}
       {filteredOrders.length !== 0 ? (
         <PreFormList />
-        // <ul className={css.list}>
-        //   {filteredOrders.map(({ _id }) => (
-        //     <li key={_id} className={css.item}>
-        //       <Link
-        //         to={`${_id}`}
-        //         state={{ from: location }}
-        //         className={css.orderLink}
-        //         onClick={() =>
-        //           dispatch(
-        //             setActiveOrder(
-        //               orders.allOrdersArray.find(el => {
-        //                 return el._id === _id;
-        //               })
-        //             )
-        //           )
-        //         }
-        //       >
-        //         <Order id={_id} />
-        //       </Link>
-        //     </li>
-        //   ))}
-        // </ul>
       ) : (
         <></>
       )}
@@ -279,16 +266,17 @@ export const OrdersList = () => {
           <>
             <div className={css.orderModalWrapper}>
               <Formik
+                enableReinitialize={true}
                 initialValues={{
                   group: selectedGroup.value,
-                  name: '',
-                  size: '',
-                  fabric: '',
-                  description: '',
-                  number: '',
-                  adress: '',
-                  rest: '',
-                  deadline: '',
+                  name: enteredName,
+                  size: enteredSize,
+                  fabric: enteredFabric,
+                  description: enteredDescription,
+                  number: enteredNumber,
+                  adress: enteredAdress,
+                  rest: enteredRest,
+                  deadline: enteredDeadline,
                 }}
                 validationSchema={NewOrderSchema}
                 onSubmit={async (values, { resetForm }) => {
@@ -326,6 +314,15 @@ export const OrdersList = () => {
                     toast.success('Order sended');
                     resetForm();
                     setIsPending(false);
+                    setSelectedGroup({value: `${t('sofa')}`, label: `${t('sofa')}`,});
+                    setEnteredName('');
+                    setEnteredSize('');
+                    setEnteredFabric('');
+                    setEnteredDescription('');
+                    setEnteredNumber('');
+                    setEnteredAdress('');
+                    setEnteredRest('');
+                    setEnteredDeadline('');
                     closeOrderModal();
                     dispatch(fetchAllOrders());
                   } catch (error) {
@@ -333,7 +330,7 @@ export const OrdersList = () => {
                   }
                 }}
               >
-                {({ errors, touched }) => (
+                {({ errors, touched, setFieldValue }) => (
                 <Form className={css.formWrapper}>
                   <div className={css.formItem}>
                     <label htmlFor="group">{t('group')}</label>
@@ -357,6 +354,8 @@ export const OrdersList = () => {
                       id="name"
                       name="name"
                       placeholder="Faynee mini"
+                      value={enteredName}
+                      onChange={e => {setEnteredName(e.target.value); setFieldValue('name', e.target.value);}}
                     />
                     {errors.name && touched.name ? (
                       <div>{errors.name}</div>
@@ -385,6 +384,8 @@ export const OrdersList = () => {
                       id="size"
                       name="size"
                       placeholder={`${t('overall size')}`}
+                      value={enteredSize}
+                      onChange={e => {setEnteredSize(e.target.value); setFieldValue('size', e.target.value);}}
                     />
                     {errors.size && touched.size ? (
                       <div>{errors.size}</div>
@@ -397,6 +398,8 @@ export const OrdersList = () => {
                       id="fabric"
                       name="fabric"
                       placeholder={t('fabric name')}
+                      value={enteredFabric}
+                      onChange={e => {setEnteredFabric(e.target.value); setFieldValue('fabric', e.target.value);}}
                     />
                     {errors.fabric && touched.fabric ? (
                       <div>{errors.fabric}</div>
@@ -405,10 +408,14 @@ export const OrdersList = () => {
                   <div className={css.formItem}>
                     <label htmlFor="description">{t('description')}</label>
                     <Field
+                      as="textarea"
+                      rows="3"
                       className={errors.description && touched.description ? `${css.field} ${css.formError}` : css.field}
                       id="description"
                       name="description"
                       placeholder={t('description')}
+                      value={enteredDescription}
+                      onChange={e => {setEnteredDescription(e.target.value); setFieldValue('description', e.target.value);}}
                     />
                     {errors.description && touched.description ? (
                       <div>{errors.description}</div>
@@ -421,6 +428,8 @@ export const OrdersList = () => {
                       id="number"
                       name="number"
                       placeholder="125"
+                      value={enteredNumber}
+                      onChange={e => {setEnteredNumber(e.target.value); setFieldValue('number', e.target.value);}}
                     />
                     {errors.number && touched.number ? (
                       <div>{errors.number}</div>
@@ -433,6 +442,8 @@ export const OrdersList = () => {
                       id="adress"
                       name="adress"
                       placeholder={t('Kiev, Kyrylivska street, 103')}
+                      value={enteredAdress}
+                      onChange={e => {setEnteredAdress(e.target.value); setFieldValue('adress', e.target.value);}}
                     />
                     {errors.adress && touched.adress ? (
                       <div>{errors.adress}</div>
@@ -445,6 +456,8 @@ export const OrdersList = () => {
                       id="rest"
                       name="rest"
                       placeholder="21000"
+                      value={enteredRest}
+                      onChange={e => {setEnteredRest(e.target.value); setFieldValue('rest', e.target.value);}}
                     />
                     {errors.rest && touched.rest ? (
                       <div>{errors.rest}</div>
@@ -457,6 +470,8 @@ export const OrdersList = () => {
                       id="deadline"
                       name="deadline"
                       placeholder="21"
+                      value={enteredDeadline}
+                      onChange={e => {setEnteredDeadline(e.target.value); setFieldValue('deadline', e.target.value);}}
                     />
                     {errors.deadline && touched.deadline ? (
                       <div>{errors.deadline}</div>

@@ -60,5 +60,9 @@
   "banquettes": "Banquettes",
   "email": "Email",
   "password": "Password",
-  "name": "Name"
+  "name": "Name",
+  "too small": "Too Small",
+  "too large": "Too Large",
+  "required": "Required",
+  "mattress": "Mattress"
 }
