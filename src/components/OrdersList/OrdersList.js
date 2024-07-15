@@ -93,14 +93,14 @@ export const OrdersList = () => {
   if (user.description === 'seamstress') {
     prefilteredOrders =
       orders.allOrdersArray && orders.allOrdersArray.length !== 0
-        ? orders.allOrdersArray.filter(order => order.coverStatus !== 'TRUE')
+        ? orders.allOrdersArray.filter(order => order.coverStatus !== 'TRUE' && order.orderStatus !== 'TRUE')
         : [];
   }
 
   if (user.description === 'carpenter') {
     prefilteredOrders =
       orders.allOrdersArray && orders.allOrdersArray.length !== 0
-        ? orders.allOrdersArray.filter(order => order.frameStatus !== 'TRUE')
+        ? orders.allOrdersArray.filter(order => order.frameStatus !== 'TRUE' && order.orderStatus !== 'TRUE')
         : [];
   }
 
