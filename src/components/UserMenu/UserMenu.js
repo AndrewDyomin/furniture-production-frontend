@@ -31,7 +31,7 @@ export const UserMenu = ({ close }) => {
       )}
       <div className={isMobile ? css.propMob : css.prop}>
         <LanguageSelector />
-        <button type="button" onClick={() => dispatch(logOut())} >
+        <button className={css.logoutBtn} type="button" onClick={() => dispatch(logOut())} >
         {t('logout')}
       </button>
       </div>
