@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/furniture-production-frontend/static/css/main.60f03a38.css",
-    "main.js": "/furniture-production-frontend/static/js/main.a25067b2.js",
+    "main.css": "/furniture-production-frontend/static/css/main.e246b059.css",
+    "main.js": "/furniture-production-frontend/static/js/main.180aa711.js",
     "static/css/391.3e52d63c.chunk.css": "/furniture-production-frontend/static/css/391.3e52d63c.chunk.css",
     "static/js/391.a4f1f993.chunk.js": "/furniture-production-frontend/static/js/391.a4f1f993.chunk.js",
     "static/css/40.28351077.chunk.css": "/furniture-production-frontend/static/css/40.28351077.chunk.css",
@@ -33,8 +33,8 @@
     "static/media/icons.svg": "/furniture-production-frontend/static/media/icons.ec3e48179206795402cc3ef5ff26775e.svg",
     "index.html": "/furniture-production-frontend/index.html",
     "static/media/getFetch.cjs": "/furniture-production-frontend/static/media/getFetch.40f37ddea2378391108f.cjs",
-    "main.60f03a38.css.map": "/furniture-production-frontend/static/css/main.60f03a38.css.map",
-    "main.a25067b2.js.map": "/furniture-production-frontend/static/js/main.a25067b2.js.map",
+    "main.e246b059.css.map": "/furniture-production-frontend/static/css/main.e246b059.css.map",
+    "main.180aa711.js.map": "/furniture-production-frontend/static/js/main.180aa711.js.map",
     "391.3e52d63c.chunk.css.map": "/furniture-production-frontend/static/css/391.3e52d63c.chunk.css.map",
     "391.a4f1f993.chunk.js.map": "/furniture-production-frontend/static/js/391.a4f1f993.chunk.js.map",
     "40.28351077.chunk.css.map": "/furniture-production-frontend/static/css/40.28351077.chunk.css.map",
@@ -59,7 +59,7 @@
     "611.ab841dc5.chunk.js.map": "/furniture-production-frontend/static/js/611.ab841dc5.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.60f03a38.css",
-    "static/js/main.a25067b2.js"
+    "static/css/main.e246b059.css",
+    "static/js/main.180aa711.js"
   ]
 }
