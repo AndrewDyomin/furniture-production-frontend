@@ -27,6 +27,9 @@ export const UserMenu = ({ close }) => {
           {user.description === "administrator" && (
             <Link className={css.link} to="/room" onClick={close}>{t('my room')}</Link>
           )}
+          {user.description === "administrator" || user.description === "carpenter" || user.description === "seamstress" || user.description === "upholsterer" ? (
+            <Link className={css.link} to="/drufts" onClick={close}>{t('my drufts')}</Link>
+          ) : <></>}
         </div>
       )}
       <div className={isMobile ? css.propMob : css.prop}>

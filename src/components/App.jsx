@@ -8,7 +8,6 @@ import { refreshUser } from '../redux/auth/operations';
 import { useAuth } from 'hooks';
 import { Loading } from './Loading/Loading';
 
-
 const HomePage = lazy(() => import('../pages/Home'));
 const RegisterPage = lazy(() => import('../pages/Register'));
 const LoginPage = lazy(() => import('../pages/Login'));
@@ -18,6 +17,7 @@ const ProductsPage = lazy(() => import('../pages/Products'));
 const OrderDetailsPage = lazy(() => import('../pages/OrderDetails'));
 const MyRoomPage = lazy(() => import('../pages/MyRoom'));
 const ProductDetailsPage = lazy(() => import('../pages/ProductDetails'));
+const MyDruftsPage = lazy(() => import('../pages/Drufts'));
 
 export const App = () => {
   const dispatch = useDispatch();
@@ -58,36 +58,31 @@ export const App = () => {
               <PrivateRoute redirectTo="/login" component={<OrdersPage />} />
             }
           />
-          <Route 
-            path="/orders/:orderId" 
+          <Route
+            path="/orders/:orderId"
             element={
-              <PrivateRoute redirectTo="/login" component={<OrderDetailsPage />} />
+              <PrivateRoute
+                redirectTo="/login"
+                component={<OrderDetailsPage />}
+              />
             }
           />
-          <Route 
-            path="/products" 
-            element={<ProductsPage />}
-          />
-          <Route 
-            path="/products/:filter" 
-            element={<ProductsPage />}
-          />
-          <Route 
-            path="/product-details/:id" 
-            element={<ProductDetailsPage />}
-          />
-          <Route 
-            path="/room" 
+          <Route path="/products" element={<ProductsPage />} />
+          <Route path="/products/:filter" element={<ProductsPage />} />
+          <Route path="/product-details/:id" element={<ProductDetailsPage />} />
+          <Route
+            path="/room"
             element={
               <PrivateRoute redirectTo="/login" component={<MyRoomPage />} />
             }
           />
-          <Route 
-            path="*" 
+          <Route
+            path="/drufts"
             element={
-              <Navigate to="/" />
-            } 
+              <PrivateRoute redirectTo="/login" component={<MyDruftsPage />} />
+            }
           />
+          <Route path="*" element={<Navigate to="/" />} />
         </Route>
       </Routes>
     </Suspense>
