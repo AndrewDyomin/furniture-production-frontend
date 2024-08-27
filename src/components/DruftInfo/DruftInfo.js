@@ -64,7 +64,7 @@ export const DruftInfo = ({ id }) => {
 
   const currentImagesArray = druft.imageArrays.find(
     item => item.role === user.description
-  );
+  ) || {images: []};
 
   return (
     <div className={css.wrapper}>
