@@ -1,0 +1,94 @@
+.btn {
+    padding: 10px 20px;
+    background-color: #B88E2F;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.backBtn {
+    padding: 0 20px;
+}
+
+.delBtn {
+    background-color: #db4d15;
+}
+
+.backIcon {
+    transform: rotate(180deg);
+    width: 32px;
+    height: 32px;
+}
+
+.druftName {
+    font-size: 24px;
+    font-weight: 700;
+    text-transform: capitalize;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.druftDcrptn {
+    margin-top: 10px;
+}
+
+.optionsWrapper {
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+}
+
+.mySwiper {
+    z-index: 0;
+}
+
+.formWrapper {
+    margin-top: 20px;
+    max-width: 500px;
+}
+
+.formItem {
+    margin-bottom: 15px;
+}
+
+.formItem:nth-child(n + 2) {
+    margin-top: 10px;
+}
+
+.formItem:hover,
+.formItem:focus {
+    outline: 2px solid #f1be44;
+}
+
+.label {
+    font-weight: bold;
+}
+
+.field {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.field:hover,
+.field:focus {
+    outline: none;
+}
+
+.inputItem {
+    display: flex;
+    align-items: center;
+}
+
+.delModalWrapper {
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.modalContent {
+    z-index: 100;
+}

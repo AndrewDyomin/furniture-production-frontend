@@ -9,10 +9,28 @@ export const fetchAllDrufts = createAsyncThunk(
       const res = await axios.get('/drufts/all');
       if (res.data.message) {
         toast.error(`${res.data.message}`)
-        return {druftssArray: []};
+        return {druftsArray: []};
       }
       return res.data;
     } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteDruft = createAsyncThunk(
+  'drufts/deleteDruft',
+  async (credentials, thunkAPI) => {
+    try {
+      await axios.post('/drufts/remove', {
+        data: credentials,
+        headers: {
+          'Content-Type': 'application/json'
+        }});
+      const res = thunkAPI.dispatch(fetchAllDrufts());
+      return res;
+    } catch(error) {
+      console.log(error)
       return thunkAPI.rejectWithValue(error.message);
     }
   }

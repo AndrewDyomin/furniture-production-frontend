@@ -18,6 +18,7 @@ const OrderDetailsPage = lazy(() => import('../pages/OrderDetails'));
 const MyRoomPage = lazy(() => import('../pages/MyRoom'));
 const ProductDetailsPage = lazy(() => import('../pages/ProductDetails'));
 const MyDruftsPage = lazy(() => import('../pages/Drufts'));
+const DruftDetailsPage = lazy(() => import('../pages/DruftDetails'));
 
 export const App = () => {
   const dispatch = useDispatch();
@@ -80,6 +81,15 @@ export const App = () => {
             path="/drufts"
             element={
               <PrivateRoute redirectTo="/login" component={<MyDruftsPage />} />
+            }
+          />
+          <Route
+            path="/drufts/:druftId"
+            element={
+              <PrivateRoute
+                redirectTo="/login"
+                component={<DruftDetailsPage />}
+              />
             }
           />
           <Route path="*" element={<Navigate to="/" />} />

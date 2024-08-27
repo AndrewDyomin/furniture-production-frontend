@@ -23,6 +23,9 @@ export const Navigation = () => {
           <NavLink className={css.link} to="/products">
             {t('all products')}
           </NavLink>
+          <NavLink className={css.link} to="/drufts">
+            {t('my drufts')}
+          </NavLink>
           {user.description === "administrator" && (
             <NavLink className={css.link} to="/room">{t('my room')}</NavLink>
           )}

@@ -1,5 +1,5 @@
 import { PopUp } from 'components/PopUp/PopUp';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import css from './Drufts.module.css';
 import { Field, Form, Formik } from 'formik';
@@ -7,12 +7,14 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { PulseLoader } from 'react-spinners';
-import { fetchAllDrufts } from '../../redux/drufts/operations';
+import { fetchAllDrufts, setActiveDruft } from '../../redux/drufts/operations';
 import { selectAllDrufts } from '../../redux/drufts/selectors';
+import { Link, useLocation } from 'react-router-dom';
 
 export const Drufts = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const location = useLocation();
 
   const [isModalDruftOpen, setIsModalDruftOpen] = useState(false);
   const [isPending, setIsPending] = useState(false);
@@ -25,21 +27,46 @@ export const Drufts = () => {
   };
 
   const openModal = () => {
-    setIsModalDruftOpen(true)
-  }
+    setIsModalDruftOpen(true);
+  };
 
   const closeModal = () => {
-    setIsModalDruftOpen(false)
-  }
+    setIsModalDruftOpen(false);
+  };
 
-  dispatch(fetchAllDrufts())
-  const drufts = useSelector(selectAllDrufts);
+  useEffect(() => {
+    dispatch(fetchAllDrufts());
+  }, [dispatch]);
 
-  console.log(drufts)
+  const drufts = useSelector(selectAllDrufts).array;
 
   return (
     <div>
-      <button onClick={openModal}>ok</button>
+      <button onClick={openModal} className={css.btn}>{t('add druft')}</button>
+      <div>
+        <ul className={css.list}>
+          {drufts && drufts.map(druft => (
+            <li key={druft._id} className={css.item}>
+              <Link
+                to={`${druft._id}`}
+                state={{ from: location }}
+                className={css.druftLink}
+                onClick={() =>
+                  dispatch(
+                    setActiveDruft(
+                      drufts.find(el => {
+                        return el._id === druft._id;
+                      })
+                    )
+                  )
+                }
+              >
+                <p className={css.name}>{druft.name}</p>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
       <PopUp
         isOpen={isModalDruftOpen}
         close={closeModal}

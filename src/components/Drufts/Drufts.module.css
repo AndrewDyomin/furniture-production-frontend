@@ -1,0 +1,71 @@
+
+.list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.item {
+    box-shadow: 0 0 5px 0 rgba(0,0,0,0.2);
+    margin-top: 10px;
+    border-radius: 8px;
+    padding: 8px 15px;
+}
+
+.druftLink {
+    text-decoration: none;
+    color: black;
+}
+
+.name {
+    font-size: 20px;
+    text-transform: capitalize;
+}
+
+.btn {
+    padding: 10px 20px;
+    background-color: #B88E2F;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.formWrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.formItem {
+    margin-bottom: 15px;
+}
+
+.label {
+    font-weight: bold;
+}
+
+.field {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.formError {
+    border-color: red;
+}
+
+.btn {
+    padding: 10px 20px;
+    background-color: #B88E2F;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #a07c28;
+}
