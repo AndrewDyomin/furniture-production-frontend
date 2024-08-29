@@ -11,12 +11,9 @@ import { selectUser } from '../../redux/auth/selectors';
 import { setActiveDruft, deleteDruft } from '../../redux/drufts/operations';
 import { PopUp } from 'components/PopUp/PopUp';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
 import Modal from 'react-modal';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+import Fancybox from 'components/Fancybox/Fancybox';
+import Carousel from 'components/Fancybox/Carousel';
 
 const customStyles = {
   overlay: {
@@ -111,56 +108,64 @@ export const DruftInfo = ({ id }) => {
       <p className={css.druftDcrptn}>{druft.description}</p>
       {user.description !== 'administrator' &&
         currentImagesArray.images.length > 0 && (
-          <Swiper
-            navigation={true}
-            zoom={true}
-            pagination={{
-              dynamicBullets: true,
+          <Fancybox
+            options={{
+              Carousel: {
+                infinite: false,
+              },
             }}
-            modules={[Navigation, Pagination]}
-            className={css.mySwiper}
           >
-            {currentImagesArray.images.map(imageId => (
-              <SwiperSlide
-                key={imageId}
-                className={`swiper-slide ${css.slide}`}
-              >
-                <img
-                  className={css.druftImage}
-                  src={`https://lh3.googleusercontent.com/d/${imageId}=w800?authuser=0`}
-                  alt={imageId}
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
+            <Carousel options={{ infinite: false }}>
+              {currentImagesArray.images.map(imageId => (
+                <div
+                  key={imageId}
+                  className="f-carousel__slide"
+                  data-fancybox="gallery"
+                  data-src={`https://lh3.googleusercontent.com/d/${imageId}=w800?authuser=0`}
+                  data-thumb-src={`https://lh3.googleusercontent.com/d/${imageId}=w800?authuser=0`}
+                >
+                  <img
+                    src={`https://lh3.googleusercontent.com/d/${imageId}=w800?authuser=0`}
+                    alt={imageId}
+                    width="auto"
+                    height="500"
+                  />
+                </div>
+              ))}
+            </Carousel>
+          </Fancybox>
         )}
       {user.description === 'administrator' &&
         druft.imageArrays.length > 0 &&
         druft.imageArrays.map(role => (
           <div key={role.role}>
             <p>{role.role}</p>
-            <Swiper
-              navigation={true}
-              zoom={true}
-              pagination={{
-                dynamicBullets: true,
+            <Fancybox
+              options={{
+                Carousel: {
+                  infinite: false,
+                },
               }}
-              modules={[Navigation, Pagination]}
-              className={css.mySwiper}
             >
-              {role.images.map(imageId => (
-                <SwiperSlide
-                  key={imageId}
-                  className={`swiper-slide ${css.slide}`}
-                >
-                  <img
-                    className={css.druftImage}
-                    src={`https://lh3.googleusercontent.com/d/${imageId}=w800?authuser=0`}
-                    alt={imageId}
-                  />
-                </SwiperSlide>
-              ))}
-            </Swiper>
+              <Carousel options={{ infinite: false }}>
+                {role.images.map(imageId => (
+                  <div
+                    key={imageId}
+                    className="f-carousel__slide"
+                    data-fancybox="gallery"
+                    data-src={`https://lh3.googleusercontent.com/d/${imageId}=w800?authuser=0`}
+                    data-thumb-src={`https://lh3.googleusercontent.com/d/${imageId}=w800?authuser=0`}
+                  >
+                    <img
+                      src={`https://lh3.googleusercontent.com/d/${imageId}=w800?authuser=0`}
+                      alt={imageId}
+                      width="auto"
+                      height="500"
+                    />
+                  </div>
+                ))}
+              </Carousel>
+            </Fancybox>
           </div>
         ))}
       <div className={css.optionsWrapper}>
