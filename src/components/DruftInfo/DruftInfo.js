@@ -13,9 +13,40 @@ import { PopUp } from 'components/PopUp/PopUp';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
+import Modal from 'react-modal';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+
+const customStyles = {
+  overlay: {
+    backgroundColor: 'rgba(9, 9, 9, 0.75)',
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  content: {
+    position: 'relative',
+    top: 'auto',
+    left: 'auto',
+    right: 'auto',
+    bottom: 'auto',
+    minWidth: '300px',
+    maxWidth: '80%',
+    width: 'auto',
+    maxHeight: '80%',
+    padding: '50px 20px',
+    borderRadius: '12px',
+    border: '2px solid black',
+    backgroundColor: 'FFF',
+    transition: 'top 0.3s ease-in-out',
+  },
+};
 
 export const DruftInfo = ({ id }) => {
   const { t } = useTranslation();
@@ -32,6 +63,7 @@ export const DruftInfo = ({ id }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isSliderModalOpen, setIsSliderModalOpen] = useState(false);
 
   const openEditModal = () => {
     setIsModalEditOpen(true);
@@ -64,7 +96,7 @@ export const DruftInfo = ({ id }) => {
 
   const currentImagesArray = druft.imageArrays.find(
     item => item.role === user.description
-  ) || {images: []};
+  ) || { images: [] };
 
   return (
     <div className={css.wrapper}>
@@ -81,6 +113,7 @@ export const DruftInfo = ({ id }) => {
         currentImagesArray.images.length > 0 && (
           <Swiper
             navigation={true}
+            zoom={true}
             pagination={{
               dynamicBullets: true,
             }}
@@ -108,6 +141,7 @@ export const DruftInfo = ({ id }) => {
             <p>{role.role}</p>
             <Swiper
               navigation={true}
+              zoom={true}
               pagination={{
                 dynamicBullets: true,
               }}
@@ -270,6 +304,26 @@ export const DruftInfo = ({ id }) => {
           </>
         }
       />
+      <Modal
+        isOpen={isSliderModalOpen}
+        onRequestClose={() => {
+          setIsSliderModalOpen(false);
+        }}
+        style={customStyles}
+        ariaHideApp={false}
+      >
+        <button
+          className={css.modalCloseButton}
+          type="button"
+          onClick={() => {
+            setIsSliderModalOpen(false);
+          }}
+        >
+          <svg className={css.menuIcon}>
+            <use href={`${svgIcons}#icon-close-circle`}></use>
+          </svg>
+        </button>
+      </Modal>
     </div>
   );
 };
