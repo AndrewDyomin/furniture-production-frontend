@@ -31,7 +31,7 @@ export const ProductDetails = () => {
     const components = useSelector(selectAllComponents);
     const { t } = useTranslation();
     const differenceInWidth = product.dimensions.width - 160;
-    const price = product.basePrice;
+    // const price = product.basePrice;
 
     useEffect(() => {
         dispatch(getProduct(id))
@@ -60,14 +60,14 @@ export const ProductDetails = () => {
                     />
                     <p className={css.baseInfoTitle}>{t('overall size')}:</p>
                     <p>{Number(selectedBedSize.value) + Number(differenceInWidth)} x {product.dimensions.depth}({product.dimensions.depth-10})</p>
-                    <p className={css.baseInfoTitle}>{t('price')}:</p>
-                    <p className={css.price}>{price} ₴</p>
+                    {/* <p className={css.baseInfoTitle}>{t('price')}:</p>
+                    <p className={css.price}>{price} ₴</p> */}
                 </div> : 
                 <div className={css.baseInfoWrapper}>
                     <p className={css.baseInfoTitle}>{t('overall size')}:</p>
                     <p>{product.dimensions.depth} x {product.dimensions.width} x {product.dimensions.height}</p>
-                    <p className={css.baseInfoTitle}>{t('price')}:</p>
-                    <p className={css.price}>{product.basePrice} ₴</p>
+                    {/* <p className={css.baseInfoTitle}>{t('price')}:</p>
+                    <p className={css.price}>{product.basePrice} ₴</p> */}
                 </div>}
             <p className={css.baseInfoTitle}>{t('description')}:</p>
             <p>{product.description}</p>
