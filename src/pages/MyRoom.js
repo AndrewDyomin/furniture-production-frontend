@@ -8,6 +8,7 @@ import { fetchAllProducts } from '../redux/products/operations';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import toast from 'react-hot-toast';
+import { UsersManager } from '../components/UsersManager/UsersManager';
 
 export default function MyRoom() {
 
@@ -32,6 +33,7 @@ export default function MyRoom() {
           <CollectionEditor />
           <ComponentList />
           <MaterialsPlanner />
+          <UsersManager/>
       </HelmetProvider>
     </>
   );

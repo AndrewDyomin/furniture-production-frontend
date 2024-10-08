@@ -1,0 +1,124 @@
+.section {
+    margin-top: 20px;
+}
+
+.header {
+    text-align: center;
+}
+
+ul {
+    padding: 0;
+} 
+
+.userCard {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    margin-top: 25px;
+}
+
+.firstBlock {
+    display: flex;
+    align-items: baseline;
+}
+
+.userName {
+    font-size: 21px;
+}
+
+.userRole {
+    margin-left: auto;
+}
+
+.accessItem {
+    display: flex;
+    width: 130px;
+}
+
+.accessKey {
+    width: max-content;
+}
+
+.accessValue {
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    font-weight: 800;
+    background: #be6060;
+    color: #fff;
+    border-radius: 5px;
+    margin-left: auto;
+}
+
+.accessTrue {
+    background: #60be77;
+}
+
+.accessItem:nth-child(n + 2) {
+    margin-top: 5px;
+}
+
+.adminBlock {
+    margin-top: 15px;
+    display: flex;
+    gap: 20px;
+}
+
+.btn {
+    background:#B88E2F;
+    padding: 10px 20px;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    min-width: calc(50% - 10px);
+}
+
+.delBtn {
+    background: #be6060;
+}
+
+.formWrapper {
+    margin-top: 20px;
+    max-width: 500px;
+}
+
+.formItem:nth-child(n + 2) {
+    margin-top: 10px;
+}
+
+.formItem:hover,
+.formItem:focus {
+    outline: 2px solid #f1be44;
+}
+
+.label {
+    font-weight: bold;
+}
+
+.field {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.checkboxField:nth-child(n + 2) {
+    margin-top: 10px;
+}
+
+.checkboxLabel {
+    min-width: 100%;
+}
+
+.modalSubmitButton {
+    margin-top: 15px;
+    width: 100%;
+}
+
+.hidden {
+    display: none;
+}
