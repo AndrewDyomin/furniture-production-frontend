@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { UsersManager } from '../components/UsersManager/UsersManager';
+import { getAllUsers } from '../redux/user/operations';
 
 export default function MyRoom() {
 
@@ -21,6 +22,8 @@ export default function MyRoom() {
     toast.success('All orders fetch requested');
     dispatch(fetchAllProducts());
     toast.success('All products fetch requested');
+    dispatch(getAllUsers());
+    toast.success('All users fetch requested');
   }, [dispatch]);
 
   return (

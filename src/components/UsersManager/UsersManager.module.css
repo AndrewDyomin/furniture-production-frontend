@@ -111,12 +111,24 @@ ul {
 }
 
 .checkboxLabel {
-    min-width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.checkboxField {
+    margin-left: auto;
+    
 }
 
 .modalSubmitButton {
     margin-top: 15px;
     width: 100%;
+}
+
+.delModalWrapper {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
 }
 
 .hidden {

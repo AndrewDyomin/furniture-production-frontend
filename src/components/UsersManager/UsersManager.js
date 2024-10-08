@@ -1,31 +1,25 @@
 import { useDispatch, useSelector } from 'react-redux';
 import css from './UsersManager.module.css';
 import { useEffect, useState } from 'react';
-import { getAllUsers, deleteUser } from '../../redux/user/operations';
+import { getAllUsers, deleteUser, updateUser } from '../../redux/user/operations';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { PopUp } from 'components/PopUp/PopUp';
 import { Field, Form, Formik } from 'formik';
-import axios from 'axios';
+import { PulseLoader } from 'react-spinners';
 
 export const UsersManager = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-
-  useEffect(() => {
-    dispatch(getAllUsers());
-    toast.success('All users fetch requested');
-  }, [dispatch]);
 
   const users = useSelector(state => state.user.users);
   const isLoading = useSelector(state => state.user.isLoading);
   const [visibleUser, setVisibleUser] = useState('');
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isPending, setIsPending] = useState(false);
 
-  const targetUser = users
-    ? users.find(user => user._id.includes(visibleUser))
-    : {
+  let targetUser = {
         name: '',
         description: '',
         organization: 'demo',
@@ -39,6 +33,10 @@ export const UsersManager = () => {
           sweetHome: false,
         },
       };
+
+  if (users && users.length > 0) {
+    targetUser = users.find(user => user._id.includes(visibleUser))
+  }
 
   const openEditModal = () => {
     setIsModalEditOpen(true);
@@ -68,8 +66,11 @@ export const UsersManager = () => {
     }
   };
 
-  const handleDelete = id => {
-    dispatch(deleteUser(id));
+  const handleDelete = () => {
+    dispatch(deleteUser({ _id: targetUser._id })).then(() => {
+      setVisibleUser('');
+    });
+    setIsDeleteModalOpen(false);
   };
 
   return (
@@ -142,13 +143,17 @@ export const UsersManager = () => {
             <Formik
               initialValues={{
                 name: targetUser.name,
+                email: targetUser.email,
                 description: targetUser.description,
                 organization: targetUser.organization,
                 access: targetUser.access,
+                _id: targetUser._id,
               }}
               onSubmit={values => {
-                // Обработка отправки данных
-                console.log('Submitted values:', values);
+                setIsPending(true);
+                dispatch(updateUser(values));
+                closeEditModal();
+                setIsPending(false);
               }}
             >
               {({ values, handleChange }) => (
@@ -161,6 +166,19 @@ export const UsersManager = () => {
                       placeholder="Enter name"
                       type="text"
                       value={values.name}
+                      onChange={handleChange}
+                      className={css.field}
+                    />
+                  </div>
+
+                  <div className={css.formItem}>
+                    <label htmlFor="email">Email:</label>
+                    <Field
+                      id="email"
+                      name="email"
+                      placeholder="Enter email"
+                      type="text"
+                      value={values.email}
                       onChange={handleChange}
                       className={css.field}
                     />
@@ -181,6 +199,7 @@ export const UsersManager = () => {
                     <option value="carpenter">carpenter</option>
                     <option value="seamstress">seamstress</option>
                     <option value="upholsterer">upholsterer</option>
+                    <option value="guest">guest</option>
                     </Field>
                   </div>
 
@@ -219,6 +238,7 @@ export const UsersManager = () => {
                             name={`access.${key}`}
                             checked={values.access[key]}
                             onChange={handleChange}
+                            className={css.checkboxField}
                           />
                         </label>
                       </div>
@@ -229,7 +249,11 @@ export const UsersManager = () => {
                     type="submit"
                     className={`${css.btn} ${css.modalSubmitButton}`}
                   >
-                    Submit
+                    {isPending ? (
+                      <PulseLoader color="#c8c19b" size="10px" />
+                    ) : (
+                      `${t('submit')}`
+                    )}
                   </button>
                 </Form>
               )}
