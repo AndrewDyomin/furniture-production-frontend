@@ -12,6 +12,8 @@ import { selectUser } from '../../redux/auth/selectors';
 import { setActiveOrder, archiveOrder } from '../../redux/orders/operations';
 import { PopUp } from 'components/PopUp/PopUp';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import Fancybox from 'components/Fancybox/Fancybox';
+import Carousel from 'components/Fancybox/Carousel';
 
 export const OrderInfo = ({ id }) => {
   const { t } = useTranslation();
@@ -165,28 +167,54 @@ export const OrderInfo = ({ id }) => {
         <p>{order.dealer}</p>
         {user.description === 'manager' ||
           (user.description === 'administrator' && (
-          <div>
-            <p className={css.orderAdress}>
-              {t('adress')}: {order.adress}
-            </p>
-            <p className={css.orderRest}>
-              {t('rest')}: {order.rest}
-            </p>
-          </div>
-        ))}
+            <div>
+              <p className={css.orderAdress}>
+                {t('adress')}: {order.adress}
+              </p>
+              <p className={css.orderRest}>
+                {t('rest')}: {order.rest}
+              </p>
+            </div>
+          ))}
       </div>
       {order.images && order.images.length !== 0 ? (
-        <ul className={css.imagesList}>
-          {order.images.map(imageId => (
-            <li key={`${imageId}`}>
-              <img
-                className={css.orderImage}
-                src={`https://lh3.googleusercontent.com/d/${imageId}=w800?authuser=0`}
-                alt={imageId}
-              />
-            </li>
-          ))}
-        </ul>
+        // <ul className={css.imagesList}>
+        //   {order.images.map(imageId => (
+        //     <li key={`${imageId}`}>
+        //       <img
+        //         className={css.orderImage}
+        //         src={`https://lh3.googleusercontent.com/d/${imageId}=w800?authuser=0`}
+        //         alt={imageId}
+        //       />
+        //     </li>
+        //   ))}
+        // </ul>
+        <Fancybox
+          options={{
+            Carousel: {
+              infinite: false,
+            },
+          }}
+        >
+          <Carousel options={{ infinite: false }}>
+            {order.images.map(imageId => (
+              <div
+                key={imageId}
+                className="f-carousel__slide"
+                data-fancybox="gallery"
+                data-src={`https://lh3.googleusercontent.com/d/${imageId}=w800?authuser=0`}
+                // data-thumb-src={`https://lh3.googleusercontent.com/d/${imageId}=w800?authuser=0`}
+              >
+                <img
+                  src={`https://lh3.googleusercontent.com/d/${imageId}=w800?authuser=0`}
+                  alt={imageId}
+                  width="auto"
+                  height="500"
+                />
+              </div>
+            ))}
+          </Carousel>
+        </Fancybox>
       ) : (
         <></>
       )}
