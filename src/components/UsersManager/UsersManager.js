@@ -1,8 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import css from './UsersManager.module.css';
-import { useEffect, useState } from 'react';
-import { getAllUsers, deleteUser, updateUser } from '../../redux/user/operations';
-import toast from 'react-hot-toast';
+import { useState } from 'react';
+import { deleteUser, updateUser } from '../../redux/user/operations';
 import { useTranslation } from 'react-i18next';
 import { PopUp } from 'components/PopUp/PopUp';
 import { Field, Form, Formik } from 'formik';

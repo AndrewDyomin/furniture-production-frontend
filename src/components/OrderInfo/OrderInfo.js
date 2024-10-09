@@ -2,7 +2,7 @@ import css from './OrderInfo.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import PulseLoader from "react-spinners/PulseLoader";
+import PulseLoader from 'react-spinners/PulseLoader';
 import axios from 'axios';
 import Select from 'react-select';
 import svgIcons from '../../images/icons.svg';
@@ -20,15 +20,17 @@ export const OrderInfo = ({ id }) => {
   const user = useSelector(selectUser);
   const location = useLocation();
   const navigate = useNavigate();
-  const backLinkHref = location.state?.from ?? "/orders";
+  const backLinkHref = location.state?.from ?? '/orders';
   const statuses = [
     { value: '', label: `${t('not ordered')}` },
     { value: 'ordered', label: `${t('ordered')}` },
     { value: 'received', label: `${t('received')}` },
   ];
-  let initialFabricStatus = !order.fabricStatus ? { value: '', label: `${t('not ordered')}` } : { value: '', label: `${t(order.fabricStatus)}` };
+  let initialFabricStatus = !order.fabricStatus
+    ? { value: '', label: `${t('not ordered')}` }
+    : { value: '', label: `${t(order.fabricStatus)}` };
 
-  useEffect(() => {}, [order])
+  useEffect(() => {}, [order]);
 
   function dateToString(date) {
     const d = new Date(date);
@@ -59,12 +61,11 @@ export const OrderInfo = ({ id }) => {
     document.body.classList.remove('modal-open');
   };
 
-  const handleFileChange = (event) => {
-    setSelectedFiles([ ...event.target.files ]);
+  const handleFileChange = event => {
+    setSelectedFiles([...event.target.files]);
   };
 
-  const sewnToggle = async (e) => {
-  
+  const sewnToggle = async e => {
     setIsLoading(true);
     let orderStatus = order.orderStatus;
     let fabricStatus = order.fabricStatus;
@@ -84,7 +85,8 @@ export const OrderInfo = ({ id }) => {
         frameStatus = order.frameStatus !== 'TRUE' ? 'TRUE' : '';
       } else if (e.target.name === 'order') {
         orderStatus = order.orderStatus !== 'TRUE' ? 'TRUE' : '';
-    }}
+      }
+    }
 
     let formData = new FormData();
     formData.append('group', order.group);
@@ -122,18 +124,18 @@ export const OrderInfo = ({ id }) => {
   };
 
   const sendToArchive = async () => {
-    console.log(order._id)
+    console.log(order._id);
     const res = await dispatch(archiveOrder(order._id));
-    console.log(res)
-    navigate("/orders", { replace: true });
-  }
+    console.log(res);
+    navigate('/orders', { replace: true });
+  };
 
   return (
     <div className={css.wrapper}>
       <Link to={backLinkHref}>
         <button className={`${css.btn} ${css.backBtn}`}>
           <svg className={css.backIcon}>
-              <use href={`${svgIcons}#icon-arrow-right`} width={'32px'} />
+            <use href={`${svgIcons}#icon-arrow-right`} width={'32px'} />
           </svg>
         </button>
       </Link>
@@ -151,15 +153,18 @@ export const OrderInfo = ({ id }) => {
         <p className={css.orderDescription}>
           {t('description')}: {order.description}
         </p>
+        {user.description === 'manager' ||
+          (user.description === 'administrator' && (
+            <p className={css.orderDescription}>
+              {t('inner price')}: {order.innerPrice}
+            </p>
+          ))}
         <p className={css.orderDeadline}>
           {t('deadline')}: {dateToString(order.plannedDeadline)}
         </p>
         <p>{order.dealer}</p>
-        {user.description === 'seamstress' ||
-        user.description === 'carpenter' ||
-        user.description === 'upholsterer' ? (
-          <></>
-        ) : (
+        {user.description === 'manager' ||
+          (user.description === 'administrator' && (
           <div>
             <p className={css.orderAdress}>
               {t('adress')}: {order.adress}
@@ -168,7 +173,7 @@ export const OrderInfo = ({ id }) => {
               {t('rest')}: {order.rest}
             </p>
           </div>
-        )}
+        ))}
       </div>
       {order.images && order.images.length !== 0 ? (
         <ul className={css.imagesList}>
@@ -192,48 +197,58 @@ export const OrderInfo = ({ id }) => {
           </button>
           <Select
             className={css.fabricStatusSelector}
-            name="fabricStatusSelector" 
+            name="fabricStatusSelector"
             id="fabricStatusSelector"
             onChange={e => sewnToggle(e)}
             options={statuses}
             defaultValue={initialFabricStatus}
-            placeholder={t('fabric')}>
-          </Select>
-          <button name='isSewn' className={order.coverStatus === '' ? css.btn : `${css.btn} ${css.activeBtn}`} 
-            onClick={(e) => sewnToggle(e)}>
-            {isLoading ? 
-              <PulseLoader 
-                color="#c8c19b"
-                size='10px'
-              />
-            : `${t('is sewn')}`}
+            placeholder={t('fabric')}
+          ></Select>
+          <button
+            name="isSewn"
+            className={
+              order.coverStatus === '' ? css.btn : `${css.btn} ${css.activeBtn}`
+            }
+            onClick={e => sewnToggle(e)}
+          >
+            {isLoading ? (
+              <PulseLoader color="#c8c19b" size="10px" />
+            ) : (
+              `${t('is sewn')}`
+            )}
           </button>
-          <button name='frame' className={order.frameStatus === '' ? css.btn : `${css.btn} ${css.activeBtn}`} 
-            onClick={(e) => sewnToggle(e)}>
-            {isLoading ? 
-              <PulseLoader 
-                color="#c8c19b"
-                size='10px'
-              />
-            : `${t('frame is done')}`}
+          <button
+            name="frame"
+            className={
+              order.frameStatus === '' ? css.btn : `${css.btn} ${css.activeBtn}`
+            }
+            onClick={e => sewnToggle(e)}
+          >
+            {isLoading ? (
+              <PulseLoader color="#c8c19b" size="10px" />
+            ) : (
+              `${t('frame is done')}`
+            )}
           </button>
-          <button name='order' className={order.orderStatus === '' ? css.btn : `${css.btn} ${css.activeBtn}`} 
-            onClick={(e) => sewnToggle(e)}>
-            {isLoading ? 
-              <PulseLoader 
-                color="#c8c19b"
-                size='10px'
-              />
-            : `${t('order is done')}`}
+          <button
+            name="order"
+            className={
+              order.orderStatus === '' ? css.btn : `${css.btn} ${css.activeBtn}`
+            }
+            onClick={e => sewnToggle(e)}
+          >
+            {isLoading ? (
+              <PulseLoader color="#c8c19b" size="10px" />
+            ) : (
+              `${t('order is done')}`
+            )}
           </button>
-          <button name='done' className={css.btn} 
-            onClick={sendToArchive}>
-            {isLoading ? 
-              <PulseLoader 
-                color="#c8c19b"
-                size='10px'
-              />
-            : `${t('to archive')}`}
+          <button name="done" className={css.btn} onClick={sendToArchive}>
+            {isLoading ? (
+              <PulseLoader color="#c8c19b" size="10px" />
+            ) : (
+              `${t('to archive')}`
+            )}
           </button>
         </div>
       ) : (
@@ -246,30 +261,32 @@ export const OrderInfo = ({ id }) => {
           </button>
           <Select
             className={css.fabricStatusSelector}
-            name="fabricStatusSelector" 
+            name="fabricStatusSelector"
             id="fabricStatusSelector"
             onChange={e => sewnToggle(e)}
             options={statuses}
             defaultValue={initialFabricStatus}
-            placeholder={t('fabric')}>
-          </Select>
-          <button name='order' className={order.orderStatus === '' ? css.btn : `${css.btn} ${css.activeBtn}`} 
-            onClick={(e) => sewnToggle(e)}>
-            {isLoading ? 
-              <PulseLoader 
-                color="#c8c19b"
-                size='10px'
-              />
-            : `${t('order is done')}`}
+            placeholder={t('fabric')}
+          ></Select>
+          <button
+            name="order"
+            className={
+              order.orderStatus === '' ? css.btn : `${css.btn} ${css.activeBtn}`
+            }
+            onClick={e => sewnToggle(e)}
+          >
+            {isLoading ? (
+              <PulseLoader color="#c8c19b" size="10px" />
+            ) : (
+              `${t('order is done')}`
+            )}
           </button>
-          <button name='done' className={css.btn} 
-            onClick={sendToArchive}>
-            {isLoading ? 
-              <PulseLoader 
-                color="#c8c19b"
-                size='10px'
-              />
-            : `${t('to archive')}`}
+          <button name="done" className={css.btn} onClick={sendToArchive}>
+            {isLoading ? (
+              <PulseLoader color="#c8c19b" size="10px" />
+            ) : (
+              `${t('to archive')}`
+            )}
           </button>
         </div>
       ) : (
@@ -277,14 +294,18 @@ export const OrderInfo = ({ id }) => {
       )}
       {user.description === 'seamstress' ? (
         <div className={css.optionWrapper}>
-          <button name='isSewn' className={order.coverStatus === '' ? css.btn : `${css.btn} ${css.activeBtn}`} 
-            onClick={(e) => sewnToggle(e)}>
-            {isLoading ? 
-              <PulseLoader 
-                color="#c8c19b"
-                size='10px'
-              />
-            : `${t('is sewn')}`}
+          <button
+            name="isSewn"
+            className={
+              order.coverStatus === '' ? css.btn : `${css.btn} ${css.activeBtn}`
+            }
+            onClick={e => sewnToggle(e)}
+          >
+            {isLoading ? (
+              <PulseLoader color="#c8c19b" size="10px" />
+            ) : (
+              `${t('is sewn')}`
+            )}
           </button>
         </div>
       ) : (
@@ -292,14 +313,18 @@ export const OrderInfo = ({ id }) => {
       )}
       {user.description === 'carpenter' ? (
         <div className={css.optionWrapper}>
-          <button name='frame' className={order.frameStatus === '' ? css.btn : `${css.btn} ${css.activeBtn}`} 
-            onClick={(e) => sewnToggle(e)}>
-            {isLoading ? 
-              <PulseLoader 
-                color="#c8c19b"
-                size='10px'
-              />
-            : `${t('frame is done')}`}
+          <button
+            name="frame"
+            className={
+              order.frameStatus === '' ? css.btn : `${css.btn} ${css.activeBtn}`
+            }
+            onClick={e => sewnToggle(e)}
+          >
+            {isLoading ? (
+              <PulseLoader color="#c8c19b" size="10px" />
+            ) : (
+              `${t('frame is done')}`
+            )}
           </button>
         </div>
       ) : (
@@ -307,14 +332,18 @@ export const OrderInfo = ({ id }) => {
       )}
       {user.description === 'upholsterer' ? (
         <div className={css.optionWrapper}>
-          <button name='order' className={order.orderStatus === '' ? css.btn : `${css.btn} ${css.activeBtn}`} 
-            onClick={(e) => sewnToggle(e)}>
-            {isLoading ? 
-              <PulseLoader 
-                color="#c8c19b"
-                size='10px'
-              />
-            : `${t('order is done')}`}
+          <button
+            name="order"
+            className={
+              order.orderStatus === '' ? css.btn : `${css.btn} ${css.activeBtn}`
+            }
+            onClick={e => sewnToggle(e)}
+          >
+            {isLoading ? (
+              <PulseLoader color="#c8c19b" size="10px" />
+            ) : (
+              `${t('order is done')}`
+            )}
           </button>
         </div>
       ) : (
@@ -384,12 +413,16 @@ export const OrderInfo = ({ id }) => {
                     formData.append('file', file);
                   });
 
-                  const response = await axios.post('/orders/update', formData, {
-                    headers: {
-                      'Content-Type': 'multipart/form-data',
-                    },
-                  });
-                  dispatch(setActiveOrder(response.data))
+                  const response = await axios.post(
+                    '/orders/update',
+                    formData,
+                    {
+                      headers: {
+                        'Content-Type': 'multipart/form-data',
+                      },
+                    }
+                  );
+                  dispatch(setActiveOrder(response.data));
                   setIsLoading(false);
                   closeEditModal();
                 } catch (error) {
@@ -453,11 +486,7 @@ export const OrderInfo = ({ id }) => {
                 </div>
                 <div className={css.formItem}>
                   <label htmlFor="rest">{t('rest')}</label>
-                  <Field
-                    className={css.field}
-                    id="rest"
-                    name="rest"
-                  />
+                  <Field className={css.field} id="rest" name="rest" />
                 </div>
                 <div className={css.formItem}>
                   <label htmlFor="plannedDeadline">
@@ -474,40 +503,45 @@ export const OrderInfo = ({ id }) => {
                     name="images"
                     render={arrayHelpers => (
                       <div className={css.field}>
-                        {arrayHelpers.form.values.images.map(
-                          (image, index) => (
-                            <div key={index} className={css.inputItem}>
-                              <img
-                                src={`https://lh3.googleusercontent.com/d/${image}=w200?authuser=0`}
-                                alt={image}
-                              />
-                              <button 
+                        {arrayHelpers.form.values.images.map((image, index) => (
+                          <div key={index} className={css.inputItem}>
+                            <img
+                              src={`https://lh3.googleusercontent.com/d/${image}=w200?authuser=0`}
+                              alt={image}
+                            />
+                            <button
                               className={css.btn}
-                              type='button'
-                              onClick={() => arrayHelpers.remove(index)}>
-                                {t('delete')}
-                              </button>
-                            </div>
-                          )
-                        )}
+                              type="button"
+                              onClick={() => arrayHelpers.remove(index)}
+                            >
+                              {t('delete')}
+                            </button>
+                          </div>
+                        ))}
                       </div>
                     )}
                   />
                 </div>
                 <div className={css.formItem}>
                   <label htmlFor="files">{t('add new images')}</label>
-                  <Field className={css.field} id="files" name="files" type="file" onChange={handleFileChange} multiple/>
+                  <Field
+                    className={css.field}
+                    id="files"
+                    name="files"
+                    type="file"
+                    onChange={handleFileChange}
+                    multiple
+                  />
                 </div>
                 <button
                   type="submit"
                   className={`${css.btn} ${css.modalSubmitButton}`}
                 >
-                  {isLoading ? 
-                  <PulseLoader 
-                      color="#c8c19b"
-                      size='10px'
-                    />
-                  : `${t('submit')}`}
+                  {isLoading ? (
+                    <PulseLoader color="#c8c19b" size="10px" />
+                  ) : (
+                    `${t('submit')}`
+                  )}
                 </button>
               </Form>
             </Formik>
