@@ -178,17 +178,6 @@ export const OrderInfo = ({ id }) => {
           ))}
       </div>
       {order.images && order.images.length !== 0 ? (
-        // <ul className={css.imagesList}>
-        //   {order.images.map(imageId => (
-        //     <li key={`${imageId}`}>
-        //       <img
-        //         className={css.orderImage}
-        //         src={`https://lh3.googleusercontent.com/d/${imageId}=w800?authuser=0`}
-        //         alt={imageId}
-        //       />
-        //     </li>
-        //   ))}
-        // </ul>
         <Fancybox
           options={{
             Carousel: {
