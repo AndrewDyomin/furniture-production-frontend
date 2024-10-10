@@ -155,18 +155,18 @@ export const OrderInfo = ({ id }) => {
         <p className={css.orderDescription}>
           {t('description')}: {order.description}
         </p>
-        {user.description === 'manager' ||
-          (user.description === 'administrator' && (
+        {user.description === 'manager' || user.description === 'administrator' ?
             <p className={css.orderDescription}>
               {t('inner price')}: {order.innerPrice}
             </p>
-          ))}
+            :
+            <></>
+          }
         <p className={css.orderDeadline}>
           {t('deadline')}: {dateToString(order.plannedDeadline)}
         </p>
         <p>{order.dealer}</p>
-        {user.description === 'manager' ||
-          (user.description === 'administrator' && (
+        {user.description === 'manager' || user.description === 'administrator' ? 
             <div>
               <p className={css.orderAdress}>
                 {t('adress')}: {order.adress}
@@ -175,7 +175,9 @@ export const OrderInfo = ({ id }) => {
                 {t('rest')}: {order.rest}
               </p>
             </div>
-          ))}
+            :
+            <></>
+          }
       </div>
       {order.images && order.images.length !== 0 ? (
         <Fancybox
