@@ -41,3 +41,19 @@ export const archiveOrder = createAsyncThunk(
     }
   }
 );
+
+export const fetchArchivedOrders = createAsyncThunk(
+  'orders/fetchArchivedOrders',
+  async (_, thunkAPI) => {
+    try {
+      const res = await axios.get('/orders/archive');
+      if (res.data.message) {
+        toast.error(`${res.data.message}`)
+        return {allOrdersArray: []};
+      }
+      return res.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);

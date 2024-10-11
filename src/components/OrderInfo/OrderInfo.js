@@ -194,7 +194,6 @@ export const OrderInfo = ({ id }) => {
                 className="f-carousel__slide"
                 data-fancybox="gallery"
                 data-src={`https://lh3.googleusercontent.com/d/${imageId}=w800?authuser=0`}
-                // data-thumb-src={`https://lh3.googleusercontent.com/d/${imageId}=w800?authuser=0`}
               >
                 <img
                   src={`https://lh3.googleusercontent.com/d/${imageId}=w800?authuser=0`}

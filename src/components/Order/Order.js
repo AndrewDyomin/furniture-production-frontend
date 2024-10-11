@@ -4,11 +4,11 @@ import { selectAllOrders } from '../../redux/orders/selectors';
 import { selectUser } from '../../redux/auth/selectors';
 import { useMediaQuery } from 'react-responsive';
 
-export const Order = ({ id }) => {
+export const Order = ({ id, order }) => {
 
-  const orders = useSelector(selectAllOrders);
-  const order = orders.allOrdersArray.find((el) => {return(el._id === id)});
-  const date = new Date(order.plannedDeadline);
+  // const orders = useSelector(selectAllOrders);
+  // const order = orders.allOrdersArray.find((el) => {return(el._id === id)});
+  const date = new Date(order.plannedDeadline) || '';
   const user = useSelector(selectUser);
   const isMobile = useMediaQuery({ query: '(max-width: 833px)' });
   let fabricClassName = css.orderFabric;

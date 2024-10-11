@@ -19,6 +19,7 @@ const MyRoomPage = lazy(() => import('../pages/MyRoom'));
 const ProductDetailsPage = lazy(() => import('../pages/ProductDetails'));
 const MyDruftsPage = lazy(() => import('../pages/Drufts'));
 const DruftDetailsPage = lazy(() => import('../pages/DruftDetails'));
+const ArchivePage = lazy(() => import('../pages/Archive'));
 
 export const App = () => {
   const dispatch = useDispatch();
@@ -61,6 +62,21 @@ export const App = () => {
           />
           <Route
             path="/orders/:orderId"
+            element={
+              <PrivateRoute
+                redirectTo="/login"
+                component={<OrderDetailsPage />}
+              />
+            }
+          />
+          <Route
+            path="/archive/"
+            element={
+              <PrivateRoute redirectTo="/login" component={<ArchivePage />} />
+            }
+          />
+          <Route
+            path="/archive/:orderId"
             element={
               <PrivateRoute
                 redirectTo="/login"

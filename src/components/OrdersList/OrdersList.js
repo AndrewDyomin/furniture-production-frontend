@@ -93,14 +93,20 @@ export const OrdersList = () => {
   if (user.description === 'seamstress') {
     prefilteredOrders =
       orders.allOrdersArray && orders.allOrdersArray.length !== 0
-        ? orders.allOrdersArray.filter(order => order.coverStatus !== 'TRUE' && order.orderStatus !== 'TRUE')
+        ? orders.allOrdersArray.filter(
+            order =>
+              order.coverStatus !== 'TRUE' && order.orderStatus !== 'TRUE'
+          )
         : [];
   }
 
   if (user.description === 'carpenter') {
     prefilteredOrders =
       orders.allOrdersArray && orders.allOrdersArray.length !== 0
-        ? orders.allOrdersArray.filter(order => order.frameStatus !== 'TRUE' && order.orderStatus !== 'TRUE')
+        ? orders.allOrdersArray.filter(
+            order =>
+              order.frameStatus !== 'TRUE' && order.orderStatus !== 'TRUE'
+          )
         : [];
   }
 
@@ -159,7 +165,7 @@ export const OrdersList = () => {
   if (!isMobile) {
     filteredOrders.forEach((order, index) => {
       let date = dateToString(order.plannedDeadline);
-      !dateArray.includes(date) && dateArray.push(date)
+      !dateArray.includes(date) && dateArray.push(date);
     });
   }
 
@@ -167,36 +173,39 @@ export const OrdersList = () => {
     if (!isMobile) {
       return (
         <ul className={css.list}>
-          {dateArray.map((day) => (
+          {dateArray.map(day => (
             <li key={day} className={css.dateItem}>
               <p className={css.dayTitle}>{day}</p>
               <ul className={`${css.list} ${css.dateWrapper}`}>
-              {filteredOrders.map(({ _id, plannedDeadline }) => (
-                dateToString(plannedDeadline) === day &&
-                <li key={_id} className={css.item}>
-                  <Link
-                    to={`${_id}`}
-                    state={{ from: location }}
-                    className={css.orderLink}
-                    onClick={() =>
-                      dispatch(
-                        setActiveOrder(
-                          orders.allOrdersArray.find(el => {
-                            return el._id === _id;
-                          })
-                        )
-                      )
-                    }
-                  >
-                    <Order id={_id} />
-                  </Link>
-                </li>
-              ))}
+                {filteredOrders.map(
+                  ({ _id, plannedDeadline }) =>
+                    dateToString(plannedDeadline) === day && (
+                      <li key={_id} className={css.item}>
+                        <Link
+                          to={`${_id}`}
+                          state={{ from: location }}
+                          className={css.orderLink}
+                          onClick={() =>
+                            dispatch(
+                              setActiveOrder(
+                                orders.allOrdersArray.find(el => {
+                                  return el._id === _id;
+                                })
+                              )
+                            )
+                          }
+                        >
+                          <Order id={_id} order={orders.allOrdersArray.find((el) => {return(el._id === _id)})}/>
+                        </Link>
+                      </li>
+                    )
+                )}
               </ul>
             </li>
           ))}
         </ul>
-    )}
+      );
+    }
     return (
       <ul className={css.list}>
         {filteredOrders.map(({ _id }) => (
@@ -215,13 +224,13 @@ export const OrdersList = () => {
                 )
               }
             >
-              <Order id={_id} />
+              <Order id={_id} order={orders.allOrdersArray.find((el) => {return(el._id === _id)})}/>
             </Link>
           </li>
         ))}
       </ul>
-    )
-  }
+    );
+  };
 
   return (
     <div className={css.container}>
@@ -231,7 +240,11 @@ export const OrdersList = () => {
           name="filter"
           id="filter"
           onChange={e => setFilter(e.value)}
-          options={filters}
+          options={filters.sort((a, b) => {
+            if (a.value === '') return -1;
+            if (b.value === '') return 1;
+            return a.label.localeCompare(b.label);
+          })}
           defaultValue={filter}
           placeholder={t('filter')}
         ></Select>
@@ -241,6 +254,9 @@ export const OrdersList = () => {
         >
           {t('add order')}
         </button>
+        <Link className={`${css.link} ${css.toArchive}`} to="/archive">
+          <button className={css.btn}>{t('to archive')}</button>
+        </Link>
       </div>
       {isLoading ? (
         <PulseLoader
@@ -254,11 +270,7 @@ export const OrdersList = () => {
       ) : (
         <></>
       )}
-      {filteredOrders.length !== 0 ? (
-        <PreFormList />
-      ) : (
-        <></>
-      )}
+      {filteredOrders.length !== 0 ? <PreFormList /> : <></>}
       <PopUp
         isOpen={isModalOrderOpen}
         close={closeOrderModal}
@@ -314,7 +326,10 @@ export const OrdersList = () => {
                     toast.success('Order sended');
                     resetForm();
                     setIsPending(false);
-                    setSelectedGroup({value: `${t('sofa')}`, label: `${t('sofa')}`,});
+                    setSelectedGroup({
+                      value: `${t('sofa')}`,
+                      label: `${t('sofa')}`,
+                    });
                     setEnteredName('');
                     setEnteredSize('');
                     setEnteredFabric('');
@@ -331,171 +346,229 @@ export const OrdersList = () => {
                 }}
               >
                 {({ errors, touched, setFieldValue }) => (
-                <Form className={css.formWrapper}>
-                  <div className={css.formItem}>
-                    <label htmlFor="group">{t('group')}</label>
-                    <Field
-                      component={Select}
-                      name="group"
-                      id="group"
-                      onChange={e => setSelectedGroup(e)}
-                      options={groups}
-                      defaultValue={selectedGroup.value}
-                      placeholder={selectedGroup.label}
-                    ></Field>
-                    {errors.group && touched.group ? (
-                      <div>{errors.group}</div>
-                    ) : null}
-                  </div>
-                  <div className={css.formItem}>
-                    <label htmlFor="name">{t('order name')}</label>
-                    <Field
-                      className={errors.name && touched.name ? `${css.field} ${css.formError}` : css.field}
-                      id="name"
-                      name="name"
-                      placeholder="Faynee mini"
-                      value={enteredName}
-                      onChange={e => {setEnteredName(e.target.value); setFieldValue('name', e.target.value);}}
-                    />
-                    {errors.name && touched.name ? (
-                      <div>{errors.name}</div>
-                    ) : null}
-                  </div>
-                  {selectedGroup.value === `${t('bed')}` ? (
+                  <Form className={css.formWrapper}>
                     <div className={css.formItem}>
-                      <label htmlFor="sleepingArea">{t('sleeping area')}</label>
+                      <label htmlFor="group">{t('group')}</label>
                       <Field
                         component={Select}
-                        name="sleepingArea"
-                        id="sleepingArea"
-                        onChange={e => setSelectedSleepSizes(e)}
-                        options={sleepSizes}
-                        defaultValue={selectedSleepSizes.value}
-                        placeholder={selectedSleepSizes.value}
+                        name="group"
+                        id="group"
+                        onChange={e => setSelectedGroup(e)}
+                        options={groups}
+                        defaultValue={selectedGroup.value}
+                        placeholder={selectedGroup.label}
                       ></Field>
+                      {errors.group && touched.group ? (
+                        <div>{errors.group}</div>
+                      ) : null}
                     </div>
-                  ) : (
-                    <></>
-                  )}
-                  <div className={css.formItem}>
-                    <label htmlFor="size">{t('size')}</label>
-                    <Field
-                      className={errors.size && touched.size ? `${css.field} ${css.formError}` : css.field}
-                      id="size"
-                      name="size"
-                      placeholder={`${t('overall size')}`}
-                      value={enteredSize}
-                      onChange={e => {setEnteredSize(e.target.value); setFieldValue('size', e.target.value);}}
-                    />
-                    {errors.size && touched.size ? (
-                      <div>{errors.size}</div>
-                    ) : null}
-                  </div>
-                  <div className={css.formItem}>
-                    <label htmlFor="fabric">{t('fabric')}</label>
-                    <Field
-                      className={errors.fabric && touched.fabric ? `${css.field} ${css.formError}` : css.field}
-                      id="fabric"
-                      name="fabric"
-                      placeholder={t('fabric name')}
-                      value={enteredFabric}
-                      onChange={e => {setEnteredFabric(e.target.value); setFieldValue('fabric', e.target.value);}}
-                    />
-                    {errors.fabric && touched.fabric ? (
-                      <div>{errors.fabric}</div>
-                    ) : null}
-                  </div>
-                  <div className={css.formItem}>
-                    <label htmlFor="description">{t('description')}</label>
-                    <Field
-                      as="textarea"
-                      rows="3"
-                      className={errors.description && touched.description ? `${css.field} ${css.formError}` : css.field}
-                      id="description"
-                      name="description"
-                      placeholder={t('description')}
-                      value={enteredDescription}
-                      onChange={e => {setEnteredDescription(e.target.value); setFieldValue('description', e.target.value);}}
-                    />
-                    {errors.description && touched.description ? (
-                      <div>{errors.description}</div>
-                    ) : null}
-                  </div>
-                  <div className={css.formItem}>
-                    <label htmlFor="number">{t('number')}</label>
-                    <Field
-                      className={errors.number && touched.number ? `${css.field} ${css.formError}` : css.field}
-                      id="number"
-                      name="number"
-                      placeholder="125"
-                      value={enteredNumber}
-                      onChange={e => {setEnteredNumber(e.target.value); setFieldValue('number', e.target.value);}}
-                    />
-                    {errors.number && touched.number ? (
-                      <div>{errors.number}</div>
-                    ) : null}
-                  </div>
-                  <div className={css.formItem}>
-                    <label htmlFor="adress">{t('adress')}</label>
-                    <Field
-                      className={errors.adress && touched.adress ? `${css.field} ${css.formError}` : css.field}
-                      id="adress"
-                      name="adress"
-                      placeholder={t('Kiev, Kyrylivska street, 103')}
-                      value={enteredAdress}
-                      onChange={e => {setEnteredAdress(e.target.value); setFieldValue('adress', e.target.value);}}
-                    />
-                    {errors.adress && touched.adress ? (
-                      <div>{errors.adress}</div>
-                    ) : null}
-                  </div>
-                  <div className={css.formItem}>
-                    <label htmlFor="rest">{t('rest')}</label>
-                    <Field
-                      className={errors.rest && touched.rest ? `${css.field} ${css.formError}` : css.field}
-                      id="rest"
-                      name="rest"
-                      placeholder="21000"
-                      value={enteredRest}
-                      onChange={e => {setEnteredRest(e.target.value); setFieldValue('rest', e.target.value);}}
-                    />
-                    {errors.rest && touched.rest ? (
-                      <div>{errors.rest}</div>
-                    ) : null}
-                  </div>
-                  <div className={css.formItem}>
-                    <label htmlFor="deadline">{t('deadline')}</label>
-                    <Field
-                      className={errors.deadline && touched.deadline ? `${css.field} ${css.formError}` : css.field}
-                      id="deadline"
-                      name="deadline"
-                      placeholder="21"
-                      value={enteredDeadline}
-                      onChange={e => {setEnteredDeadline(e.target.value); setFieldValue('deadline', e.target.value);}}
-                    />
-                    {errors.deadline && touched.deadline ? (
-                      <div>{errors.deadline}</div>
-                    ) : null}
-                  </div>
-                  <div className={css.formItem}>
-                    <label htmlFor="files">{t('add new images')}</label>
-                    <Field
-                      className={css.field}
-                      id="files"
-                      name="files"
-                      type="file"
-                      onChange={handleFileChange}
-                      multiple
-                    />
-                  </div>
-                  <button type="submit" className={css.btn}>
-                    {isPending ? (
-                      <PulseLoader color="#c8c19b" size="10px" />
+                    <div className={css.formItem}>
+                      <label htmlFor="name">{t('order name')}</label>
+                      <Field
+                        className={
+                          errors.name && touched.name
+                            ? `${css.field} ${css.formError}`
+                            : css.field
+                        }
+                        id="name"
+                        name="name"
+                        placeholder="Faynee mini"
+                        value={enteredName}
+                        onChange={e => {
+                          setEnteredName(e.target.value);
+                          setFieldValue('name', e.target.value);
+                        }}
+                      />
+                      {errors.name && touched.name ? (
+                        <div>{errors.name}</div>
+                      ) : null}
+                    </div>
+                    {selectedGroup.value === `${t('bed')}` ? (
+                      <div className={css.formItem}>
+                        <label htmlFor="sleepingArea">
+                          {t('sleeping area')}
+                        </label>
+                        <Field
+                          component={Select}
+                          name="sleepingArea"
+                          id="sleepingArea"
+                          onChange={e => setSelectedSleepSizes(e)}
+                          options={sleepSizes}
+                          defaultValue={selectedSleepSizes.value}
+                          placeholder={selectedSleepSizes.value}
+                        ></Field>
+                      </div>
                     ) : (
-                      `${t('submit')}`
+                      <></>
                     )}
-                  </button>
-                </Form>
+                    <div className={css.formItem}>
+                      <label htmlFor="size">{t('size')}</label>
+                      <Field
+                        className={
+                          errors.size && touched.size
+                            ? `${css.field} ${css.formError}`
+                            : css.field
+                        }
+                        id="size"
+                        name="size"
+                        placeholder={`${t('overall size')}`}
+                        value={enteredSize}
+                        onChange={e => {
+                          setEnteredSize(e.target.value);
+                          setFieldValue('size', e.target.value);
+                        }}
+                      />
+                      {errors.size && touched.size ? (
+                        <div>{errors.size}</div>
+                      ) : null}
+                    </div>
+                    <div className={css.formItem}>
+                      <label htmlFor="fabric">{t('fabric')}</label>
+                      <Field
+                        className={
+                          errors.fabric && touched.fabric
+                            ? `${css.field} ${css.formError}`
+                            : css.field
+                        }
+                        id="fabric"
+                        name="fabric"
+                        placeholder={t('fabric name')}
+                        value={enteredFabric}
+                        onChange={e => {
+                          setEnteredFabric(e.target.value);
+                          setFieldValue('fabric', e.target.value);
+                        }}
+                      />
+                      {errors.fabric && touched.fabric ? (
+                        <div>{errors.fabric}</div>
+                      ) : null}
+                    </div>
+                    <div className={css.formItem}>
+                      <label htmlFor="description">{t('description')}</label>
+                      <Field
+                        as="textarea"
+                        rows="3"
+                        className={
+                          errors.description && touched.description
+                            ? `${css.field} ${css.formError}`
+                            : css.field
+                        }
+                        id="description"
+                        name="description"
+                        placeholder={t('description')}
+                        value={enteredDescription}
+                        onChange={e => {
+                          setEnteredDescription(e.target.value);
+                          setFieldValue('description', e.target.value);
+                        }}
+                      />
+                      {errors.description && touched.description ? (
+                        <div>{errors.description}</div>
+                      ) : null}
+                    </div>
+                    <div className={css.formItem}>
+                      <label htmlFor="number">{t('number')}</label>
+                      <Field
+                        className={
+                          errors.number && touched.number
+                            ? `${css.field} ${css.formError}`
+                            : css.field
+                        }
+                        id="number"
+                        name="number"
+                        placeholder="125"
+                        value={enteredNumber}
+                        onChange={e => {
+                          setEnteredNumber(e.target.value);
+                          setFieldValue('number', e.target.value);
+                        }}
+                      />
+                      {errors.number && touched.number ? (
+                        <div>{errors.number}</div>
+                      ) : null}
+                    </div>
+                    <div className={css.formItem}>
+                      <label htmlFor="adress">{t('adress')}</label>
+                      <Field
+                        className={
+                          errors.adress && touched.adress
+                            ? `${css.field} ${css.formError}`
+                            : css.field
+                        }
+                        id="adress"
+                        name="adress"
+                        placeholder={t('Kiev, Kyrylivska street, 103')}
+                        value={enteredAdress}
+                        onChange={e => {
+                          setEnteredAdress(e.target.value);
+                          setFieldValue('adress', e.target.value);
+                        }}
+                      />
+                      {errors.adress && touched.adress ? (
+                        <div>{errors.adress}</div>
+                      ) : null}
+                    </div>
+                    <div className={css.formItem}>
+                      <label htmlFor="rest">{t('rest')}</label>
+                      <Field
+                        className={
+                          errors.rest && touched.rest
+                            ? `${css.field} ${css.formError}`
+                            : css.field
+                        }
+                        id="rest"
+                        name="rest"
+                        placeholder="21000"
+                        value={enteredRest}
+                        onChange={e => {
+                          setEnteredRest(e.target.value);
+                          setFieldValue('rest', e.target.value);
+                        }}
+                      />
+                      {errors.rest && touched.rest ? (
+                        <div>{errors.rest}</div>
+                      ) : null}
+                    </div>
+                    <div className={css.formItem}>
+                      <label htmlFor="deadline">{t('deadline')}</label>
+                      <Field
+                        className={
+                          errors.deadline && touched.deadline
+                            ? `${css.field} ${css.formError}`
+                            : css.field
+                        }
+                        id="deadline"
+                        name="deadline"
+                        placeholder="21"
+                        value={enteredDeadline}
+                        onChange={e => {
+                          setEnteredDeadline(e.target.value);
+                          setFieldValue('deadline', e.target.value);
+                        }}
+                      />
+                      {errors.deadline && touched.deadline ? (
+                        <div>{errors.deadline}</div>
+                      ) : null}
+                    </div>
+                    <div className={css.formItem}>
+                      <label htmlFor="files">{t('add new images')}</label>
+                      <Field
+                        className={css.field}
+                        id="files"
+                        name="files"
+                        type="file"
+                        onChange={handleFileChange}
+                        multiple
+                      />
+                    </div>
+                    <button type="submit" className={css.btn}>
+                      {isPending ? (
+                        <PulseLoader color="#c8c19b" size="10px" />
+                      ) : (
+                        `${t('submit')}`
+                      )}
+                    </button>
+                  </Form>
                 )}
               </Formik>
             </div>
