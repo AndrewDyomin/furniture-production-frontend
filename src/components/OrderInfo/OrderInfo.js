@@ -134,13 +134,11 @@ export const OrderInfo = ({ id }) => {
 
   return (
     <div className={css.wrapper}>
-      <Link to={backLinkHref}>
-        <button className={`${css.btn} ${css.backBtn}`}>
+        <button className={`${css.btn} ${css.backBtn}`} onClick={() => window.history.back()}>
           <svg className={css.backIcon}>
             <use href={`${svgIcons}#icon-arrow-right`} width={'32px'} />
           </svg>
         </button>
-      </Link>
       <p className={css.orderNumber}>{order.number}</p>
       <div className={css.description}>
         <p className={css.orderName}>

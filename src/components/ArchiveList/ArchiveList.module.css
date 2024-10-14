@@ -75,6 +75,13 @@
     text-decoration: none;
 }
 
+.searchInput {
+    min-height: 38px;
+    border: 1px solid hsl(0, 0%, 80%);
+    border-radius: 4px;
+    padding: 0 15px;
+}
+
 @media screen and (min-width: 833px) {
     .dateWrapper {
         margin-top: 10px;

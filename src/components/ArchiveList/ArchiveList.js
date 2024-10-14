@@ -10,7 +10,6 @@ import { setActiveOrder } from '../../redux/orders/operations';
 import css from './ArchiveList.module.css';
 import { useState } from 'react';
 import Select from 'react-select';
-// import { selectUser } from '../../redux/auth/selectors';
 import { useMediaQuery } from 'react-responsive';
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
@@ -19,19 +18,18 @@ export const ArchiveList = () => {
   const { t } = useTranslation();
   const isMobile = useMediaQuery({ query: '(max-width: 833px)' });
 
-  const [filter, setFilter] = useState('');
+  const [filter, setFilter] = useState([]);
+  const [search, setSearch] = useState('');
   const [isModalOpen, setIsModalOrderOpen] = useState(false);
 
   const location = useLocation();
-  // const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const isLoading = useSelector(selectLoading);
   const orders = useSelector(selectArchivedOrders);
-  // const orders = {allOrdersArray: []};
   let dealerNames = [];
   let prefilteredOrders = orders.allOrdersArray;
   let dateArray = [];
-  const filters = [{ value: '', label: 'All' }];
+  const filters = [{ value: '', label: 'Не указано' }];
 
   if (orders.allOrdersArray) {
     orders.allOrdersArray.forEach((order, index) => {
@@ -48,38 +46,13 @@ export const ArchiveList = () => {
     });
   }
 
-  // if (user.description === 'seamstress') {
-  //   prefilteredOrders =
-  //     orders.allOrdersArray && orders.allOrdersArray.length !== 0
-  //       ? orders.allOrdersArray.filter(order => order.coverStatus !== 'TRUE' && order.orderStatus !== 'TRUE')
-  //       : [];
-  // }
-
-  // if (user.description === 'carpenter') {
-  //   prefilteredOrders =
-  //     orders.allOrdersArray && orders.allOrdersArray.length !== 0
-  //       ? orders.allOrdersArray.filter(order => order.frameStatus !== 'TRUE' && order.orderStatus !== 'TRUE')
-  //       : [];
-  // }
-
-  // if (user.description === 'upholsterer') {
-  //   prefilteredOrders =
-  //     orders.allOrdersArray && orders.allOrdersArray.length !== 0
-  //       ? orders.allOrdersArray.filter(order => order.orderStatus !== 'TRUE')
-  //       : [];
-  // }
-
   const filteredOrders =
-    prefilteredOrders && prefilteredOrders.length !== 0
-      ? prefilteredOrders.filter(order =>
-          order.dealer.toLowerCase().includes(filter.toLowerCase())
-        )
-      : [];
-
-  // const openModal = () => {
-  //   setIsModalOrderOpen(true);
-  //   document.body.classList.add('modal-open');
-  // };
+  prefilteredOrders && prefilteredOrders.length !== 0
+    ? prefilteredOrders.filter(order =>
+        (filter.length === 0 || filter.some(f => f.value.toLowerCase() === order.dealer.toLowerCase())) &&
+        (search === "" || order.name.toLowerCase().includes(search.toLowerCase()))
+      )
+    : [];
 
   const closeModal = () => {
     setIsModalOrderOpen(false);
@@ -167,17 +140,19 @@ export const ArchiveList = () => {
       <div className={css.navigation}>
         <Select
           className={css.filter}
+          isMulti
           name="filter"
           id="filter"
-          onChange={e => setFilter(e.value)}
-          options={filters.sort((a, b) => {
-            if (a.value === '') return -1;
-            if (b.value === '') return 1;
-            return a.label.localeCompare(b.label);
-          })}
+          onChange={e => setFilter(e)}
+          options={filters.sort((a, b) => a.label.localeCompare(b.label))}
           defaultValue={filter}
-          placeholder={t('filter')}
+          placeholder={t('dealers filter')}
         ></Select>
+        <input
+          className={css.searchInput}
+          placeholder={t('search')}
+          onChange={e => setSearch(e.target.value)}
+        />
       </div>
       {isLoading ? (
         <PulseLoader
