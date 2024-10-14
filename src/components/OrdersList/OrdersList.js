@@ -44,7 +44,6 @@ export const OrdersList = () => {
     { value: '140 x 190', label: '140 x 190' },
   ];
 
-  // const [filter, setFilter] = useState('');
   const filter = useSelector(state => state.orders.itemsFilter)
   const [isModalOrderOpen, setIsModalOrderOpen] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState({
@@ -236,19 +235,6 @@ export const OrdersList = () => {
   return (
     <div className={css.container}>
       <div className={css.navigation}>
-        {/* <Select
-          className={css.filter}
-          name="filter"
-          id="filter"
-          onChange={e => setFilter(e.value)}
-          options={filters.sort((a, b) => {
-            if (a.value === '') return -1;
-            if (b.value === '') return 1;
-            return a.label.localeCompare(b.label);
-          })}
-          defaultValue={filter}
-          placeholder={t('filter')}
-        ></Select> */}
         <Select
           className={css.filter}
           isMulti

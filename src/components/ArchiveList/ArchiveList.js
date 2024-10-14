@@ -18,8 +18,6 @@ export const ArchiveList = () => {
   const { t } = useTranslation();
   const isMobile = useMediaQuery({ query: '(max-width: 833px)' });
 
-  // const [filter, setFilter] = useState([]);
-  // const [search, setSearch] = useState('');
   const filter = useSelector(state => state.orders.archiveFilter)
   const search = useSelector(state => state.orders.archiveSearch)
   const [isModalOpen, setIsModalOrderOpen] = useState(false);
@@ -156,6 +154,7 @@ export const ArchiveList = () => {
           placeholder={t('search')}
           onChange={e => dispatch(changeArchiveSearch(e.target.value))}
         />
+        <p className={css.pcs}>{filteredOrders.length} шт.</p>
       </div>
       {isLoading ? (
         <PulseLoader
