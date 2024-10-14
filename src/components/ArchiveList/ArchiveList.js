@@ -6,7 +6,7 @@ import { PopUp } from '../PopUp/PopUp';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { selectLoading, selectArchivedOrders } from '../../redux/orders/selectors';
-import { setActiveOrder } from '../../redux/orders/operations';
+import { setActiveOrder, changeArchiveFilter, changeArchiveSearch } from '../../redux/orders/operations';
 import css from './ArchiveList.module.css';
 import { useState } from 'react';
 import Select from 'react-select';
@@ -18,8 +18,10 @@ export const ArchiveList = () => {
   const { t } = useTranslation();
   const isMobile = useMediaQuery({ query: '(max-width: 833px)' });
 
-  const [filter, setFilter] = useState([]);
-  const [search, setSearch] = useState('');
+  // const [filter, setFilter] = useState([]);
+  // const [search, setSearch] = useState('');
+  const filter = useSelector(state => state.orders.archiveFilter)
+  const search = useSelector(state => state.orders.archiveSearch)
   const [isModalOpen, setIsModalOrderOpen] = useState(false);
 
   const location = useLocation();
@@ -143,15 +145,16 @@ export const ArchiveList = () => {
           isMulti
           name="filter"
           id="filter"
-          onChange={e => setFilter(e)}
+          onChange={e => dispatch(changeArchiveFilter(e))}
           options={filters.sort((a, b) => a.label.localeCompare(b.label))}
           defaultValue={filter}
           placeholder={t('dealers filter')}
         ></Select>
         <input
           className={css.searchInput}
+          defaultValue={search}
           placeholder={t('search')}
-          onChange={e => setSearch(e.target.value)}
+          onChange={e => dispatch(changeArchiveSearch(e.target.value))}
         />
       </div>
       {isLoading ? (

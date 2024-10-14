@@ -55,6 +55,7 @@
 
 .filter {
     min-width: 30%;
+    max-width: 50%;
 }
 
 .btn {

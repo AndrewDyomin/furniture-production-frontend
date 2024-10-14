@@ -57,3 +57,36 @@ export const fetchArchivedOrders = createAsyncThunk(
     }
   }
 );
+
+export const changeOrdersFilter = createAsyncThunk(
+  'orders/changeOrdersFilter',
+  async (value, thunkAPI) => {
+    try {
+      return value;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const changeArchiveFilter = createAsyncThunk(
+  'orders/changeArchiveFilter',
+  async (value, thunkAPI) => {
+    try {
+      return value;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const changeArchiveSearch = createAsyncThunk(
+  'orders/changeArchiveSearch',
+  async (value, thunkAPI) => {
+    try {
+      return value;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);

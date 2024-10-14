@@ -11,7 +11,7 @@ import { selectActiveOrder } from '../../redux/orders/selectors';
 import { selectUser } from '../../redux/auth/selectors';
 import { setActiveOrder, archiveOrder } from '../../redux/orders/operations';
 import { PopUp } from 'components/PopUp/PopUp';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Fancybox from 'components/Fancybox/Fancybox';
 import Carousel from 'components/Fancybox/Carousel';
 
@@ -20,9 +20,9 @@ export const OrderInfo = ({ id }) => {
   const dispatch = useDispatch();
   const order = useSelector(selectActiveOrder);
   const user = useSelector(selectUser);
-  const location = useLocation();
+  // const location = useLocation();
   const navigate = useNavigate();
-  const backLinkHref = location.state?.from ?? '/orders';
+  // const backLinkHref = location.state?.from ?? '/orders';
   const statuses = [
     { value: '', label: `${t('not ordered')}` },
     { value: 'ordered', label: `${t('ordered')}` },

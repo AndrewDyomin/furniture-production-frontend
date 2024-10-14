@@ -9,7 +9,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { selectAllOrders, selectLoading } from '../../redux/orders/selectors';
-import { setActiveOrder, fetchAllOrders } from '../../redux/orders/operations';
+import { setActiveOrder, fetchAllOrders, changeOrdersFilter } from '../../redux/orders/operations';
 import css from './OrdersList.module.css';
 import { useState } from 'react';
 import Select from 'react-select';
@@ -44,7 +44,8 @@ export const OrdersList = () => {
     { value: '140 x 190', label: '140 x 190' },
   ];
 
-  const [filter, setFilter] = useState('');
+  // const [filter, setFilter] = useState('');
+  const filter = useSelector(state => state.orders.itemsFilter)
   const [isModalOrderOpen, setIsModalOrderOpen] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState({
     value: `${t('sofa')}`,
@@ -73,7 +74,7 @@ export const OrdersList = () => {
   let dealerNames = [];
   let prefilteredOrders = orders.allOrdersArray;
   let dateArray = [];
-  const filters = [{ value: '', label: 'All' }];
+  const filters = [{ value: '', label: 'Не указано' }];
 
   if (orders.allOrdersArray) {
     orders.allOrdersArray.forEach((order, index) => {
@@ -118,11 +119,11 @@ export const OrdersList = () => {
   }
 
   const filteredOrders =
-    prefilteredOrders && prefilteredOrders.length !== 0
-      ? prefilteredOrders.filter(order =>
-          order.dealer.toLowerCase().includes(filter.toLowerCase())
-        )
-      : [];
+  prefilteredOrders && prefilteredOrders.length !== 0
+    ? prefilteredOrders.filter(order =>
+        filter.length === 0 || filter.some(f => f.value.toLowerCase() === order.dealer.toLowerCase())
+      )
+    : [];
 
   const openOrderModal = () => {
     setIsModalOrderOpen(true);
@@ -235,7 +236,7 @@ export const OrdersList = () => {
   return (
     <div className={css.container}>
       <div className={css.navigation}>
-        <Select
+        {/* <Select
           className={css.filter}
           name="filter"
           id="filter"
@@ -247,6 +248,16 @@ export const OrdersList = () => {
           })}
           defaultValue={filter}
           placeholder={t('filter')}
+        ></Select> */}
+        <Select
+          className={css.filter}
+          isMulti
+          name="filter"
+          id="filter"
+          onChange={e => dispatch(changeOrdersFilter(e))}
+          options={filters.sort((a, b) => a.label.localeCompare(b.label))}
+          defaultValue={filter}
+          placeholder={t('dealers filter')}
         ></Select>
         <button
           className={`${css.btn} ${css.addOrderBtn}`}
