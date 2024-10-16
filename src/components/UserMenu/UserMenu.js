@@ -22,10 +22,13 @@ export const UserMenu = ({ close }) => {
             {t('orders')}
           </Link>
           <Link className={css.link} to="/products" onClick={close}>
-            {t('all products')}
+            {t('catalog')}
           </Link>
           {user.description === "administrator" && (
-            <Link className={css.link} to="/room" onClick={close}>{t('my room')}</Link>
+            <div className={css.mobileMenuLinks}>
+              <Link className={css.link} to="/room" onClick={close}>{t('my room')}</Link>
+            <Link className={css.link} to="/archive" onClick={close}>{t('archive')}</Link>
+            </div>
           )}
           {user.description === "administrator" || user.description === "carpenter" || user.description === "seamstress" || user.description === "upholsterer" ? (
             <Link className={css.link} to="/drufts" onClick={close}>{t('my drufts')}</Link>

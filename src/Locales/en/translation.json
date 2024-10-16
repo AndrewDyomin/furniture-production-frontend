@@ -53,6 +53,7 @@
   "cancel": "Cancel",
   "product components": "Product components",
   "to archive": "To archive",
+  "archive": "Archive",
   "kitchen banquette": "Kitchen banquette",
   "pouf": "Pouf",
   "poufs": "Poufs",
@@ -68,5 +69,6 @@
   "my drufts": "My drufts",
   "add druft": "Add druft",
   "dealers filter": "Dealers filter",
-  "search": "Search"
+  "search": "Search",
+  "catalog": "All products"
 }

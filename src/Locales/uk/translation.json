@@ -53,6 +53,7 @@
   "cancel": "Скасувати",
   "product components": "Компоненти виробу",
   "to archive": "В архів",
+  "archive": "Архів",
   "kitchen banquette": "Кухонний куточок",
   "pouf": "Пуф",
   "poufs": "Пуфи",
@@ -68,5 +69,6 @@
   "my drufts": "Чернетки",
   "add druft": "Нова чернетка",
   "dealers filter": "Фільтр по магазинах",
-  "search": "Пошук"
+  "search": "Пошук",
+  "catalog": "Каталог"
 }

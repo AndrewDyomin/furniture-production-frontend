@@ -53,6 +53,7 @@
   "cancel": "Отмена",
   "product components": "Компоненты изделия",
   "to archive": "В архив",
+  "archive": "Архив",
   "kitchen banquette": "Кухонный уголок",
   "pouf": "Пуф",
   "poufs": "Пуфы",
@@ -68,5 +69,6 @@
   "my drufts": "Черновики",
   "add druft": "Новый черновик",
   "dealers filter": "Фильтр по магазинам",
-  "search": "Поиск"
+  "search": "Поиск",
+  "catalog": "Каталог"
 }

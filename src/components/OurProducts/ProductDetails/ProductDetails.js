@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import Select from 'react-select';
 import { useAuth } from "hooks";
 import { AdminMenu } from "../AdminMenu/AdminMenu";
+import { ManagerOptions } from "../ManagerOptions/ManagerOptions";
 import { ProductComponents } from "../ProductComponents/ProductComponents";
 import { fetchAllComponents } from "../../../redux/components/operations";
 
@@ -78,6 +79,11 @@ export const ProductDetails = () => {
                 <AdminMenu id={id}/>
             </div>
             )) : <></>}
+            {isLoggedIn ? 
+            <div className={css.adminBlock}>
+                <ManagerOptions product={product}/>
+            </div>
+            : <></>}
         </div>
     )
 }

@@ -18,6 +18,7 @@ import { componentsReducer } from './components/slice';
 import { druftsReducer } from './drufts/slice';
 import refreshTokenMiddleware from './middleware/refreshTokenMiddleware';
 import { userReducer } from './user/slice';
+import { fabricsReducer } from './fabrics/slice';
 
 const authPersistConfig = {
   key: 'auth',
@@ -40,6 +41,7 @@ export const store = configureStore({
     components: componentsReducer,
     drufts: druftsReducer,
     user: userReducer,
+    fabrics: fabricsReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

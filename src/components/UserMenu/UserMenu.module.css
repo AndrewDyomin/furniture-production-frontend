@@ -10,6 +10,7 @@
 
 .username {
   font-weight: 700;
+  margin-bottom: 15px;
 }
 
 .propMob {
@@ -36,13 +37,13 @@
 .link {
   display: inline-block;
   text-decoration: none;
-  padding: 15px 15px 0 15px;
+  padding: 8px 8px;
   font-weight: 700;
   color: #2a363b;
 }
 
 .logoutBtn {
-  background:#B88E2F;
+  background: #b88e2f;
   padding: 10px 20px;
   color: #fff;
   border: none;
@@ -50,4 +51,10 @@
   /* margin-left: 10px; */
   cursor: pointer;
   min-width: 50%;
+}
+
+@media screen and (min-width: 833px) {
+  .username {
+    margin-bottom: 0;
+  }
 }

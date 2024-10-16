@@ -5,8 +5,15 @@ import { Order } from '../Order/Order';
 import { PopUp } from '../PopUp/PopUp';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-import { selectLoading, selectArchivedOrders } from '../../redux/orders/selectors';
-import { setActiveOrder, changeArchiveFilter, changeArchiveSearch } from '../../redux/orders/operations';
+import {
+  selectLoading,
+  selectArchivedOrders,
+} from '../../redux/orders/selectors';
+import {
+  setActiveOrder,
+  changeArchiveFilter,
+  changeArchiveSearch,
+} from '../../redux/orders/operations';
 import css from './ArchiveList.module.css';
 import { useState } from 'react';
 import Select from 'react-select';
@@ -18,8 +25,8 @@ export const ArchiveList = () => {
   const { t } = useTranslation();
   const isMobile = useMediaQuery({ query: '(max-width: 833px)' });
 
-  const filter = useSelector(state => state.orders.archiveFilter)
-  const search = useSelector(state => state.orders.archiveSearch)
+  const filter = useSelector(state => state.orders.archiveFilter);
+  const search = useSelector(state => state.orders.archiveSearch);
   const [isModalOpen, setIsModalOrderOpen] = useState(false);
 
   const location = useLocation();
@@ -47,12 +54,17 @@ export const ArchiveList = () => {
   }
 
   const filteredOrders =
-  prefilteredOrders && prefilteredOrders.length !== 0
-    ? prefilteredOrders.filter(order =>
-        (filter.length === 0 || filter.some(f => f.value.toLowerCase() === order.dealer.toLowerCase())) &&
-        (search === "" || order.name.toLowerCase().includes(search.toLowerCase()))
-      )
-    : [];
+    prefilteredOrders && prefilteredOrders.length !== 0
+      ? prefilteredOrders.filter(
+          order =>
+            (filter.length === 0 ||
+              filter.some(
+                f => f.value.toLowerCase() === order.dealer.toLowerCase()
+              )) &&
+            (search === '' ||
+              order.name.toLowerCase().includes(search.toLowerCase()))
+        )
+      : [];
 
   const closeModal = () => {
     setIsModalOrderOpen(false);
@@ -68,72 +80,75 @@ export const ArchiveList = () => {
     return dateString;
   }
 
-  if (!isMobile) {
-    filteredOrders.forEach((order, index) => {
-      let date = dateToString(order.plannedDeadline);
-      !dateArray.includes(date) && dateArray.push(date)
-    });
-  }
+  filteredOrders.forEach(order => {
+    let date = dateToString(order.plannedDeadline);
+    !dateArray.includes(date) && dateArray.push(date);
+  });
 
   const PreFormList = () => {
     if (!isMobile) {
       return (
-        <ul className={css.list}>
-          {dateArray.map((day) => (
-            <li key={day} className={css.dateItem}>
-              <p className={css.dayTitle}>{day}</p>
-              <ul className={`${css.list} ${css.dateWrapper}`}>
-              {filteredOrders.map(({ _id, plannedDeadline }) => (
-                dateToString(plannedDeadline) === day &&
-                <li key={_id} className={css.item}>
-                  <Link
-                    to={`${_id}`}
-                    state={{ from: location }}
-                    className={css.orderLink}
-                    onClick={() =>
-                      dispatch(
-                        setActiveOrder(
-                          orders.allOrdersArray.find(el => {
-                            return el._id === _id;
-                          })
-                        )
-                      )
-                    }
-                  >
-                    <Order id={_id} order={orders.allOrdersArray.find((el) => {return(el._id === _id)})}/>
-                  </Link>
-                </li>
-              ))}
-              </ul>
+        <ul className={`${css.list} ${css.dateWrapper}`}>
+          {filteredOrders.map(({ _id }) => (
+            <li key={_id} className={css.item}>
+              <Link
+                to={`${_id}`}
+                state={{ from: location }}
+                className={css.orderLink}
+                onClick={() =>
+                  dispatch(
+                    setActiveOrder(
+                      orders.allOrdersArray.find(el => {
+                        return el._id === _id;
+                      })
+                    )
+                  )
+                }
+              >
+                <Order
+                  id={_id}
+                  order={orders.allOrdersArray.find(el => {
+                    return el._id === _id;
+                  })}
+                />
+              </Link>
             </li>
           ))}
         </ul>
-    )}
-    return (
-      <ul className={css.list}>
-        {filteredOrders.map(({ _id }) => (
-          <li key={_id} className={css.item}>
-            <Link
-              to={`${_id}`}
-              state={{ from: location }}
-              className={css.orderLink}
-              onClick={() =>
-                dispatch(
-                  setActiveOrder(
-                    orders.allOrdersArray.find(el => {
-                      return el._id === _id;
-                    })
+      );
+    }
+    if (isMobile) {
+      return (
+        <ul className={css.list}>
+          {filteredOrders.map(({ _id }) => (
+            <li key={_id} className={css.item}>
+              <Link
+                to={`${_id}`}
+                state={{ from: location }}
+                className={css.orderLink}
+                onClick={() =>
+                  dispatch(
+                    setActiveOrder(
+                      orders.allOrdersArray.find(el => {
+                        return el._id === _id;
+                      })
+                    )
                   )
-                )
-              }
-            >
-              <Order id={_id} order={orders.allOrdersArray.find((el) => {return(el._id === _id)})}/>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    )
-  }
+                }
+              >
+                <Order
+                  id={_id}
+                  order={orders.allOrdersArray.find(el => {
+                    return el._id === _id;
+                  })}
+                />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      );
+    }
+  };
 
   return (
     <div className={css.container}>
@@ -168,19 +183,13 @@ export const ArchiveList = () => {
       ) : (
         <></>
       )}
-      {filteredOrders.length !== 0 ? (
-        <PreFormList />
-      ) : (
-        <></>
-      )}
+      {filteredOrders.length !== 0 ? <PreFormList /> : <></>}
       <PopUp
         isOpen={isModalOpen}
         close={closeModal}
         body={
           <>
-            <div className={css.modalWrapper}>
-              {/* modal content */}
-            </div>
+            <div className={css.modalWrapper}>{/* modal content */}</div>
           </>
         }
       />
