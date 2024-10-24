@@ -32,7 +32,6 @@ export const ProductDetails = () => {
     const components = useSelector(selectAllComponents);
     const { t } = useTranslation();
     const differenceInWidth = product.dimensions.width - 160;
-    // const price = product.basePrice;
 
     useEffect(() => {
         dispatch(getProduct(id))
@@ -80,8 +79,8 @@ export const ProductDetails = () => {
             </div>
             )) : <></>}
             {isLoggedIn ? 
-            <div className={css.adminBlock}>
-                <ManagerOptions product={product}/>
+            <div className={css.adminBlock} key={product._id}>
+                <ManagerOptions />
             </div>
             : <></>}
         </div>

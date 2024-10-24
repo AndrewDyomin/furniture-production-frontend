@@ -4,12 +4,24 @@ import Select from 'react-select';
 import { fetchAllFabrics } from '../../../redux/fabrics/operations';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
-import { Stage, Layer, Rect } from 'react-konva';
 
-export const ManagerOptions = ({ product }) => {
+export const ManagerOptions = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const product = useSelector(state => state.products.activeItem);
   const fabricItems = useSelector(state => state.fabrics.items);
+  const [ProductKonva, setProductKonva] = useState(null);
+  const [productWidth, setProductWidth] = useState(
+    product.dimensions.width || 0
+  );
+
+  const [productDepth, setProductDepth] = useState(
+    product.dimensions.depth || 0
+  );
+  const [angleDirection, setAngleDirection] = useState({
+    value: '7',
+    label: '7',
+  });
   const [fabricOptions, setFabricOptions] = useState([]);
   const [fabricDealer, setFabricDealer] = useState({
     value: 'не выбрано',
@@ -86,75 +98,55 @@ export const ManagerOptions = ({ product }) => {
     };
   }, []);
 
-  const seatWidth = product.dimensions.width; // Ширина сиденья от пользователя
-  const seatDepth = product.dimensions.depth * 0.6; // Глубина сиденья 60% от общей глубины дивана
-  
-  const backrestDepth = product.dimensions.depth * 0.1; // Спинка 10% от общей глубины
-  const armWidth = seatWidth * 0.1; // Подлокотники по 10% от ширины сиденья
-  const sofaTotalDepth = seatDepth + backrestDepth;
+  useEffect(() => {
+    const loadComponent = async () => {
+      try {
+        const modelModule = await import(`../Konvas/${product.name}`);
+        setProductKonva(() => modelModule.default);
+      } catch {
+        const modelModule = await import(`../Konvas/Undefined`);
+        setProductKonva(() => modelModule.default);
+      }
+    };
+
+    loadComponent();
+  }, [product.name]);
 
   return (
     <>
       <h3 className={css.calcHeader}>{t('cost calculation')}</h3>
       <div className={css.calcArea}>
         <div ref={stageContainerRef} className={css.schemaArea}>
-          {
-            <Stage width={dimensions.width} height={dimensions.height}>
-              <Layer>
-        {/* Спинка */}
-        <Rect
-          x={armWidth} // Начало спинки с учетом ширины подлокотников
-          y={0} // Спинка вверху, так как это вид сверху
-          width={seatWidth} // Спинка по всей ширине сиденья
-          height={backrestDepth} // Глубина спинки
-          fill="darkgray"
-        />
-        
-        {/* Сиденье */}
-        <Rect
-          x={armWidth} // Начало сиденья с учётом подлокотника
-          y={backrestDepth} // Сиденье начинается сразу после спинки
-          width={seatWidth} // Сиденье по ширине
-          height={seatDepth} // Глубина сиденья
-          fill="gray"
-        />
-        
-        {/* Левый подлокотник */}
-        <Rect
-          x={0} // Левый подлокотник в крайнем левом положении
-          y={backrestDepth} // Подлокотник начинается после спинки
-          width={armWidth} // Ширина подлокотника
-          height={seatDepth} // Высота соответствует глубине сиденья
-          fill="lightgray"
-        />
-        
-        {/* Правый подлокотник */}
-        <Rect
-          x={armWidth + seatWidth} // Правый подлокотник после сиденья
-          y={backrestDepth} // Начало после спинки
-          width={armWidth} // Ширина подлокотника
-          height={seatDepth} // Высота подлокотника
-          fill="lightgray"
-        />
-      </Layer>
-            </Stage>
-          }
+          {!ProductKonva ? (
+            <p>Loading...</p>
+          ) : (
+            <ProductKonva
+              dimensions={dimensions}
+              productWidth={productWidth}
+              productDepth={productDepth}
+              angleDirection={angleDirection}
+            />
+          )}
         </div>
         <div className={css.inputsArea}>
           <label>
             {t('width')}
             <input
               className={css.sizeInput}
-              placeholder="ширина"
-              defaultValue={product.dimensions.width}
+              defaultValue={productWidth}
+              onChange={e =>
+                e.target.value > 100 && setProductWidth(e.target.value)
+              }
             />
           </label>
           <label>
             {t('depth')}
             <input
               className={css.sizeInput}
-              placeholder="глубина"
-              defaultValue={product.dimensions.depth}
+              defaultValue={productDepth}
+              onChange={e =>
+                e.target.value > 100 && setProductDepth(e.target.value)
+              }
             />
           </label>
           <label>
@@ -165,7 +157,8 @@ export const ManagerOptions = ({ product }) => {
                 { value: '7', label: '7' },
                 { value: 'Г', label: 'Г' },
               ]}
-              defaultValue={{ value: '7', label: '7' }}
+              defaultValue={angleDirection}
+              onChange={e => setAngleDirection(e)}
             />
           </label>
           <label>
