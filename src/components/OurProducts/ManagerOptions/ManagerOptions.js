@@ -149,7 +149,7 @@ export const ManagerOptions = () => {
               }
             />
           </label>
-          <label>
+          {product.costCalc.corner && <label>
             {t('angle direction')}
             <Select
               placeholder="угол поворота"
@@ -160,7 +160,7 @@ export const ManagerOptions = () => {
               defaultValue={angleDirection}
               onChange={e => setAngleDirection(e)}
             />
-          </label>
+          </label>}
           <label>
             {t('Утяжки')}
             <Select

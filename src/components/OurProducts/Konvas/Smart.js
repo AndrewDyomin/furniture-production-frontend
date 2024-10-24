@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Stage, Layer, Rect, Line } from 'react-konva';
+import { Stage, Layer, Rect, Line, Text } from 'react-konva';
 
 export default function Smart({
   dimensions,
@@ -148,9 +148,9 @@ export default function Smart({
         <Layer>
           <Line
             points={[
-              offsetX + 50,
+              offsetX + 100,
               offsetY + (sofaTotalDepth),
-              offsetX + 200,
+              offsetX - cornerSeatWidth - cornerBack + sofaTotalWidth,
               offsetY + (sofaTotalDepth),
             ]}
             stroke="black"
@@ -159,14 +159,53 @@ export default function Smart({
           />
           <Line
             points={[
-              offsetX - 50,
+              offsetX,
               offsetY + (sofaTotalDepth),
-              offsetX - 200,
+              offsetX - cornerSeatWidth - cornerBack,
               offsetY + (sofaTotalDepth),
             ]}
             stroke="black"
             strokeWidth={1}
             closed={false}
+          />
+          <Text
+            x={offsetX}
+            y={(offsetY + (sofaTotalDepth)) - 9}
+            text={productWidth}
+            width={100}
+            align='center'
+            fontSize={18}
+          />
+          <Line
+            points={[
+              offsetX - (sofaTotalWidth / 2),
+              offsetY - cornerBack,
+              offsetX - (sofaTotalWidth / 2),
+              offsetY - cornerBack + (sofaTotalDepth / 2) - 50,
+            ]}
+            stroke="black"
+            strokeWidth={1}
+            closed={false}
+          />
+          <Line
+            points={[
+              offsetX - (sofaTotalWidth / 2),
+              offsetY - cornerBack + (sofaTotalDepth / 2) + 50,
+              offsetX - (sofaTotalWidth / 2),
+              offsetY - cornerBack + sofaTotalDepth,
+            ]}
+            stroke="black"
+            strokeWidth={1}
+            closed={false}
+          />
+          <Text
+            x={(offsetX - (sofaTotalWidth / 2)) - 9}
+            y={(offsetY - cornerBack) + (sofaTotalDepth / 2) + 50}
+            text={productDepth}
+            width={100}
+            align='center'
+            rotation={270}
+            fontSize={18}
           />
         </Layer>
       </Stage>
