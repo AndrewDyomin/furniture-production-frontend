@@ -14,10 +14,11 @@ export const ManagerOptions = () => {
   const [productWidth, setProductWidth] = useState(
     product.dimensions.width || 0
   );
-
   const [productDepth, setProductDepth] = useState(
     product.dimensions.depth || 0
   );
+  const [mattressWidth, setMattressWidth] = useState(Number(160));
+  const [mattressDepth, setMattressDepth] = useState(Number(200));
   const [angleDirection, setAngleDirection] = useState({
     value: '7',
     label: '7',
@@ -110,7 +111,19 @@ export const ManagerOptions = () => {
     };
 
     loadComponent();
-  }, [product.name]);
+  }, [product.name, mattressWidth, mattressDepth, productWidth, productDepth]);
+
+  const changeMattressWidth = value => {
+    const difference = value - 160;
+    setProductWidth(() => Number(product.dimensions.width) + difference);
+    setMattressWidth(value);
+  };
+
+  const changeMattressDepth = value => {
+    const difference = value - 200;
+    setProductDepth(() => Number(product.dimensions.depth) + difference);
+    setMattressDepth(value);
+  };
 
   return (
     <>
@@ -125,53 +138,110 @@ export const ManagerOptions = () => {
               productWidth={productWidth}
               productDepth={productDepth}
               angleDirection={angleDirection}
+              mattressWidth={mattressWidth}
+              mattressDepth={mattressDepth}
             />
           )}
         </div>
-        <div className={css.inputsArea}>
+        <div className={css.inputsArea} id="widthInput">
           <label>
             {t('width')}
-            <input
-              className={css.sizeInput}
-              defaultValue={productWidth}
-              onChange={e =>
-                e.target.value > 100 && setProductWidth(e.target.value)
-              }
-            />
+            {product.group === 'bed' && (
+              <input
+                className={css.sizeInput}
+                disabled={true}
+                value={productWidth}
+              />
+            )}
+            {product.group !== 'bed' && (
+              <input
+                className={css.sizeInput}
+                defaultValue={productWidth}
+                onChange={e =>
+                  e.target.value >= 100 &&
+                  setProductWidth(Number(e.target.value))
+                }
+              />
+            )}
           </label>
           <label>
             {t('depth')}
-            <input
-              className={css.sizeInput}
-              defaultValue={productDepth}
-              onChange={e =>
-                e.target.value > 100 && setProductDepth(e.target.value)
-              }
-            />
+            {product.group === 'bed' && (
+              <input
+                className={css.sizeInput}
+                disabled={true}
+                value={productDepth}
+              />
+            )}
+            {product.group !== 'bed' && (
+              <input
+                className={css.sizeInput}
+                defaultValue={productDepth}
+                onChange={e =>
+                  e.target.value >= 100 &&
+                  setProductDepth(Number(e.target.value))
+                }
+              />
+            )}
           </label>
-          {product.costCalc.corner && <label>
-            {t('angle direction')}
-            <Select
-              placeholder="угол поворота"
-              options={[
-                { value: '7', label: '7' },
-                { value: 'Г', label: 'Г' },
-              ]}
-              defaultValue={angleDirection}
-              onChange={e => setAngleDirection(e)}
-            />
-          </label>}
-          <label>
-            {t('Утяжки')}
-            <Select
-              placeholder="утяжки"
-              options={[
-                { value: 'с утяжками', label: 'С утяжками' },
-                { value: 'без утяжек', label: 'Без утяжек' },
-              ]}
-              defaultValue={{ value: 'с утяжками', label: 'С утяжками' }}
-            />
-          </label>
+          {product.group === 'bed' && (
+            <div>
+              <label>{t('sleeping area')}</label>
+              <div>
+                <input
+                  className={`${css.sizeInput} ${css.sleepSizeInput}`}
+                  defaultValue={mattressWidth}
+                  onChange={e =>
+                    e.target.value >= 90 &&
+                    changeMattressWidth(Number(e.target.value))
+                  }
+                />
+                {` x `}
+                <input
+                  className={`${css.sizeInput} ${css.sleepSizeInput}`}
+                  defaultValue={mattressDepth}
+                  onChange={e =>
+                    e.target.value >= 90 &&
+                    changeMattressDepth(Number(e.target.value))
+                  }
+                />
+              </div>
+              {/* <label>
+                {t('Standart proportions')}
+                <input 
+                  type='checkbox'
+                  defaultChecked={true}
+                />
+              </label> */}
+            </div>
+          )}
+          {product.costCalc.corner && (
+            <label>
+              {t('angle direction')}
+              <Select
+                placeholder="угол поворота"
+                options={[
+                  { value: '7', label: '7' },
+                  { value: 'Г', label: 'Г' },
+                ]}
+                defaultValue={angleDirection}
+                onChange={e => setAngleDirection(e)}
+              />
+            </label>
+          )}
+          {product.costCalc.drawstrings && (
+            <label>
+              {t('Утяжки')}
+              <Select
+                placeholder="утяжки"
+                options={[
+                  { value: 'с утяжками', label: 'С утяжками' },
+                  { value: 'без утяжек', label: 'Без утяжек' },
+                ]}
+                defaultValue={{ value: 'с утяжками', label: 'С утяжками' }}
+              />
+            </label>
+          )}
           <label>
             {t('supplier')}
             <Select
