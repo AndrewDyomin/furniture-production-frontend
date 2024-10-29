@@ -37,6 +37,21 @@
     width: 80px;
 }
 
+.proportionsBtnWrapper {
+ margin-top: 10px;
+ display: flex;
+ gap: 10px;
+}
+
+/* .proportionsLabel {
+
+} */
+
+.bedDetailsWrapper {
+    display: flex;
+    flex-direction: column;
+}
+
 @media screen and (min-width: 768px) {
     .calcArea {
         flex-direction: row;

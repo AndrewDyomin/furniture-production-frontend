@@ -7,6 +7,10 @@ export default function Feelee({
   productDepth,
   mattressWidth,
   mattressDepth,
+  headDepth,
+  setHeadDepth,
+  tsargWidth,
+  setTsargWidth
 }) {
 
   const [scaleFactor, setScaleFactor] = useState(1);
@@ -17,8 +21,8 @@ export default function Feelee({
   const sleepingWidth = (mattressWidth + 1) * scaleFactor;
   const sleepingDepth = (mattressDepth + 2) * scaleFactor;
 
-  const headDepth = 17 * scaleFactor;
-  const tsargWidth = 12 * scaleFactor;
+  const head = headDepth * scaleFactor;
+  const tsarg = tsargWidth * scaleFactor;
 
   const offsetX = dimensions.width / 2;
   const offsetY = dimensions.height / 2;
@@ -33,6 +37,11 @@ export default function Feelee({
     }
   }, [dimensions, productWidth, productDepth]);
 
+  useEffect(() => {
+    setHeadDepth(17);
+    setTsargWidth(12);
+  }, [])
+
   return (
     <div>
       <Stage width={dimensions.width} height={dimensions.height}>
@@ -42,17 +51,17 @@ export default function Feelee({
             x={offsetX - (bedTotalWidth / 2)}
             y={offsetY - (bedTotalDepth / 2)}
             width={bedTotalWidth}
-            height={headDepth}
+            height={head}
             stroke="black"
             strokeWidth={1}
             cornerRadius={3}
           />
           {/* Out */}
           <Rect
-            x={offsetX - (sleepingWidth / 2) - tsargWidth}
-            y={offsetY - (bedTotalDepth / 2) + (headDepth)}
-            width={sleepingWidth + (tsargWidth * 2)}
-            height={sleepingDepth + tsargWidth}
+            x={offsetX - (sleepingWidth / 2) - tsarg}
+            y={offsetY - (bedTotalDepth / 2) + (head)}
+            width={sleepingWidth + (tsarg * 2)}
+            height={sleepingDepth + tsarg}
             stroke="black"
             strokeWidth={1}
             cornerRadius={5}
@@ -60,7 +69,7 @@ export default function Feelee({
           {/* In */}
           <Rect
             x={offsetX - (sleepingWidth / 2)}
-            y={offsetY - (bedTotalDepth / 2) + (headDepth)}
+            y={offsetY - (bedTotalDepth / 2) + (head)}
             width={sleepingWidth}
             height={sleepingDepth}
             stroke="black"
@@ -69,7 +78,7 @@ export default function Feelee({
           {/* Mattress */}
           <Rect
             x={offsetX - ((mattressWidth * scaleFactor) / 2)}
-            y={offsetY - (bedTotalDepth / 2) + headDepth + scaleFactor}
+            y={offsetY - (bedTotalDepth / 2) + head + scaleFactor}
             width={mattressWidth * scaleFactor}
             height={mattressDepth * scaleFactor}
             stroke="black"

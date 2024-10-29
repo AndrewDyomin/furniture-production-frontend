@@ -4,6 +4,7 @@ import Select from 'react-select';
 import { fetchAllFabrics } from '../../../redux/fabrics/operations';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
+import ToggleButton from 'react-toggle-button';
 
 export const ManagerOptions = () => {
   const { t } = useTranslation();
@@ -19,6 +20,11 @@ export const ManagerOptions = () => {
   );
   const [mattressWidth, setMattressWidth] = useState(Number(160));
   const [mattressDepth, setMattressDepth] = useState(Number(200));
+  const [standardProportions, setStandardProportions] = useState({
+    value: true,
+  });
+  const [headDepth, setHeadDepth] = useState(10)
+  const [tsargWidth, setTsargWidth] = useState(5)
   const [angleDirection, setAngleDirection] = useState({
     value: '7',
     label: '7',
@@ -125,6 +131,20 @@ export const ManagerOptions = () => {
     setMattressDepth(value);
   };
 
+  const changeHeadDepth = value => {
+    
+    console.log('headDeptth=', headDepth);
+    console.log('value=', value)
+    if (value > headDepth) {
+      const difference = value - headDepth;
+      setProductDepth(() => productDepth + difference);
+    } else {
+      const difference = headDepth - value;
+      setProductDepth(() => productDepth - difference);
+    };
+    setHeadDepth(value);
+  };
+
   return (
     <>
       <h3 className={css.calcHeader}>{t('cost calculation')}</h3>
@@ -140,6 +160,10 @@ export const ManagerOptions = () => {
               angleDirection={angleDirection}
               mattressWidth={mattressWidth}
               mattressDepth={mattressDepth}
+              headDepth={headDepth}
+              setHeadDepth={setHeadDepth}
+              tsargWidth={tsargWidth}
+              setTsargWidth={setTsargWidth}
             />
           )}
         </div>
@@ -206,13 +230,50 @@ export const ManagerOptions = () => {
                   }
                 />
               </div>
-              {/* <label>
-                {t('Standart proportions')}
-                <input 
-                  type='checkbox'
-                  defaultChecked={true}
+              <div className={css.proportionsBtnWrapper}>
+                <p className={css.proportionsLabel}>{t('standard proportions')}</p>
+                <ToggleButton
+                  inactiveLabel={'X'}
+                  activeLabel={'V'}
+                  value={standardProportions}
+                  onToggle={value => {
+                    setStandardProportions( !value );
+                  }}
                 />
-              </label> */}
+              </div>
+              {!standardProportions && 
+              <div className={css.bedDetailsWrapper}>
+                <label>
+                  высота изголовья
+                  <input 
+                    className={css.sizeInput}
+                  />
+                </label>
+                <label>
+                  толщина изголовья
+                  <input 
+                    className={css.sizeInput}
+                    defaultValue={headDepth}
+                    onChange={e =>
+                      e.target.value >= 9 &&
+                      changeHeadDepth(Number(e.target.value))
+                    }
+                  />
+                </label>
+                <label>
+                  высота царг
+                  <input 
+                    className={css.sizeInput}
+                  />
+                </label>
+                <label>
+                  толщина царг
+                  <input 
+                    className={css.sizeInput}
+                  />
+                </label>
+              </div>
+              }
             </div>
           )}
           {product.costCalc.corner && (
