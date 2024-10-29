@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Stage, Layer, Rect, Line, Text } from 'react-konva';
 
-export default function Feelee({
+export default function Frao({
   dimensions,
   productWidth,
   productDepth,
@@ -38,8 +38,8 @@ export default function Feelee({
   }, [dimensions, productWidth, productDepth]);
 
   useEffect(() => {
-    setHeadDepth(17);
-    setTsargWidth(12);
+    setHeadDepth(10);
+    setTsargWidth(7);
   }, [setHeadDepth, setTsargWidth])
 
   return (

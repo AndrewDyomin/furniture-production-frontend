@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Stage, Layer, Rect, Line, Text } from 'react-konva';
 
-export default function Feelee({
+export default function Flow({
   dimensions,
   productWidth,
   productDepth,
@@ -38,8 +38,8 @@ export default function Feelee({
   }, [dimensions, productWidth, productDepth]);
 
   useEffect(() => {
-    setHeadDepth(17);
-    setTsargWidth(12);
+    setHeadDepth(23);
+    setTsargWidth(6);
   }, [setHeadDepth, setTsargWidth])
 
   return (
@@ -50,7 +50,16 @@ export default function Feelee({
           <Rect
             x={offsetX - (bedTotalWidth / 2)}
             y={offsetY - (bedTotalDepth / 2)}
-            width={bedTotalWidth}
+            width={bedTotalWidth / 2}
+            height={head}
+            stroke="black"
+            strokeWidth={1}
+            cornerRadius={3}
+          />
+          <Rect
+            x={offsetX}
+            y={offsetY - (bedTotalDepth / 2)}
+            width={bedTotalWidth / 2}
             height={head}
             stroke="black"
             strokeWidth={1}
@@ -65,15 +74,6 @@ export default function Feelee({
             stroke="black"
             strokeWidth={1}
             cornerRadius={5}
-          />
-          {/* In */}
-          <Rect
-            x={offsetX - (sleepingWidth / 2)}
-            y={offsetY - (bedTotalDepth / 2) + (head)}
-            width={sleepingWidth}
-            height={sleepingDepth}
-            stroke="black"
-            strokeWidth={1}
           />
           {/* Mattress */}
           <Rect

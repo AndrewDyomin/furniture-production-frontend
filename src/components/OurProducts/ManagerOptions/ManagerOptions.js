@@ -23,7 +23,9 @@ export const ManagerOptions = () => {
   const [standardProportions, setStandardProportions] = useState({
     value: true,
   });
+  const [headHeight, setHeadHeight] = useState('Standard')
   const [headDepth, setHeadDepth] = useState(10)
+  const [tsargHeight, setTsargHeight] = useState('Standard')
   const [tsargWidth, setTsargWidth] = useState(5)
   const [angleDirection, setAngleDirection] = useState({
     value: '7',
@@ -39,6 +41,7 @@ export const ManagerOptions = () => {
     value: 'не выбрано',
     label: 'Не выбрано',
   });
+  const [comment, setComment] = useState('')
 
   useEffect(() => {
     if (fabricItems.length === 0) {
@@ -132,9 +135,6 @@ export const ManagerOptions = () => {
   };
 
   const changeHeadDepth = value => {
-    
-    console.log('headDeptth=', headDepth);
-    console.log('value=', value)
     if (value > headDepth) {
       const difference = value - headDepth;
       setProductDepth(() => productDepth + difference);
@@ -143,6 +143,19 @@ export const ManagerOptions = () => {
       setProductDepth(() => productDepth - difference);
     };
     setHeadDepth(value);
+  };
+
+  const changeTsargWidth = value => {
+    if (value > tsargWidth) {
+      const difference = value - tsargWidth;
+      setProductDepth(() => productDepth + difference);
+      setProductWidth(() => productWidth + (difference * 2));
+    } else {
+      const difference = tsargWidth - value;
+      setProductDepth(() => productDepth - difference);
+      setProductWidth(() => productWidth - (difference * 2));
+    };
+    setTsargWidth(value);
   };
 
   return (
@@ -247,6 +260,11 @@ export const ManagerOptions = () => {
                   высота изголовья
                   <input 
                     className={css.sizeInput}
+                    defaultValue={headHeight}
+                    onChange={e =>
+                      e.target.value >= 9 &&
+                      setHeadHeight(Number(e.target.value))
+                    }
                   />
                 </label>
                 <label>
@@ -264,12 +282,22 @@ export const ManagerOptions = () => {
                   высота царг
                   <input 
                     className={css.sizeInput}
+                    defaultValue={tsargHeight}
+                    onChange={e =>
+                      e.target.value >= 9 &&
+                      setTsargHeight(Number(e.target.value))
+                    }
                   />
                 </label>
                 <label>
                   толщина царг
                   <input 
                     className={css.sizeInput}
+                    defaultValue={tsargWidth}
+                    onChange={e =>
+                      e.target.value >= 5 &&
+                      changeTsargWidth(Number(e.target.value))
+                    }
                   />
                 </label>
               </div>
@@ -326,6 +354,16 @@ export const ManagerOptions = () => {
               />
             </label>
           )}
+          <label>
+                  {t('comment')}
+                  <input 
+                    className={css.sizeInput}
+                    defaultValue={comment}
+                    onChange={e =>
+                      setComment(e.target.value)
+                    }
+                  />
+                </label>
         </div>
       </div>
     </>
