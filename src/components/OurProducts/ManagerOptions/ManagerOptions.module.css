@@ -48,6 +48,20 @@
 
 } */
 
+.btn {
+    padding: 10px 20px;
+    background-color: #B88E2F;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    min-width: calc((100% - 20px)/2);
+}
+
+.btn:hover {
+    background-color: #a07c28;
+}
+
 .bedDetailsWrapper {
     display: flex;
     flex-direction: column;

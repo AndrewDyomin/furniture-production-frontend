@@ -73,5 +73,12 @@
   "catalog": "All products",
   "cost calculation": "Cost calculation",
   "angle direction": "Angle direction",
-  "supplier": "Supplier"
+  "supplier": "Supplier",
+  "standard proportions": "Standard proportions",
+  "comment": "Comment",
+  "head height": "Head height",
+  "head thickness": "Head thickness",
+  "tsarg height": "Tsarg height",
+  "tsarg thickness": "Tsarg thickness",
+  "send": "Send"
 }

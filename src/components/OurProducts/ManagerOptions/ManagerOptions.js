@@ -5,6 +5,9 @@ import { fetchAllFabrics } from '../../../redux/fabrics/operations';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import ToggleButton from 'react-toggle-button';
+import axios from 'axios';
+
+axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
 
 export const ManagerOptions = () => {
   const { t } = useTranslation();
@@ -23,10 +26,10 @@ export const ManagerOptions = () => {
   const [standardProportions, setStandardProportions] = useState({
     value: true,
   });
-  const [headHeight, setHeadHeight] = useState('Standard')
-  const [headDepth, setHeadDepth] = useState(10)
-  const [tsargHeight, setTsargHeight] = useState('Standard')
-  const [tsargWidth, setTsargWidth] = useState(5)
+  const [headHeight, setHeadHeight] = useState('Standard');
+  const [headDepth, setHeadDepth] = useState(10);
+  const [tsargHeight, setTsargHeight] = useState('Standard');
+  const [tsargWidth, setTsargWidth] = useState(5);
   const [angleDirection, setAngleDirection] = useState({
     value: '7',
     label: '7',
@@ -41,7 +44,7 @@ export const ManagerOptions = () => {
     value: 'не выбрано',
     label: 'Не выбрано',
   });
-  const [comment, setComment] = useState('')
+  const [comment, setComment] = useState('');
 
   useEffect(() => {
     if (fabricItems.length === 0) {
@@ -141,7 +144,7 @@ export const ManagerOptions = () => {
     } else {
       const difference = headDepth - value;
       setProductDepth(() => productDepth - difference);
-    };
+    }
     setHeadDepth(value);
   };
 
@@ -149,13 +152,51 @@ export const ManagerOptions = () => {
     if (value > tsargWidth) {
       const difference = value - tsargWidth;
       setProductDepth(() => productDepth + difference);
-      setProductWidth(() => productWidth + (difference * 2));
+      setProductWidth(() => productWidth + difference * 2);
     } else {
       const difference = tsargWidth - value;
       setProductDepth(() => productDepth - difference);
-      setProductWidth(() => productWidth - (difference * 2));
-    };
+      setProductWidth(() => productWidth - difference * 2);
+    }
     setTsargWidth(value);
+  };
+
+  const productKonvaRef = useRef(null);
+
+  const downloadScheme = () => {
+    const image = productKonvaRef.current.getImage();
+    const link = document.createElement('a');
+    link.href = image;
+    link.download = 'konva-image.jpg';
+
+    link.click();
+  };
+
+  const sendCalc = async () => {
+    const image = productKonvaRef.current.getImage();
+
+    const response = await fetch(image);
+    const blob = await response.blob();
+
+    const formData = new FormData();
+    formData.append('file', blob, 'konva-image.jpg');
+    formData.append('width', productWidth);
+    formData.append('depth', productDepth);
+    formData.append('comment', comment);
+    formData.append('name', product.name);
+    formData.append('fabricDealer', fabricDealer.value);
+    formData.append('fabricName', fabricName.value);
+
+    try {
+      const res = await axios.post('/calculations/send', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log('Изображение успешно отправлено:', res.data);
+    } catch (error) {
+      console.error('Ошибка при отправке изображения:', error);
+    }
   };
 
   return (
@@ -167,6 +208,7 @@ export const ManagerOptions = () => {
             <p>Loading...</p>
           ) : (
             <ProductKonva
+              ref={productKonvaRef}
               dimensions={dimensions}
               productWidth={productWidth}
               productDepth={productDepth}
@@ -244,64 +286,66 @@ export const ManagerOptions = () => {
                 />
               </div>
               <div className={css.proportionsBtnWrapper}>
-                <p className={css.proportionsLabel}>{t('standard proportions')}</p>
+                <p className={css.proportionsLabel}>
+                  {t('standard proportions')}
+                </p>
                 <ToggleButton
                   inactiveLabel={'X'}
                   activeLabel={'V'}
                   value={standardProportions}
                   onToggle={value => {
-                    setStandardProportions( !value );
+                    setStandardProportions(!value);
                   }}
                 />
               </div>
-              {!standardProportions && 
-              <div className={css.bedDetailsWrapper}>
-                <label>
-                  высота изголовья
-                  <input 
-                    className={css.sizeInput}
-                    defaultValue={headHeight}
-                    onChange={e =>
-                      e.target.value >= 9 &&
-                      setHeadHeight(Number(e.target.value))
-                    }
-                  />
-                </label>
-                <label>
-                  толщина изголовья
-                  <input 
-                    className={css.sizeInput}
-                    defaultValue={headDepth}
-                    onChange={e =>
-                      e.target.value >= 9 &&
-                      changeHeadDepth(Number(e.target.value))
-                    }
-                  />
-                </label>
-                <label>
-                  высота царг
-                  <input 
-                    className={css.sizeInput}
-                    defaultValue={tsargHeight}
-                    onChange={e =>
-                      e.target.value >= 9 &&
-                      setTsargHeight(Number(e.target.value))
-                    }
-                  />
-                </label>
-                <label>
-                  толщина царг
-                  <input 
-                    className={css.sizeInput}
-                    defaultValue={tsargWidth}
-                    onChange={e =>
-                      e.target.value >= 5 &&
-                      changeTsargWidth(Number(e.target.value))
-                    }
-                  />
-                </label>
-              </div>
-              }
+              {!standardProportions && (
+                <div className={css.bedDetailsWrapper}>
+                  <label>
+                    {t('head height')}
+                    <input
+                      className={css.sizeInput}
+                      defaultValue={headHeight}
+                      onChange={e =>
+                        e.target.value >= 9 &&
+                        setHeadHeight(Number(e.target.value))
+                      }
+                    />
+                  </label>
+                  <label>
+                    {t('head thickness')}
+                    <input
+                      className={css.sizeInput}
+                      defaultValue={headDepth}
+                      onChange={e =>
+                        e.target.value >= 9 &&
+                        changeHeadDepth(Number(e.target.value))
+                      }
+                    />
+                  </label>
+                  <label>
+                    {t('tsarg height')}
+                    <input
+                      className={css.sizeInput}
+                      defaultValue={tsargHeight}
+                      onChange={e =>
+                        e.target.value >= 9 &&
+                        setTsargHeight(Number(e.target.value))
+                      }
+                    />
+                  </label>
+                  <label>
+                    {t('tsarg thickness')}
+                    <input
+                      className={css.sizeInput}
+                      defaultValue={tsargWidth}
+                      onChange={e =>
+                        e.target.value >= 5 &&
+                        changeTsargWidth(Number(e.target.value))
+                      }
+                    />
+                  </label>
+                </div>
+              )}
             </div>
           )}
           {product.costCalc.corner && (
@@ -355,15 +399,20 @@ export const ManagerOptions = () => {
             </label>
           )}
           <label>
-                  {t('comment')}
-                  <input 
-                    className={css.sizeInput}
-                    defaultValue={comment}
-                    onChange={e =>
-                      setComment(e.target.value)
-                    }
-                  />
-                </label>
+            {t('comment')}
+            <input
+              className={css.sizeInput}
+              defaultValue={comment}
+              onChange={e => setComment(e.target.value)}
+            />
+          </label>
+          <button className={css.btn} onClick={sendCalc}>
+            {t('send')}
+          </button>
+          <p>{t('or')}</p>
+          <button className={css.btn} onClick={downloadScheme}>
+            {t('download scheme')}
+          </button>
         </div>
       </div>
     </>

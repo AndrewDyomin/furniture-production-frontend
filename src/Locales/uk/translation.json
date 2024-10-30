@@ -73,5 +73,13 @@
   "catalog": "Каталог",
   "cost calculation": "Прорахунок вартості",
   "angle direction": "Напрям кута",
-  "supplier": "Постачальник тканини"
+  "supplier": "Постачальник тканини",
+  
+"standard proportions": "Стандартні пропорції",
+"comment": "Коментар",
+"head height": "Висота узголів'я",
+"head thickness": "Товщина узголів'я",
+"tsarg height": "Висота царг",
+"tsarg thickness": "Товщина царг",
+"send": "Надіслати"
 }
