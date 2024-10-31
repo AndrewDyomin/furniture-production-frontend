@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import ToggleButton from 'react-toggle-button';
 import axios from 'axios';
+import toast from 'react-hot-toast';
+import PulseLoader from 'react-spinners/PulseLoader';
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
 
@@ -14,6 +16,7 @@ export const ManagerOptions = () => {
   const dispatch = useDispatch();
   const product = useSelector(state => state.products.activeItem);
   const fabricItems = useSelector(state => state.fabrics.items);
+  const [isPending, setIsPending] = useState(false);
   const [ProductKonva, setProductKonva] = useState(null);
   const [productWidth, setProductWidth] = useState(
     product.dimensions.width || 0
@@ -23,9 +26,7 @@ export const ManagerOptions = () => {
   );
   const [mattressWidth, setMattressWidth] = useState(Number(160));
   const [mattressDepth, setMattressDepth] = useState(Number(200));
-  const [standardProportions, setStandardProportions] = useState({
-    value: true,
-  });
+  const [standardProportions, setStandardProportions] = useState(true);
   const [headHeight, setHeadHeight] = useState('Standard');
   const [headDepth, setHeadDepth] = useState(10);
   const [tsargHeight, setTsargHeight] = useState('Standard');
@@ -34,6 +35,7 @@ export const ManagerOptions = () => {
     value: '7',
     label: '7',
   });
+  const [drawstrings, setDrawstrings] = useState({ value: 'с утяжками', label: 'С утяжками' })
   const [fabricOptions, setFabricOptions] = useState([]);
   const [fabricDealer, setFabricDealer] = useState({
     value: 'не выбрано',
@@ -164,15 +166,18 @@ export const ManagerOptions = () => {
   const productKonvaRef = useRef(null);
 
   const downloadScheme = () => {
+    setIsPending(true);
     const image = productKonvaRef.current.getImage();
     const link = document.createElement('a');
     link.href = image;
     link.download = 'konva-image.jpg';
 
     link.click();
+    setIsPending(false);
   };
 
   const sendCalc = async () => {
+    setIsPending(true);
     const image = productKonvaRef.current.getImage();
 
     const response = await fetch(image);
@@ -180,22 +185,41 @@ export const ManagerOptions = () => {
 
     const formData = new FormData();
     formData.append('file', blob, 'konva-image.jpg');
+    formData.append('_id', product._id);
     formData.append('width', productWidth);
     formData.append('depth', productDepth);
     formData.append('comment', comment);
     formData.append('name', product.name);
     formData.append('fabricDealer', fabricDealer.value);
     formData.append('fabricName', fabricName.value);
+    if (product.group === 'bed') {
+      formData.append('mattressWidth', mattressWidth);
+      formData.append('mattressDepth', mattressDepth);
+      formData.append('standardProportions', standardProportions);
+    }
+    if (!standardProportions) {
+      formData.append('headHeight', headHeight);
+      formData.append('headDepth', headDepth);
+      formData.append('tsargHeight', tsargHeight);
+      formData.append('tsargWidth', tsargWidth);
+    }
+    if (product.costCalc.corner) {
+      formData.append('angleDirection', angleDirection.value)
+    }
+    if (product.costCalc.drawstrings) {
+      formData.append('drawstrings', drawstrings.value)
+    }
 
     try {
-      const res = await axios.post('/calculations/send', formData, {
+      await axios.post('/calculations/send', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log('Изображение успешно отправлено:', res.data);
+      setIsPending(false);
+      toast.success(t('Your application has been successfully sent'));
     } catch (error) {
-      console.error('Ошибка при отправке изображения:', error);
+      toast.error(error)
     }
   };
 
@@ -371,7 +395,8 @@ export const ManagerOptions = () => {
                   { value: 'с утяжками', label: 'С утяжками' },
                   { value: 'без утяжек', label: 'Без утяжек' },
                 ]}
-                defaultValue={{ value: 'с утяжками', label: 'С утяжками' }}
+                defaultValue={drawstrings}
+                onChange={e => setDrawstrings(e)}
               />
             </label>
           )}
@@ -407,11 +432,19 @@ export const ManagerOptions = () => {
             />
           </label>
           <button className={css.btn} onClick={sendCalc}>
-            {t('send')}
+            {isPending ? (
+              <PulseLoader color="#c8c19b" size="10px" />
+            ) : (
+              `${t('send')}`
+            )}
           </button>
           <p>{t('or')}</p>
           <button className={css.btn} onClick={downloadScheme}>
-            {t('download scheme')}
+            {isPending ? (
+              <PulseLoader color="#c8c19b" size="10px" />
+            ) : (
+              `${t('download scheme')}`
+            )}
           </button>
         </div>
       </div>

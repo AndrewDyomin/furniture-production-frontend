@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, forwardRef, useRef, useImperativeHandle } from 'react';
 import { Stage, Layer, Rect, Line, Text } from 'react-konva';
 
-export default function Hugo({
+const Hugo = forwardRef(({
   dimensions,
   productWidth,
   productDepth,
-}) {
+}, ref) => {
   const [scaleFactor, setScaleFactor] = useState(1);
+  const stageRef = useRef(null);
 
   const sofaTotalDepth = productDepth * scaleFactor;
   const sofaTotalWidth = productWidth * scaleFactor;
@@ -24,9 +25,24 @@ export default function Hugo({
     }
   }, [dimensions, productWidth, productDepth]);
 
+  useImperativeHandle(ref, () => ({
+    getImage() {
+      return stageRef.current.toDataURL({ mimeType: 'image/jpeg', quality: 1 });
+    }
+  }));
+
   return (
     <div>
-      <Stage width={dimensions.width} height={dimensions.height}>
+      <Stage ref={stageRef} width={dimensions.width} height={dimensions.height}>
+      <Layer>
+        <Rect
+            x={0}
+            y={0}
+            width={dimensions.width}
+            height={dimensions.height}
+            fill={'#FFF'}
+          />
+        </Layer>
         <Layer>
           <Rect
             x={offsetX - (sofaTotalWidth / 2)}
@@ -113,4 +129,6 @@ export default function Hugo({
       </Stage>
     </div>
   );
-}
+})
+
+export default Hugo;

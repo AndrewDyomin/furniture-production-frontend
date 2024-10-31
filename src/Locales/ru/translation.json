@@ -80,5 +80,8 @@
   "head thickness": "Толщина изголовья",
   "tsarg height": "Высота царг",
   "tsarg thickness": "Толщина царг",
-  "send": "Отправить"
+  "send": "Отправить",
+  "or": "или",
+  "download scheme": "Скачать схему",
+  "Your application has been successfully sent": "Ваша заявка отправлена"
 }

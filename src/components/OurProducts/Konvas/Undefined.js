@@ -1,9 +1,25 @@
-import { Stage, Layer, Text } from 'react-konva';
+import { forwardRef, useImperativeHandle, useRef } from 'react';
+import { Stage, Layer, Text, Rect } from 'react-konva';
 
-export default function Undefined({ dimensions }) {
+const Undefined = forwardRef(({ dimensions }, ref) => {
+  const stageRef = useRef(null);
+  useImperativeHandle(ref, () => ({
+    getImage() {
+      return stageRef.current.toDataURL({ mimeType: 'image/jpeg', quality: 1 });
+    }
+  }));
   return (
     <div>
-      <Stage width={dimensions.width} height={dimensions.height}>
+      <Stage ref={stageRef} width={dimensions.width} height={dimensions.height}>
+        <Layer>
+        <Rect
+            x={0}
+            y={0}
+            width={dimensions.width}
+            height={dimensions.height}
+            fill={'#FFF'}
+          />
+        </Layer>
         <Layer>
           <Text
             x={dimensions.width / 2.4}
@@ -15,4 +31,6 @@ export default function Undefined({ dimensions }) {
       </Stage>
     </div>
   );
-}
+})
+
+export default Undefined;

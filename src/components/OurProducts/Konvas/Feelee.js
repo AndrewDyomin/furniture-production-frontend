@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, forwardRef, useRef, useImperativeHandle } from 'react';
 import { Stage, Layer, Rect, Line, Text } from 'react-konva';
 
-export default function Feelee({
+const Feelee = forwardRef(({
   dimensions,
   productWidth,
   productDepth,
@@ -11,8 +11,9 @@ export default function Feelee({
   setHeadDepth,
   tsargWidth,
   setTsargWidth
-}) {
+}, ref) => {
 
+  const stageRef = useRef(null)
   const [scaleFactor, setScaleFactor] = useState(1);
 
   const bedTotalDepth = productDepth * scaleFactor;
@@ -42,9 +43,24 @@ export default function Feelee({
     setTsargWidth(12);
   }, [setHeadDepth, setTsargWidth])
 
+  useImperativeHandle(ref, () => ({
+    getImage() {
+      return stageRef.current.toDataURL({ mimeType: 'image/jpeg', quality: 1 });
+    }
+  }));
+
   return (
     <div>
-      <Stage width={dimensions.width} height={dimensions.height}>
+      <Stage ref={stageRef} width={dimensions.width} height={dimensions.height}>
+      <Layer>
+        <Rect
+            x={0}
+            y={0}
+            width={dimensions.width}
+            height={dimensions.height}
+            fill={'#FFF'}
+          />
+        </Layer>
         <Layer>
             {/* Head */}
           <Rect
@@ -215,4 +231,6 @@ export default function Feelee({
       </Stage>
     </div>
   );
-}
+})
+
+export default Feelee;

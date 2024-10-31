@@ -1,13 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, forwardRef, useImperativeHandle, useRef } from 'react';
 import { Stage, Layer, Rect, Line, Text } from 'react-konva';
 
-export default function Marsel({
+const Marsel = forwardRef(({
   dimensions,
   productWidth,
   productDepth,
   angleDirection,
-}) {
+}, ref) => {
   const [scaleFactor, setScaleFactor] = useState(1);
+  const stageRef = useRef(null);
 
   const sofaTotalDepth = productDepth * scaleFactor;
   const sofaTotalWidth = productWidth * scaleFactor;
@@ -36,9 +37,24 @@ export default function Marsel({
     }
   }, [dimensions, productWidth, productDepth]);
 
+  useImperativeHandle(ref, () => ({
+    getImage() {
+      return stageRef.current.toDataURL({ mimeType: 'image/jpeg', quality: 1 });
+    }
+  }));
+
   return (
     <div>
-      <Stage width={dimensions.width} height={dimensions.height}>
+      <Stage ref={stageRef} width={dimensions.width} height={dimensions.height}>
+        <Layer>
+        <Rect
+            x={0}
+            y={0}
+            width={dimensions.width}
+            height={dimensions.height}
+            fill={'#FFF'}
+          />
+        </Layer>
         {angleDirection.value === '7' && (
           <Layer>
             <Rect
@@ -314,4 +330,6 @@ export default function Marsel({
       </Stage>
     </div>
   );
-}
+})
+
+export default Marsel;

@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, forwardRef, useImperativeHandle, useRef } from 'react';
 import { Stage, Layer, Rect, Line, Text } from 'react-konva';
 
-export default function Sofia({
+const Sofia = forwardRef(({
   dimensions,
   productWidth,
   productDepth,
@@ -11,9 +11,10 @@ export default function Sofia({
   setHeadDepth,
   tsargWidth,
   setTsargWidth
-}) {
+}, ref) => {
 
   const [scaleFactor, setScaleFactor] = useState(1);
+  const stageRef = useRef(null);
 
   const bedTotalDepth = productDepth * scaleFactor;
   const bedTotalWidth = productWidth * scaleFactor;
@@ -42,9 +43,24 @@ export default function Sofia({
     setTsargWidth(8);
   }, [setHeadDepth, setTsargWidth])
 
+  useImperativeHandle(ref, () => ({
+    getImage() {
+      return stageRef.current.toDataURL({ mimeType: 'image/jpeg', quality: 1 });
+    }
+  }));
+
   return (
     <div>
-      <Stage width={dimensions.width} height={dimensions.height}>
+      <Stage ref={stageRef} width={dimensions.width} height={dimensions.height}>
+        <Layer>
+        <Rect
+            x={0}
+            y={0}
+            width={dimensions.width}
+            height={dimensions.height}
+            fill={'#FFF'}
+          />
+        </Layer>
         <Layer>
             {/* Head */}
           <Rect
@@ -215,4 +231,6 @@ export default function Sofia({
       </Stage>
     </div>
   );
-}
+})
+
+export default Sofia;
