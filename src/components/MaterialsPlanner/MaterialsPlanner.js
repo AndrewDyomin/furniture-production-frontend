@@ -42,7 +42,11 @@ export const MaterialsPlanner = () => {
         }
 
         if (ordersArray && ordersArray.allOrdersArray && ordersArray.allOrdersArray.length !== 0) {
-            setOrders(ordersArray.allOrdersArray);
+            ordersArray.allOrdersArray.forEach((order) => {
+                if (order.orderStatus !== "TRUE") {
+                    setOrders((prev) => [ ...prev, order ]);
+                }
+            })
           } else {
             setOrders([]);
           }
