@@ -21,7 +21,7 @@ export const Navigation = () => {
             {t('orders')}
           </NavLink>
           <NavLink className={css.link} to="/products">
-            {t('all products')}
+            {t('catalog')}
           </NavLink>
           <NavLink className={css.link} to="/drufts">
             {t('my drufts')}
