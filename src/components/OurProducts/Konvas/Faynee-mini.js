@@ -278,7 +278,7 @@ const FayneeMini = forwardRef(
               fill={'#FFF'}
             />
           </Layer>
-          {initialModules
+          {possibleModules
             .filter(module => activeModules.includes(module.id))
             .map(module => (
               <React.Fragment key={module.id}>
