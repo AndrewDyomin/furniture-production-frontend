@@ -8,26 +8,28 @@ import React, {
 import { Stage, Layer, Rect, Line, Text } from 'react-konva';
 
 const FayneeMini = forwardRef(
-  ({ dimensions, productWidth, productDepth }, ref) => {
+  ({ dimensions, productWidth, productDepth, activeModules, setActiveModules }, ref) => {
     const [scaleFactor, setScaleFactor] = useState(1);
-    const [activeModules, setActiveModules] = useState([
-      'ARML',
-      'FM01',
-      'FM02',
-      'ARMR',
-      'BKPL',
-    ]);
-    const [modulePositions, setModulePositions] = useState({});
+ 
     const stageRef = useRef(null);
 
     const sofaTotalDepth = productDepth * scaleFactor;
     const sofaTotalWidth = productWidth * scaleFactor;
 
     const armrestsWidth = 17.5 * scaleFactor;
-    const armrestsDepth = sofaTotalDepth - 2 * scaleFactor;
 
     const offsetX = dimensions.width / 2;
     const offsetY = dimensions.height / 2;
+
+    useEffect(() => {
+      setActiveModules([
+          'ARML',
+          'FM01',
+          'FM02',
+          'ARMR',
+          'BKPL',
+        ])
+    }, [setActiveModules]);
 
     useEffect(() => {
       const value = Math.min(
@@ -47,41 +49,6 @@ const FayneeMini = forwardRef(
         });
       },
     }));
-
-    const calculateDistance = (x1, y1, x2, y2) => {
-      return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
-    };
-
-    const handleDragMove = (id, event) => {
-      const { x, y } = event.target.position();
-      let snappedX = x;
-      let snappedY = y;
-
-      // Пробегаем по позициям всех модулей
-      Object.keys(modulePositions).forEach(key => {
-        if (key === id) return; // Пропускаем сам модуль
-
-        const { x: otherX, y: otherY } = modulePositions[key];
-
-        // Проверяем расстояние по X и Y
-        if (calculateDistance(x, y, otherX, otherY) <= 20) {
-          // Расстояние притяжения
-          snappedX = otherX;
-          snappedY = otherY;
-        }
-      });
-
-      // Обновляем позицию модуля
-      event.target.position({ x: snappedX, y: snappedY });
-    };
-
-    const handleDragEnd = (id, event) => {
-      const { x, y } = event.target.position();
-      setModulePositions(prev => ({
-        ...prev,
-        [id]: { x, y },
-      }));
-    };
 
     const possibleModules = [
       {
@@ -246,22 +213,6 @@ const FayneeMini = forwardRef(
       },
     ];
 
-    // useEffect(() => {
-    //   const initialPositions = {};
-    //   initialModules.forEach(module => {
-    //     initialPositions[module.id] = module.position;
-    //   });
-    //   setModulePositions(initialPositions);
-    // }, []);
-
-    // const handleModuleToggle = moduleId => {
-    //   setActiveModules(prevSelected =>
-    //     prevSelected.includes(moduleId)
-    //       ? prevSelected.filter(id => id !== moduleId)
-    //       : [...prevSelected, moduleId]
-    //   );
-    // };
-
     return (
       <div>
         <Stage
@@ -278,11 +229,9 @@ const FayneeMini = forwardRef(
               fill={'#FFF'}
             />
           </Layer>
-          {possibleModules
-            .filter(module => activeModules.includes(module.id))
-            .map(module => (
-              <React.Fragment key={module.id}>
-                {module.mark(modulePositions[module.id])}
+          {activeModules.forEach(id => (
+              <React.Fragment key={id}>
+                {possibleModules.find(module => module.id === id).mark()}
               </React.Fragment>
             ))}
           <Layer>

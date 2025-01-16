@@ -48,6 +48,20 @@
 
 } */
 
+.moduleDetailsArea{
+    display: flex;
+}
+
+.moduleDetailsArea:nth-child(n + 2){
+    margin-top: 5px;
+}
+
+.delModelBtn{
+    margin-left: auto;
+    border-radius: 50%;
+    border: 1px solid red;
+}
+
 .btn {
     padding: 10px 20px;
     background-color: #B88E2F;

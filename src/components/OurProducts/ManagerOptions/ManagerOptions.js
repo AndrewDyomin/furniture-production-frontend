@@ -35,7 +35,11 @@ export const ManagerOptions = () => {
     value: '7',
     label: '7',
   });
-  const [drawstrings, setDrawstrings] = useState({ value: 'с утяжками', label: 'С утяжками' })
+  const [activeModules, setActiveModules] = useState([]);
+  const [drawstrings, setDrawstrings] = useState({
+    value: 'с утяжками',
+    label: 'С утяжками',
+  });
   const [fabricOptions, setFabricOptions] = useState([]);
   const [fabricDealer, setFabricDealer] = useState({
     value: 'не выбрано',
@@ -204,10 +208,10 @@ export const ManagerOptions = () => {
       formData.append('tsargWidth', tsargWidth);
     }
     if (product.costCalc.corner) {
-      formData.append('angleDirection', angleDirection.value)
+      formData.append('angleDirection', angleDirection.value);
     }
     if (product.costCalc.drawstrings) {
-      formData.append('drawstrings', drawstrings.value)
+      formData.append('drawstrings', drawstrings.value);
     }
 
     try {
@@ -219,9 +223,13 @@ export const ManagerOptions = () => {
       setIsPending(false);
       toast.success(t('Your application has been successfully sent'));
     } catch (error) {
-      toast.error(error)
+      toast.error(error);
     }
   };
+
+  const deleteModule = (id) => {
+    setActiveModules(prevState => prevState.filter(i => i !== id))
+  }
 
   return (
     <>
@@ -237,6 +245,8 @@ export const ManagerOptions = () => {
               productWidth={productWidth}
               productDepth={productDepth}
               angleDirection={angleDirection}
+              activeModules={activeModules}
+              setActiveModules={setActiveModules}
               mattressWidth={mattressWidth}
               mattressDepth={mattressDepth}
               headDepth={headDepth}
@@ -385,6 +395,37 @@ export const ManagerOptions = () => {
                 onChange={e => setAngleDirection(e)}
               />
             </label>
+          )}
+          {product.costCalc.module && (
+            <div>
+              <div className={css.proportionsBtnWrapper}>
+                <p className={css.proportionsLabel}>
+                  {t('standard proportions')}
+                </p>
+                <ToggleButton
+                  inactiveLabel={'X'}
+                  activeLabel={'V'}
+                  value={standardProportions}
+                  onToggle={value => {
+                    setStandardProportions(!value);
+                  }}
+                />
+              </div>
+              <div>
+                <p>{t('modules list')}:</p>
+                <ul>
+                  {activeModules.map((module, index) => 
+                    (<li key={module} className={css.moduleDetailsArea}>
+                      <p>{module}</p>
+                      <button 
+                        className={css.delModelBtn}
+                        onClick={() => deleteModule(module)}
+                      >x</button>
+                    </li>)
+                  )}
+                </ul>
+              </div>
+            </div>
           )}
           {product.costCalc.drawstrings && (
             <label>
