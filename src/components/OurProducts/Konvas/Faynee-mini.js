@@ -5,30 +5,32 @@ import React, {
   useImperativeHandle,
   useRef,
 } from 'react';
-import { Stage, Layer, Rect, Line, Text } from 'react-konva';
+import { Stage, Layer, Rect, Line, Text, Group } from 'react-konva';
 
 const FayneeMini = forwardRef(
-  ({ dimensions, productWidth, productDepth, activeModules, setActiveModules }, ref) => {
+  (
+    { dimensions, productWidth, productDepth, activeModules, setActiveModules },
+    ref
+  ) => {
     const [scaleFactor, setScaleFactor] = useState(1);
- 
+
     const stageRef = useRef(null);
 
     const sofaTotalDepth = productDepth * scaleFactor;
     const sofaTotalWidth = productWidth * scaleFactor;
 
-    const armrestsWidth = 17.5 * scaleFactor;
+    const backHeight = 20 * scaleFactor;
 
     const offsetX = dimensions.width / 2;
     const offsetY = dimensions.height / 2;
 
     useEffect(() => {
-      setActiveModules([
-          'ARML',
-          'FM01',
-          'FM02',
-          'ARMR',
-          'BKPL',
-        ])
+      const standardArr = ['ARML', 'FM01', 'FM01', 'ARMR'];
+      const sortedModules = standardArr
+        .map(id => possibleModules.find(module => module.id === id))
+        .filter(Boolean);
+        console.log(sortedModules)
+      setActiveModules(sortedModules);
     }, [setActiveModules]);
 
     useEffect(() => {
@@ -50,20 +52,23 @@ const FayneeMini = forwardRef(
       },
     }));
 
-    const possibleModules = [
+    let possibleModules = [
       {
         id: 'FM01',
+        name: 'модуль',
         position: { x: offsetX, y: offsetY },
-        mark: (position) => (
-          <Layer draggable={true}>
+        height: 115,
+        width: 100,
+        mark: (position, height, width) => (
+          <>
             <Line
               points={[
-                offsetX - sofaTotalWidth / 2 + armrestsWidth,
-                offsetY - sofaTotalDepth / 2 + 8 * scaleFactor,
-                offsetX - (sofaTotalWidth - armrestsWidth * 2) / 4,
-                offsetY - sofaTotalDepth / 2 + 3 * scaleFactor,
-                offsetX,
-                offsetY - sofaTotalDepth / 2 + 8 * scaleFactor,
+                position.x,
+                position.y + 8 * scaleFactor,
+                position.x + width / 2,
+                position.y + 3 * scaleFactor,
+                position.x + width,
+                position.y + 8 * scaleFactor,
               ]}
               stroke="black"
               strokeWidth={1}
@@ -72,79 +77,42 @@ const FayneeMini = forwardRef(
               tension={0.7}
             />
             <Rect
-              x={offsetX - sofaTotalWidth / 2 + armrestsWidth}
-              y={offsetY - sofaTotalDepth / 2 + 8 * scaleFactor}
-              width={(sofaTotalWidth - armrestsWidth * 2) / 2}
-              height={20 * scaleFactor}
+              x={position.x}
+              y={position.y + 8 * scaleFactor}
+              width={width}
+              height={backHeight}
               stroke="black"
               strokeWidth={1}
               cornerRadius={2}
             />
             <Rect
-              x={offsetX - sofaTotalWidth / 2 + armrestsWidth}
-              y={offsetY - sofaTotalDepth / 2 + 28 * scaleFactor}
-              width={(sofaTotalWidth - armrestsWidth * 2) / 2}
-              height={sofaTotalDepth - 28 * scaleFactor}
+              x={position.x}
+              y={position.y + height * 0.18}
+              width={width}
+              height={height - 28 * scaleFactor}
               stroke="black"
               strokeWidth={1}
               cornerRadius={4}
             />
-          </Layer>
-        ),
-      },
-      {
-        id: 'FM02',
-        position: { x: offsetX + 200, y: offsetY },
-        mark: (position) => (
-          <Layer draggable={true}>
-            <Line
-              points={[
-                offsetX,
-                offsetY - sofaTotalDepth / 2 + 8 * scaleFactor,
-                offsetX + (sofaTotalWidth - armrestsWidth * 2) / 4,
-                offsetY - sofaTotalDepth / 2 + 3 * scaleFactor,
-                offsetX + (sofaTotalWidth - armrestsWidth * 2) / 2,
-                offsetY - sofaTotalDepth / 2 + 8 * scaleFactor,
-              ]}
-              stroke="black"
-              strokeWidth={1}
-              closed={false}
-              lineJoin="round"
-              tension={0.7}
-            />
-            <Rect
-              x={offsetX}
-              y={offsetY - sofaTotalDepth / 2 + 8 * scaleFactor}
-              width={(sofaTotalWidth - armrestsWidth * 2) / 2}
-              height={20 * scaleFactor}
-              stroke="black"
-              strokeWidth={1}
-              cornerRadius={2}
-            />
-            <Rect
-              x={offsetX}
-              y={offsetY - sofaTotalDepth / 2 + 28 * scaleFactor}
-              width={(sofaTotalWidth - armrestsWidth * 2) / 2}
-              height={sofaTotalDepth - 28 * scaleFactor}
-              stroke="black"
-              strokeWidth={1}
-              cornerRadius={4}
-            />
-          </Layer>
+          </>
         ),
       },
       {
         id: 'ARML',
-        mark: (position) => (
-          <Layer draggable={true}>
+        name: 'подлокотник левый',
+        position: { x: offsetX, y: offsetY },
+        height: 120,
+        width: 17,
+        mark: (position, height, width) => (
+          <>
             <Line
               points={[
-                offsetX - sofaTotalWidth / 2 + 2.5 * scaleFactor,
-                offsetY - sofaTotalDepth / 2,
-                offsetX - sofaTotalWidth / 2,
-                offsetY,
-                offsetX - sofaTotalWidth / 2 + 2.5 * scaleFactor,
-                offsetY + sofaTotalDepth / 2,
+                position.x + 2.5 * scaleFactor,
+                position.y,
+                position.x,
+                position.y + height / 2,
+                position.x + 2.5 * scaleFactor,
+                position.y + height,
               ]}
               stroke="black"
               strokeWidth={1}
@@ -153,29 +121,33 @@ const FayneeMini = forwardRef(
               tension={1}
             />
             <Rect
-              x={offsetX - sofaTotalWidth / 2 + 2.5 * scaleFactor}
-              y={offsetY - sofaTotalDepth / 2}
-              width={armrestsWidth - 2.5 * scaleFactor}
-              height={sofaTotalDepth}
+              x={position.x + 2.5 * scaleFactor}
+              y={position.y}
+              width={width - 2.5 * scaleFactor}
+              height={height}
               stroke="black"
               strokeWidth={1}
               cornerRadius={[0, 3, 3, 0]}
             />
-          </Layer>
+          </>
         ),
       },
       {
         id: 'ARMR',
-        mark: (position) => (
-          <Layer draggable={true}>
+        name: 'подлокотник правый',
+        position: { x: offsetX, y: offsetY },
+        height: 120,
+        width: 17,
+        mark: (position, height, width) => (
+          <>
             <Line
               points={[
-                offsetX + sofaTotalWidth / 2 - 2.5 * scaleFactor,
-                offsetY - sofaTotalDepth / 2,
-                offsetX + sofaTotalWidth / 2,
-                offsetY,
-                offsetX + sofaTotalWidth / 2 - 2.5 * scaleFactor,
-                offsetY + sofaTotalDepth / 2,
+                position.x + width - 2.5 * scaleFactor,
+                position.y,
+                position.x + width,
+                position.y + height / 2,
+                position.x + width - 2.5 * scaleFactor,
+                position.y + height,
               ]}
               stroke="black"
               strokeWidth={1}
@@ -184,34 +156,67 @@ const FayneeMini = forwardRef(
               tension={1}
             />
             <Rect
-              x={offsetX + sofaTotalWidth / 2 - armrestsWidth}
-              y={offsetY - sofaTotalDepth / 2}
-              width={armrestsWidth - 2.5 * scaleFactor}
-              height={sofaTotalDepth}
+              x={position.x}
+              y={position.y}
+              width={width - 2.5 * scaleFactor}
+              height={height}
               stroke="black"
               strokeWidth={1}
               cornerRadius={[3, 0, 0, 3]}
             />
-          </Layer>
+          </>
         ),
       },
-      {
-        id: 'BKPL',
-        mark: (position) => (
-          <Layer draggable={true}>
-            <Rect
-              x={offsetX - sofaTotalWidth / 2 + armrestsWidth}
-              y={offsetY - sofaTotalDepth / 2}
-              width={sofaTotalWidth - armrestsWidth * 2}
-              height={3 * scaleFactor}
-              stroke="black"
-              strokeWidth={1}
-              cornerRadius={[3, 3, 0, 0]}
-            />
-          </Layer>
-        ),
-      },
+      // {
+      //   id: 'BKPL',
+      //   name: 'пристенок',
+      //   position: { x: offsetX, y: offsetY },
+      //   height: 3,
+      //   width: 200,
+      //   mark: (position, height, width) => (
+      //     <>
+      //       <Rect
+      //         x={offsetX - sofaTotalWidth / 2 + armrestsWidth}
+      //         y={offsetY - sofaTotalDepth / 2}
+      //         width={sofaTotalWidth - armrestsWidth * 2}
+      //         height={3 * scaleFactor}
+      //         stroke="black"
+      //         strokeWidth={1}
+      //         cornerRadius={[3, 3, 0, 0]}
+      //       />
+      //     </>
+      //   ),
+      // },
     ];
+
+    const drawModules = () => {
+      let currentX = offsetX - sofaTotalWidth / 2;
+      let currentY = offsetY - sofaTotalDepth / 2;
+    
+      return (
+        <Layer>
+          {activeModules.map((module, index) => {
+            const updatedPosition = {
+              x: currentX,
+              y: currentY,
+            };
+
+            const height = module.height * scaleFactor;
+            const width = module.width * scaleFactor;
+    
+            currentX += module.width * scaleFactor;
+            currentY += 0;
+    
+            return (
+              <Group key={index}>
+                {module.mark(updatedPosition, height, width)}
+              </Group>
+            );
+          })}
+        </Layer>
+      );
+    };
+    
 
     return (
       <div>
@@ -229,11 +234,7 @@ const FayneeMini = forwardRef(
               fill={'#FFF'}
             />
           </Layer>
-          {activeModules.forEach(id => (
-              <React.Fragment key={id}>
-                {possibleModules.find(module => module.id === id).mark()}
-              </React.Fragment>
-            ))}
+          {drawModules()}
           <Layer>
             <Line
               points={[

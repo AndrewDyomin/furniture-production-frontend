@@ -227,8 +227,8 @@ export const ManagerOptions = () => {
     }
   };
 
-  const deleteModule = (id) => {
-    setActiveModules(prevState => prevState.filter(i => i !== id))
+  const deleteModule = (index) => {
+    setActiveModules(prevState => [...prevState.slice(0, index), ...prevState.slice(index + 1)])
   }
 
   return (
@@ -415,11 +415,11 @@ export const ManagerOptions = () => {
                 <p>{t('modules list')}:</p>
                 <ul>
                   {activeModules.map((module, index) => 
-                    (<li key={module} className={css.moduleDetailsArea}>
-                      <p>{module}</p>
+                    (<li key={index} className={css.moduleDetailsArea}>
+                      <p>{module.name}</p>
                       <button 
                         className={css.delModelBtn}
-                        onClick={() => deleteModule(module)}
+                        onClick={() => deleteModule(index)}
                       >x</button>
                     </li>)
                   )}
