@@ -25,15 +25,6 @@ const FayneeMini = forwardRef(
     const offsetY = dimensions.height / 2;
 
     useEffect(() => {
-      const standardArr = ['ARML', 'FM01', 'FM01', 'ARMR'];
-      const sortedModules = standardArr
-        .map(id => possibleModules.find(module => module.id === id))
-        .filter(Boolean);
-        console.log(sortedModules)
-      setActiveModules(sortedModules);
-    }, [setActiveModules]);
-
-    useEffect(() => {
       const value = Math.min(
         (0.7 * dimensions.width) / productWidth,
         (0.7 * dimensions.height) / productDepth
@@ -87,9 +78,9 @@ const FayneeMini = forwardRef(
             />
             <Rect
               x={position.x}
-              y={position.y + height * 0.18}
+              y={position.y + (28 * scaleFactor)}
               width={width}
-              height={height - 28 * scaleFactor}
+              height={height - (23 * scaleFactor)}
               stroke="black"
               strokeWidth={1}
               cornerRadius={4}
@@ -102,7 +93,7 @@ const FayneeMini = forwardRef(
         name: 'подлокотник левый',
         position: { x: offsetX, y: offsetY },
         height: 120,
-        width: 17,
+        width: 17.5,
         mark: (position, height, width) => (
           <>
             <Line
@@ -137,7 +128,7 @@ const FayneeMini = forwardRef(
         name: 'подлокотник правый',
         position: { x: offsetX, y: offsetY },
         height: 120,
-        width: 17,
+        width: 17.5,
         mark: (position, height, width) => (
           <>
             <Line
@@ -167,26 +158,26 @@ const FayneeMini = forwardRef(
           </>
         ),
       },
-      // {
-      //   id: 'BKPL',
-      //   name: 'пристенок',
-      //   position: { x: offsetX, y: offsetY },
-      //   height: 3,
-      //   width: 200,
-      //   mark: (position, height, width) => (
-      //     <>
-      //       <Rect
-      //         x={offsetX - sofaTotalWidth / 2 + armrestsWidth}
-      //         y={offsetY - sofaTotalDepth / 2}
-      //         width={sofaTotalWidth - armrestsWidth * 2}
-      //         height={3 * scaleFactor}
-      //         stroke="black"
-      //         strokeWidth={1}
-      //         cornerRadius={[3, 3, 0, 0]}
-      //       />
-      //     </>
-      //   ),
-      // },
+      {
+        id: 'BKPL',
+        name: 'пристенок',
+        position: { x: offsetX, y: offsetY },
+        height: 3,
+        width: 200,
+        mark: (position, height, width) => (
+          <>
+            <Rect
+              x={activeModules[0] ? (offsetX - sofaTotalWidth / 2) + (activeModules[0].width * scaleFactor) : 0} 
+              y={position.y}
+              width={ activeModules[0] ? activeModules[1].width * scaleFactor + activeModules[activeModules.length - 3].width * scaleFactor : 0}
+              height={3 * scaleFactor}
+              stroke="black"
+              strokeWidth={1}
+              cornerRadius={[3, 3, 0, 0]}
+            />
+          </>
+        ),
+      },
     ];
 
     const drawModules = () => {
@@ -216,6 +207,16 @@ const FayneeMini = forwardRef(
         </Layer>
       );
     };
+
+    useEffect(() => {
+      const standardArr = ['ARML', 'FM01', 'FM01', 'ARMR', 'BKPL'];
+      const sortedModules = standardArr
+        .map(id => possibleModules.find(module => module.id === id))
+        .filter(Boolean);
+        console.log(sortedModules[0])
+        console.log(sortedModules[sortedModules.length - 2])
+      setActiveModules(sortedModules);
+    }, [setActiveModules, scaleFactor]);
     
 
     return (
