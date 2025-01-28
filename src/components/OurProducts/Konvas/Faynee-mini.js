@@ -32,7 +32,6 @@ const FayneeMini = forwardRef(
       );
       if (value > 0 || value !== scaleFactor) {
         setScaleFactor(value);
-        console.log('scale:', value);
       }
     }, [dimensions, productWidth, productDepth, scaleFactor]);
 
@@ -192,7 +191,7 @@ const FayneeMini = forwardRef(
                 </>
               );
             } else {
-              console.log('not enough arms');
+              console.warn('not enough arms');
               return <></>;
             }
           },
@@ -204,12 +203,13 @@ const FayneeMini = forwardRef(
     const drawModules = () => {
       let currentX = offsetX - sofaTotalWidth / 2;
       let currentY = offsetY - sofaTotalDepth / 2;
-      let positions = [];
       let backStrap = {}
 
-      // const seatModules = activeModules.filter(module => module.id === 'FM01')
-      // console.log(seatModules)
-      backStrap.position = {x: offsetX - (sofaTotalWidth / 2), y: offsetY - (sofaTotalDepth / 2)}
+      const seatModules = activeModules.filter(module => module.id === 'FM01')
+      if (seatModules.length !== 0) {
+        backStrap.position = {x: seatModules[0].position.x, y: seatModules[0].position.y}
+        backStrap.width = seatModules[0].width + seatModules[1].width
+      }
 
       return (
         <Layer>
@@ -219,8 +219,6 @@ const FayneeMini = forwardRef(
               x: currentX,
               y: currentY,
             };
-
-            positions.push(updatedPosition);
 
             const height = module.height * scaleFactor;
             const width = module.width * scaleFactor;
@@ -256,20 +254,17 @@ const FayneeMini = forwardRef(
         setActiveModules(sortedModules);
       } else if (activeModules[0].position.x === offsetX) {
         
-
         const updatedPosition = { x: currentX, y: currentY};
-        const positionedModules = activeModules.map(module => {
 
+        const positionedModules = activeModules.map((module, index) => {
+        if (index !== 0) {
           currentX += module.width * scaleFactor;
-          currentY += 0;
+        } 
           
           return { ...module, position: updatedPosition }
         })
-        console.log(positionedModules)
         setActiveModules(positionedModules);
       }
-      console.log(activeModules);
-      activeModules.length !== 0 && console.log('1', activeModules[0].position.x, '2', currentX)
     }, [activeModules, setActiveModules, scaleFactor, possibleModules, offsetX, offsetY, sofaTotalDepth, sofaTotalWidth]);
 
     return (

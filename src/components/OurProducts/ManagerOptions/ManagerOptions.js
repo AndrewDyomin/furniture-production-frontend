@@ -236,8 +236,6 @@ export const ManagerOptions = () => {
     setActiveModules(prevState => [...prevState.slice(0, index), ...prevState.slice(index + 1)])
   }
 
-  console.log(productWidth)
-
   return (
     <>
       <h3 className={css.calcHeader}>{t('cost calculation')}</h3>
