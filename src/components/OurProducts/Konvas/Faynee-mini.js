@@ -1,4 +1,5 @@
 import React, {
+  useMemo,
   useState,
   useEffect,
   forwardRef,
@@ -19,20 +20,21 @@ const FayneeMini = forwardRef(
     const sofaTotalDepth = productDepth * scaleFactor;
     const sofaTotalWidth = productWidth * scaleFactor;
 
-    const backHeight = 20 * scaleFactor;
-
     const offsetX = dimensions.width / 2;
     const offsetY = dimensions.height / 2;
+
+    const isARM = activeModules.some(module => module.id === 'ARML') && activeModules.some(module => module.id === 'ARMR');
 
     useEffect(() => {
       const value = Math.min(
         (0.7 * dimensions.width) / productWidth,
         (0.7 * dimensions.height) / productDepth
       );
-      if (value > 0) {
+      if (value > 0 || value !== scaleFactor) {
         setScaleFactor(value);
+        console.log('scale:', value);
       }
-    }, [dimensions, productWidth, productDepth]);
+    }, [dimensions, productWidth, productDepth, scaleFactor]);
 
     useImperativeHandle(ref, () => ({
       getImage() {
@@ -43,164 +45,198 @@ const FayneeMini = forwardRef(
       },
     }));
 
-    let possibleModules = [
-      {
-        id: 'FM01',
-        name: 'модуль',
-        position: { x: offsetX, y: offsetY },
-        height: 115,
-        width: 100,
-        mark: (position, height, width) => (
-          <>
-            <Line
-              points={[
-                position.x,
-                position.y + 8 * scaleFactor,
-                position.x + width / 2,
-                position.y + 3 * scaleFactor,
-                position.x + width,
-                position.y + 8 * scaleFactor,
-              ]}
-              stroke="black"
-              strokeWidth={1}
-              closed={false}
-              lineJoin="round"
-              tension={0.7}
-            />
-            <Rect
-              x={position.x}
-              y={position.y + 8 * scaleFactor}
-              width={width}
-              height={backHeight}
-              stroke="black"
-              strokeWidth={1}
-              cornerRadius={2}
-            />
-            <Rect
-              x={position.x}
-              y={position.y + (28 * scaleFactor)}
-              width={width}
-              height={height - (23 * scaleFactor)}
-              stroke="black"
-              strokeWidth={1}
-              cornerRadius={4}
-            />
-          </>
-        ),
-      },
-      {
-        id: 'ARML',
-        name: 'подлокотник левый',
-        position: { x: offsetX, y: offsetY },
-        height: 120,
-        width: 17.5,
-        mark: (position, height, width) => (
-          <>
-            <Line
-              points={[
-                position.x + 2.5 * scaleFactor,
-                position.y,
-                position.x,
-                position.y + height / 2,
-                position.x + 2.5 * scaleFactor,
-                position.y + height,
-              ]}
-              stroke="black"
-              strokeWidth={1}
-              closed={false}
-              lineJoin="round"
-              tension={1}
-            />
-            <Rect
-              x={position.x + 2.5 * scaleFactor}
-              y={position.y}
-              width={width - 2.5 * scaleFactor}
-              height={height}
-              stroke="black"
-              strokeWidth={1}
-              cornerRadius={[0, 3, 3, 0]}
-            />
-          </>
-        ),
-      },
-      {
-        id: 'ARMR',
-        name: 'подлокотник правый',
-        position: { x: offsetX, y: offsetY },
-        height: 120,
-        width: 17.5,
-        mark: (position, height, width) => (
-          <>
-            <Line
-              points={[
-                position.x + width - 2.5 * scaleFactor,
-                position.y,
-                position.x + width,
-                position.y + height / 2,
-                position.x + width - 2.5 * scaleFactor,
-                position.y + height,
-              ]}
-              stroke="black"
-              strokeWidth={1}
-              closed={false}
-              lineJoin="round"
-              tension={1}
-            />
-            <Rect
-              x={position.x}
-              y={position.y}
-              width={width - 2.5 * scaleFactor}
-              height={height}
-              stroke="black"
-              strokeWidth={1}
-              cornerRadius={[3, 0, 0, 3]}
-            />
-          </>
-        ),
-      },
-      {
-        id: 'BKPL',
-        name: 'пристенок',
-        position: { x: offsetX, y: offsetY },
-        height: 3,
-        width: 200,
-        mark: (position, height, width) => (
-          <>
-            <Rect
-              x={activeModules[0] ? (offsetX - sofaTotalWidth / 2) + (activeModules[0].width * scaleFactor) : 0} 
-              y={position.y}
-              width={ activeModules[0] ? activeModules[1].width * scaleFactor + activeModules[activeModules.length - 3].width * scaleFactor : 0}
-              height={3 * scaleFactor}
-              stroke="black"
-              strokeWidth={1}
-              cornerRadius={[3, 3, 0, 0]}
-            />
-          </>
-        ),
-      },
-    ];
+    let possibleModules = useMemo(
+      () => [
+        {
+          id: 'FM01',
+          name: 'модуль',
+          position: { x: offsetX, y: offsetY },
+          height: 120,
+          width: 100,
+          mark: (position, height, width) => (
+            <>
+              <Line
+                points={[
+                  position.x,
+                  position.y + 8 * scaleFactor,
+                  position.x + width / 2,
+                  position.y + 3 * scaleFactor,
+                  position.x + width,
+                  position.y + 8 * scaleFactor,
+                ]}
+                stroke="black"
+                strokeWidth={1}
+                closed={false}
+                lineJoin="round"
+                tension={0.7}
+              />
+              <Rect
+                x={position.x}
+                y={position.y + 8 * scaleFactor}
+                width={width}
+                height={height / 6}
+                stroke="black"
+                strokeWidth={1}
+                cornerRadius={2}
+              />
+              <Rect
+                x={position.x}
+                y={position.y + height / 6 + 8 * scaleFactor}
+                width={width}
+                height={height - (height / 6 + 8 * scaleFactor)}
+                stroke="black"
+                strokeWidth={1}
+                cornerRadius={4}
+              />
+            </>
+          ),
+        },
+        {
+          id: 'ARML',
+          name: 'подлокотник левый',
+          position: { x: offsetX, y: offsetY },
+          height: 120,
+          width: 17.5,
+          mark: (position, height, width) => (
+            <>
+              <Line
+                points={[
+                  position.x + 2.5 * scaleFactor,
+                  position.y,
+                  position.x,
+                  position.y + height / 2,
+                  position.x + 2.5 * scaleFactor,
+                  position.y + height,
+                ]}
+                stroke="black"
+                strokeWidth={1}
+                closed={false}
+                lineJoin="round"
+                tension={1}
+              />
+              <Rect
+                x={position.x + 2.5 * scaleFactor}
+                y={position.y}
+                width={width - 2.5 * scaleFactor}
+                height={height}
+                stroke="black"
+                strokeWidth={1}
+                cornerRadius={[0, 3, 3, 0]}
+              />
+            </>
+          ),
+        },
+        {
+          id: 'ARMR',
+          name: 'подлокотник правый',
+          position: { x: offsetX, y: offsetY },
+          height: 120,
+          width: 17.5,
+          mark: (position, height, width) => (
+            <>
+              <Line
+                points={[
+                  position.x + width - 2.5 * scaleFactor,
+                  position.y,
+                  position.x + width,
+                  position.y + height / 2,
+                  position.x + width - 2.5 * scaleFactor,
+                  position.y + height,
+                ]}
+                stroke="black"
+                strokeWidth={1}
+                closed={false}
+                lineJoin="round"
+                tension={1}
+              />
+              <Rect
+                x={position.x}
+                y={position.y}
+                width={width - 2.5 * scaleFactor}
+                height={height}
+                stroke="black"
+                strokeWidth={1}
+                cornerRadius={[3, 0, 0, 3]}
+              />
+            </>
+          ),
+        },
+        {
+          id: 'BKPL',
+          name: 'пристенок',
+          position: { x: offsetX, y: offsetY },
+          height: 3,
+          width: 200,
+          mark: (position, height, width, arm) => {
+            if (arm) {
+              return (
+                <>
+                  <Rect
+                    x={activeModules[0] ? offsetX - sofaTotalWidth / 2 + activeModules[0].width * scaleFactor
+                        : 0
+                    }
+                    y={position.y}
+                    width={
+                      activeModules[0]
+                        ? sofaTotalWidth -
+                          activeModules[0].width * scaleFactor +
+                          activeModules[activeModules.length - 2].width *
+                            scaleFactor
+                        : 0
+                    }
+                    height={3 * scaleFactor}
+                    stroke="black"
+                    strokeWidth={1}
+                    cornerRadius={[3, 3, 0, 0]}
+                  />
+                </>
+              );
+            } else {
+              console.log('not enough arms');
+              return <></>;
+            }
+          },
+        },
+      ],
+      [offsetX, offsetY, scaleFactor, activeModules, sofaTotalWidth]
+    );
 
     const drawModules = () => {
       let currentX = offsetX - sofaTotalWidth / 2;
       let currentY = offsetY - sofaTotalDepth / 2;
-    
+      let positions = [];
+      let backStrap = {}
+
+      // const seatModules = activeModules.filter(module => module.id === 'FM01')
+      // console.log(seatModules)
+      backStrap.position = {x: offsetX - (sofaTotalWidth / 2), y: offsetY - (sofaTotalDepth / 2)}
+
       return (
         <Layer>
           {activeModules.map((module, index) => {
+            
             const updatedPosition = {
               x: currentX,
               y: currentY,
             };
 
+            positions.push(updatedPosition);
+
             const height = module.height * scaleFactor;
             const width = module.width * scaleFactor;
-    
+
             currentX += module.width * scaleFactor;
             currentY += 0;
-    
+
             return (
               <Group key={index}>
-                {module.mark(updatedPosition, height, width)}
+                {module.id === 'BKPL' ? 
+                  module.mark(
+                    backStrap.position, 
+                    height, 
+                    width, 
+                    isARM)
+                : module.mark(updatedPosition, height, width, isARM)}
               </Group>
             );
           })}
@@ -210,14 +246,31 @@ const FayneeMini = forwardRef(
 
     useEffect(() => {
       const standardArr = ['ARML', 'FM01', 'FM01', 'ARMR', 'BKPL'];
-      const sortedModules = standardArr
-        .map(id => possibleModules.find(module => module.id === id))
-        .filter(Boolean);
-        console.log(sortedModules[0])
-        console.log(sortedModules[sortedModules.length - 2])
-      setActiveModules(sortedModules);
-    }, [setActiveModules, scaleFactor]);
-    
+      let currentX =  - sofaTotalWidth / 2;
+      let currentY = offsetY - sofaTotalDepth / 2;
+
+      if (activeModules.length === 0) {
+        const sortedModules = standardArr
+          .map(id => possibleModules.find(module => module.id === id))
+          .filter(Boolean);
+        setActiveModules(sortedModules);
+      } else if (activeModules[0].position.x === offsetX) {
+        
+
+        const updatedPosition = { x: currentX, y: currentY};
+        const positionedModules = activeModules.map(module => {
+
+          currentX += module.width * scaleFactor;
+          currentY += 0;
+          
+          return { ...module, position: updatedPosition }
+        })
+        console.log(positionedModules)
+        setActiveModules(positionedModules);
+      }
+      console.log(activeModules);
+      activeModules.length !== 0 && console.log('1', activeModules[0].position.x, '2', currentX)
+    }, [activeModules, setActiveModules, scaleFactor, possibleModules, offsetX, offsetY, sofaTotalDepth, sofaTotalWidth]);
 
     return (
       <div>

@@ -228,8 +228,15 @@ export const ManagerOptions = () => {
   };
 
   const deleteModule = (index) => {
+    if (activeModules[index].id !== 'BKPL') {
+      const changedWidth = productWidth - activeModules[index].width;
+    setProductWidth(changedWidth)
+    }
+    
     setActiveModules(prevState => [...prevState.slice(0, index), ...prevState.slice(index + 1)])
   }
+
+  console.log(productWidth)
 
   return (
     <>
