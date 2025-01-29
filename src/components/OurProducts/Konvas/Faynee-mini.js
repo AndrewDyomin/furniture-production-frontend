@@ -30,7 +30,7 @@ const FayneeMini = forwardRef(
         (0.7 * dimensions.width) / productWidth,
         (0.7 * dimensions.height) / productDepth
       );
-      if (value > 0 || value !== scaleFactor) {
+      if (value > 0 && value !== scaleFactor) {
         setScaleFactor(value);
       }
     }, [dimensions, productWidth, productDepth, scaleFactor]);
@@ -171,19 +171,10 @@ const FayneeMini = forwardRef(
               return (
                 <>
                   <Rect
-                    x={activeModules[0] ? offsetX - sofaTotalWidth / 2 + activeModules[0].width * scaleFactor
-                        : 0
-                    }
+                    x={position.x}
                     y={position.y}
-                    width={
-                      activeModules[0]
-                        ? sofaTotalWidth -
-                          activeModules[0].width * scaleFactor +
-                          activeModules[activeModules.length - 2].width *
-                            scaleFactor
-                        : 0
-                    }
-                    height={3 * scaleFactor}
+                    width={width}
+                    height={height}
                     stroke="black"
                     strokeWidth={1}
                     cornerRadius={[3, 3, 0, 0]}
@@ -197,44 +188,37 @@ const FayneeMini = forwardRef(
           },
         },
       ],
-      [offsetX, offsetY, scaleFactor, activeModules, sofaTotalWidth]
+      [offsetX, offsetY, scaleFactor]
     );
 
     const drawModules = () => {
-      let currentX = offsetX - sofaTotalWidth / 2;
-      let currentY = offsetY - sofaTotalDepth / 2;
       let backStrap = {}
 
       const seatModules = activeModules.filter(module => module.id === 'FM01')
       if (seatModules.length !== 0) {
-        backStrap.position = {x: seatModules[0].position.x, y: seatModules[0].position.y}
-        backStrap.width = seatModules[0].width + seatModules[1].width
+        let acc = 0;
+        seatModules.forEach(module => {
+          acc += module.width
+        });
+        backStrap.width = acc * scaleFactor;
       }
 
       return (
         <Layer>
           {activeModules.map((module, index) => {
-            
-            const updatedPosition = {
-              x: currentX,
-              y: currentY,
-            };
 
             const height = module.height * scaleFactor;
             const width = module.width * scaleFactor;
-
-            currentX += module.width * scaleFactor;
-            currentY += 0;
 
             return (
               <Group key={index}>
                 {module.id === 'BKPL' ? 
                   module.mark(
-                    backStrap.position, 
+                    module.position, 
                     height, 
-                    width, 
+                    backStrap.width, 
                     isARM)
-                : module.mark(updatedPosition, height, width, isARM)}
+                : module.mark(module.position, height, width, isARM)}
               </Group>
             );
           })}
@@ -243,24 +227,30 @@ const FayneeMini = forwardRef(
     };
 
     useEffect(() => {
-      const standardArr = ['ARML', 'FM01', 'FM01', 'ARMR', 'BKPL'];
-      let currentX =  - sofaTotalWidth / 2;
-      let currentY = offsetY - sofaTotalDepth / 2;
 
-      if (activeModules.length === 0) {
+      const standardArr = ['ARML', 'FM01', 'FM01', 'ARMR', 'BKPL'];
+      if (activeModules.length === 0 || activeModules[0].position.x !== offsetX - sofaTotalWidth / 2) {
+      // if (activeModules.length === 0 || activeModules[0].position.x !== offsetX - sofaTotalWidth / 2) {
         const sortedModules = standardArr
           .map(id => possibleModules.find(module => module.id === id))
           .filter(Boolean);
         setActiveModules(sortedModules);
-      } else if (activeModules[0].position.x === offsetX) {
-        
-        const updatedPosition = { x: currentX, y: currentY};
+      } 
+
+      if (activeModules.length !== 0 && activeModules[0].position.x === offsetX) {
+        let currentX = offsetX - sofaTotalWidth / 2;
+        let currentY = offsetY - sofaTotalDepth / 2;
 
         const positionedModules = activeModules.map((module, index) => {
         if (index !== 0) {
-          currentX += module.width * scaleFactor;
+          currentX += activeModules[index - 1].width * scaleFactor;
         } 
-          
+        if (module.id === 'BKPL') {
+          currentX = offsetX - sofaTotalWidth / 2 + (activeModules[0].width * scaleFactor);
+          currentY = offsetY - sofaTotalDepth / 2;
+        }
+          const updatedPosition = { x: currentX, y: currentY};
+          console.log(updatedPosition)
           return { ...module, position: updatedPosition }
         })
         setActiveModules(positionedModules);
