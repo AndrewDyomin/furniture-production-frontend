@@ -23,7 +23,9 @@ const FayneeMini = forwardRef(
     const offsetX = dimensions.width / 2;
     const offsetY = dimensions.height / 2;
 
-    const isARM = activeModules.some(module => module.id === 'ARML') && activeModules.some(module => module.id === 'ARMR');
+    const isARM =
+      activeModules.some(module => module.id === 'ARML') &&
+      activeModules.some(module => module.id === 'ARMR');
 
     useEffect(() => {
       const value = Math.min(
@@ -192,13 +194,13 @@ const FayneeMini = forwardRef(
     );
 
     const drawModules = () => {
-      let backStrap = {}
+      let backStrap = {};
 
-      const seatModules = activeModules.filter(module => module.id === 'FM01')
+      const seatModules = activeModules.filter(module => module.id === 'FM01');
       if (seatModules.length !== 0) {
         let acc = 0;
         seatModules.forEach(module => {
-          acc += module.width
+          acc += module.width;
         });
         backStrap.width = acc * scaleFactor;
       }
@@ -206,19 +208,14 @@ const FayneeMini = forwardRef(
       return (
         <Layer>
           {activeModules.map((module, index) => {
-
             const height = module.height * scaleFactor;
             const width = module.width * scaleFactor;
 
             return (
               <Group key={index}>
-                {module.id === 'BKPL' ? 
-                  module.mark(
-                    module.position, 
-                    height, 
-                    backStrap.width, 
-                    isARM)
-                : module.mark(module.position, height, width, isARM)}
+                {module.id === 'BKPL'
+                  ? module.mark(module.position, height, backStrap.width, isARM)
+                  : module.mark(module.position, height, width, isARM)}
               </Group>
             );
           })}
@@ -227,35 +224,58 @@ const FayneeMini = forwardRef(
     };
 
     useEffect(() => {
+      if (activeModules.length !== 0 && activeModules[0].position.x !== offsetX - sofaTotalWidth / 2) {
+        const sortedModules = activeModules
+          .map(item => possibleModules.find(module => module.id === item.id))
+          .filter(Boolean);
+        setActiveModules(sortedModules);
+      }
+      console.log('effect 1')
+    }, [activeModules, offsetX, possibleModules, setActiveModules, sofaTotalWidth])
 
+    useEffect(() => {
       const standardArr = ['ARML', 'FM01', 'FM01', 'ARMR', 'BKPL'];
-      if (activeModules.length === 0 || activeModules[0].position.x !== offsetX - sofaTotalWidth / 2) {
-      // if (activeModules.length === 0 || activeModules[0].position.x !== offsetX - sofaTotalWidth / 2) {
+      if (activeModules.length === 0) {
         const sortedModules = standardArr
           .map(id => possibleModules.find(module => module.id === id))
           .filter(Boolean);
         setActiveModules(sortedModules);
-      } 
+      }
 
-      if (activeModules.length !== 0 && activeModules[0].position.x === offsetX) {
+      if (
+        activeModules.length !== 0 &&
+        activeModules[0].position.x === offsetX
+      ) {
         let currentX = offsetX - sofaTotalWidth / 2;
         let currentY = offsetY - sofaTotalDepth / 2;
 
         const positionedModules = activeModules.map((module, index) => {
-        if (index !== 0) {
-          currentX += activeModules[index - 1].width * scaleFactor;
-        } 
-        if (module.id === 'BKPL') {
-          currentX = offsetX - sofaTotalWidth / 2 + (activeModules[0].width * scaleFactor);
-          currentY = offsetY - sofaTotalDepth / 2;
-        }
-          const updatedPosition = { x: currentX, y: currentY};
-          console.log(updatedPosition)
-          return { ...module, position: updatedPosition }
-        })
+          if (index !== 0) {
+            currentX += activeModules[index - 1].width * scaleFactor;
+          }
+          if (module.id === 'BKPL') {
+            currentX =
+              offsetX -
+              sofaTotalWidth / 2 +
+              activeModules[0].width * scaleFactor;
+            currentY = offsetY - sofaTotalDepth / 2;
+          }
+          const updatedPosition = { x: currentX, y: currentY };
+
+          return { ...module, position: updatedPosition };
+        });
         setActiveModules(positionedModules);
       }
-    }, [activeModules, setActiveModules, scaleFactor, possibleModules, offsetX, offsetY, sofaTotalDepth, sofaTotalWidth]);
+    }, [
+      activeModules,
+      setActiveModules,
+      scaleFactor,
+      possibleModules,
+      offsetX,
+      offsetY,
+      sofaTotalDepth,
+      sofaTotalWidth,
+    ]);
 
     return (
       <div>
