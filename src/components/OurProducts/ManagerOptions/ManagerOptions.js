@@ -51,6 +51,8 @@ export const ManagerOptions = () => {
     label: 'Не выбрано',
   });
   const [comment, setComment] = useState('');
+  const [seatModule, setSeatModule] = useState({});
+  const [cornerModule, setCornerModule] = useState({});
 
   useEffect(() => {
     if (fabricItems.length === 0) {
@@ -227,13 +229,27 @@ export const ManagerOptions = () => {
     }
   };
 
-  const deleteModule = (index) => {
+  const deleteModule = index => {
     if (activeModules[index].id !== 'BKPL') {
       const changedWidth = productWidth - activeModules[index].width;
-    setProductWidth(changedWidth)
+      setProductWidth(changedWidth);
     }
-    
-    setActiveModules(prevState => [...prevState.slice(0, index), ...prevState.slice(index + 1)])
+
+    setActiveModules(prevState => [
+      ...prevState.slice(0, index),
+      ...prevState.slice(index + 1),
+    ]);
+  };
+
+  const addModule = () => {
+    console.log(activeModules)
+    const pos = seatModule.i;
+    setActiveModules((prevState) => {
+      const updatedModules = [...prevState];
+      updatedModules.splice(pos, 0, seatModule);
+      return updatedModules;
+    })
+    setProductWidth(prevState => prevState + seatModule.width)
   }
 
   return (
@@ -258,6 +274,9 @@ export const ManagerOptions = () => {
               setHeadDepth={setHeadDepth}
               tsargWidth={tsargWidth}
               setTsargWidth={setTsargWidth}
+              standardProportions={standardProportions}
+              seatModule={seatModule}
+              setSeatModule={setSeatModule}
             />
           )}
         </div>
@@ -275,9 +294,7 @@ export const ManagerOptions = () => {
               <input
                 className={css.sizeInput}
                 value={productWidth ?? 100}
-                onChange={e =>
-                  setProductWidth(Number(e.target.value))
-                }
+                onChange={e => setProductWidth(Number(e.target.value))}
               />
             )}
           </label>
@@ -418,16 +435,25 @@ export const ManagerOptions = () => {
               <div>
                 <p>{t('modules list')}:</p>
                 <ul>
-                  {activeModules.map((module, index) => 
-                    (<li key={index} className={css.moduleDetailsArea}>
+                  {activeModules.map((module, index) => (
+                    <li key={index} className={css.moduleDetailsArea}>
                       <p>{module.name}</p>
-                      <button 
+                      <button
                         className={css.delModelBtn}
                         onClick={() => deleteModule(index)}
-                      >x</button>
-                    </li>)
-                  )}
+                      >
+                        x
+                      </button>
+                    </li>
+                  ))}
                 </ul>
+                <button className={css.btn} onClick={addModule}>
+                  {isPending ? (
+                    <PulseLoader color="#c8c19b" size="10px" />
+                  ) : (
+                    `${t('add module')}`
+                  )}
+                </button>
               </div>
             </div>
           )}
