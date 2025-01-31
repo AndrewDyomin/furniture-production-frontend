@@ -252,6 +252,23 @@ export const ManagerOptions = () => {
     setProductWidth(prevState => prevState + seatModule.width)
   }
 
+  const updateModuleWidth = (index, newWidth) => { 
+      const oldWidth = activeModules[index].width;
+      const difference = oldWidth - newWidth;
+    if (newWidth > 0) {
+
+      setProductWidth(prevState => prevState - difference);
+
+      setActiveModules((prevState) =>
+        prevState.map((module, i) =>
+          i === index ? { ...module, width: Number(newWidth) } : module
+        )
+    )}
+
+    console.log(oldWidth)
+    console.log(newWidth)
+  };
+
   return (
     <>
       <h3 className={css.calcHeader}>{t('cost calculation')}</h3>
@@ -293,6 +310,7 @@ export const ManagerOptions = () => {
             {product.group !== 'bed' && (
               <input
                 className={css.sizeInput}
+                disabled={!standardProportions && true}
                 value={productWidth ?? 100}
                 onChange={e => setProductWidth(Number(e.target.value))}
               />
@@ -437,7 +455,14 @@ export const ManagerOptions = () => {
                 <ul>
                   {activeModules.map((module, index) => (
                     <li key={index} className={css.moduleDetailsArea}>
-                      <p>{module.name}</p>
+                      <div>
+                        <p>{module.name}</p>
+                        {!standardProportions && <input
+                          className={css.sizeInput}
+                          defaultValue={module.width}
+                          onChange={e => updateModuleWidth(index, e.target.value)}
+                        />}
+                      </div>
                       <button
                         className={css.delModelBtn}
                         onClick={() => deleteModule(index)}

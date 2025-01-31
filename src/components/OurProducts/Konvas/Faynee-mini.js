@@ -245,7 +245,7 @@ const FayneeMini = forwardRef(
       );
     };
 
-    useEffect(() => {
+    useEffect(() => { // если сбилась позиция
       if (
         activeModules.length !== 0 &&
         activeModules[0].position.x !== offsetX - sofaTotalWidth / 2
@@ -263,7 +263,7 @@ const FayneeMini = forwardRef(
       sofaTotalWidth,
     ]);
 
-    useEffect(() => {
+    useEffect(() => { // первичный набор модулей и позиции
       const standardArr = ['ARML', 'FM01', 'FM01', 'ARMR', 'BKPL'];
       if (activeModules.length === 0) {
         const sortedModules = standardArr
@@ -307,15 +307,11 @@ const FayneeMini = forwardRef(
       sofaTotalWidth,
     ]);
 
-    useEffect(() => {
+    useEffect(() => { //при стандартных пропорциях пересчет размера модулей
       if (productWidth >= 100) {
-        const seatModules = activeModules.filter(
-          module => module.id === 'FM01'
-        );
-        const seatWidth = seatModules.reduce(
-          (acc, module) => acc + module.width,
-          0
-        );
+
+        const seatModules = activeModules.filter(module => module.id === 'FM01');
+        const seatWidth = seatModules.reduce((acc, module) => acc + module.width, 0);
         const armsModules = activeModules.filter(
           module => module.id === 'ARML' || module.id === 'ARMR'
         );
@@ -336,7 +332,7 @@ const FayneeMini = forwardRef(
 
         setSeatModule({ ...seatModules[0], i})
 
-        if (!(productWidth === total || total === 0)) {
+        if (!(productWidth === total || total === 0 || !standardProportions)) {
           const newSeatWidth = productWidth - armsWidth;
           const resizedModules = activeModules.map(module => ({
             ...module,

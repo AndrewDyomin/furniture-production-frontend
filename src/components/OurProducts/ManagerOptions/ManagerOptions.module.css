@@ -57,9 +57,13 @@
 }
 
 .delModelBtn{
+    width: 23px;
+    height: 23px;
     margin-left: auto;
     border-radius: 50%;
     border: 1px solid red;
+    background: transparent;
+    cursor: pointer;
 }
 
 .btn {
