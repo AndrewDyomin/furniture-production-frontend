@@ -274,9 +274,8 @@ export const ManagerOptions = () => {
             {product.group !== 'bed' && (
               <input
                 className={css.sizeInput}
-                defaultValue={productWidth}
+                value={productWidth ?? 100}
                 onChange={e =>
-                  e.target.value >= 100 &&
                   setProductWidth(Number(e.target.value))
                 }
               />

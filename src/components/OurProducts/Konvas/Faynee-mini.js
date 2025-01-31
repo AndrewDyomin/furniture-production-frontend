@@ -15,18 +15,6 @@ const FayneeMini = forwardRef(
   ) => {
     const [scaleFactor, setScaleFactor] = useState(1);
 
-    const stageRef = useRef(null);
-
-    const sofaTotalDepth = productDepth * scaleFactor;
-    const sofaTotalWidth = productWidth * scaleFactor;
-
-    const offsetX = dimensions.width / 2;
-    const offsetY = dimensions.height / 2;
-
-    const isARM =
-      activeModules.some(module => module.id === 'ARML') &&
-      activeModules.some(module => module.id === 'ARMR');
-
     useEffect(() => {
       const value = Math.min(
         (0.7 * dimensions.width) / productWidth,
@@ -36,6 +24,20 @@ const FayneeMini = forwardRef(
         setScaleFactor(value);
       }
     }, [dimensions, productWidth, productDepth, scaleFactor]);
+
+    const stageRef = useRef(null);
+
+    const sofaTotalDepth = productDepth * scaleFactor;
+    const sofaTotalWidth = productWidth * scaleFactor;
+
+    const backRadius = 8 * scaleFactor;
+
+    const offsetX = dimensions.width / 2;
+    const offsetY = dimensions.height / 2;
+
+    const isARM =
+      activeModules.some(module => module.id === 'ARML') &&
+      activeModules.some(module => module.id === 'ARMR');
 
     useImperativeHandle(ref, () => ({
       getImage() {
@@ -59,11 +61,11 @@ const FayneeMini = forwardRef(
               <Line
                 points={[
                   position.x,
-                  position.y + 8 * scaleFactor,
+                  position.y + backRadius,
                   position.x + width / 2,
                   position.y + 3 * scaleFactor,
                   position.x + width,
-                  position.y + 8 * scaleFactor,
+                  position.y + backRadius,
                 ]}
                 stroke="black"
                 strokeWidth={1}
@@ -73,7 +75,7 @@ const FayneeMini = forwardRef(
               />
               <Rect
                 x={position.x}
-                y={position.y + 8 * scaleFactor}
+                y={position.y + backRadius}
                 width={width}
                 height={height / 6}
                 stroke="black"
@@ -82,9 +84,9 @@ const FayneeMini = forwardRef(
               />
               <Rect
                 x={position.x}
-                y={position.y + height / 6 + 8 * scaleFactor}
+                y={position.y + height / 6 + backRadius}
                 width={width}
-                height={height - (height / 6 + 8 * scaleFactor)}
+                height={height - (height / 6 + backRadius)}
                 stroke="black"
                 strokeWidth={1}
                 cornerRadius={4}
@@ -190,7 +192,7 @@ const FayneeMini = forwardRef(
           },
         },
       ],
-      [offsetX, offsetY, scaleFactor]
+      [offsetX, offsetY, scaleFactor, backRadius]
     );
 
     const drawModules = () => {
@@ -230,7 +232,6 @@ const FayneeMini = forwardRef(
           .filter(Boolean);
         setActiveModules(sortedModules);
       }
-      console.log('effect 1')
     }, [activeModules, offsetX, possibleModules, setActiveModules, sofaTotalWidth])
 
     useEffect(() => {
@@ -276,6 +277,8 @@ const FayneeMini = forwardRef(
       sofaTotalDepth,
       sofaTotalWidth,
     ]);
+
+    console.log(activeModules[0])
 
     return (
       <div>
