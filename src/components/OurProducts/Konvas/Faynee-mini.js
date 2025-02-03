@@ -245,11 +245,9 @@ const FayneeMini = forwardRef(
       );
     };
 
-    useEffect(() => { // если сбилась позиция
-      if (
-        activeModules.length !== 0 &&
-        activeModules[0].position.x !== offsetX - sofaTotalWidth / 2
-      ) {
+    useEffect(() => {
+      // если сбилась позиция
+      if (activeModules.length !== 0 && activeModules[0].position.x !== offsetX - sofaTotalWidth / 2 && standardProportions) {
         const sortedModules = activeModules
           .map(item => possibleModules.find(module => module.id === item.id))
           .filter(Boolean);
@@ -263,7 +261,8 @@ const FayneeMini = forwardRef(
       sofaTotalWidth,
     ]);
 
-    useEffect(() => { // первичный набор модулей и позиции
+    useEffect(() => {
+      // первичный набор модулей и позиции
       const standardArr = ['ARML', 'FM01', 'FM01', 'ARMR', 'BKPL'];
       if (activeModules.length === 0) {
         const sortedModules = standardArr
@@ -307,32 +306,27 @@ const FayneeMini = forwardRef(
       sofaTotalWidth,
     ]);
 
-    useEffect(() => { //при стандартных пропорциях пересчет размера модулей
-      if (productWidth >= 100) {
+    useEffect(() => { //пересчет размера модулей
 
-        const seatModules = activeModules.filter(module => module.id === 'FM01');
-        const seatWidth = seatModules.reduce((acc, module) => acc + module.width, 0);
-        const armsModules = activeModules.filter(
-          module => module.id === 'ARML' || module.id === 'ARMR'
-        );
-        const armsWidth = armsModules.reduce(
-          (acc, module) => acc + module.width,
-          0
-        );
+      const seatModules = activeModules.filter(module => module.id === 'FM01');
+      const seatWidth = seatModules.reduce((acc, module) => acc + module.width, 0);
+      const armsModules = activeModules.filter(module => module.id === 'ARML' || module.id === 'ARMR');
+      const armsWidth = armsModules.reduce((acc, module) => acc + module.width, 0);
+      const total = seatWidth + armsWidth;
+      let lastSeat = 0;
 
-        const total = seatWidth + armsWidth;
+      activeModules.forEach((module, index) => {
+        if (module.id === 'FM01') {
+          lastSeat = index;
+        }
+      });
 
-        let i = 0;
+      setSeatModule({ ...seatModules[0], i: lastSeat });
 
-        activeModules.forEach( (module, index) => {
-          if (module.id === 'FM01') {
-            i = index
-          };
-        })
+      if (productWidth >= 100 && standardProportions) {
+        console.log('productWidth >= 100 && standardProportions')
 
-        setSeatModule({ ...seatModules[0], i})
-
-        if (!(productWidth === total || total === 0 || !standardProportions)) {
+        if (!(productWidth === total || total === 0)) {
           const newSeatWidth = productWidth - armsWidth;
           const resizedModules = activeModules.map(module => ({
             ...module,
@@ -345,10 +339,44 @@ const FayneeMini = forwardRef(
           }));
 
           setActiveModules(resizedModules);
-          
+        }
+      } else if (productWidth >= 100 && !standardProportions) {
+        console.log('productWidth >= 100 && !standardProportions')
+        let currentX = offsetX - sofaTotalWidth / 2;
+        let currentY = offsetY - sofaTotalDepth / 2;
+
+        const resizedModules = activeModules.map((module, index) => {
+          if (index > 0) {
+            currentX += activeModules[index - 1].width * scaleFactor;
+          }
+
+          if (module.id === 'BKPL') {
+            currentX =
+              offsetX -
+              sofaTotalWidth / 2 +
+              activeModules[0].width * scaleFactor;
+            currentY = offsetY - sofaTotalDepth / 2;
+          }
+          const updatedPosition = { x: currentX, y: currentY };
+          return { ...module, position: updatedPosition };
+        })
+
+        let activeXCoords = activeModules.map(module => Math.round(module.position.x))
+        let resizedXCoords = resizedModules.map(module => Math.round(module.position.x));
+    
+        if (JSON.stringify(resizedXCoords) !== JSON.stringify(activeXCoords)) {
+          console.log('resized: ',resizedXCoords)
+          console.log('active: ',activeXCoords)
+          setActiveModules(resizedModules);
         }
       }
-    }, [productWidth, activeModules, setActiveModules, standardProportions, setSeatModule]);
+    }, [
+      productWidth,
+      activeModules,
+      setActiveModules,
+      standardProportions,
+      setSeatModule,
+    ]);
 
     return (
       <div>

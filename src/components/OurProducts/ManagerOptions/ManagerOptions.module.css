@@ -10,13 +10,16 @@
 }
 
 .schemaArea {
-    display: block;
+    display: flex;
     box-sizing: border-box;
+    width: min(90vw, 90vh);
+    height: min(90vw, 90vh);
+    justify-content: center;
+    align-items: center;
     border: 1px solid #000;
-    width: 100%;
-    aspect-ratio: 1;
-    height: auto;
+    overflow: hidden;
 }
+
 
 .inputsArea {
     display: flex;
@@ -91,6 +94,7 @@
     }
 
     .schemaArea {
-        width: 70%;
+        width: min(70vw, 70vh);
+        height: min(70vw, 70vh);
     }
 }

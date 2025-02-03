@@ -254,19 +254,18 @@ export const ManagerOptions = () => {
 
   const updateModuleWidth = (index, newWidth) => { 
       const oldWidth = activeModules[index].width;
-      const difference = oldWidth - newWidth;
-    if (newWidth > 0) {
+    if (newWidth >= 4) {
 
-      setProductWidth(prevState => prevState - difference);
+      const difference = newWidth <= oldWidth ? oldWidth - newWidth : newWidth - oldWidth;
+      setProductWidth((prevState) => newWidth <= oldWidth ? prevState - difference : prevState + difference
+      );
 
-      setActiveModules((prevState) =>
-        prevState.map((module, i) =>
+      let resizedModules = activeModules.map((module, i) =>
           i === index ? { ...module, width: Number(newWidth) } : module
         )
-    )}
 
-    console.log(oldWidth)
-    console.log(newWidth)
+      setActiveModules(resizedModules)
+    }
   };
 
   return (
