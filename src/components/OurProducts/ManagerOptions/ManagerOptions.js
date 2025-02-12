@@ -203,7 +203,7 @@ export const ManagerOptions = () => {
       formData.append('mattressDepth', mattressDepth);
       formData.append('standardProportions', standardProportions);
     }
-    if (!standardProportions) {
+    if (!standardProportions && product.group === 'bed') {
       formData.append('headHeight', headHeight);
       formData.append('headDepth', headDepth);
       formData.append('tsargHeight', tsargHeight);
@@ -214,6 +214,12 @@ export const ManagerOptions = () => {
     }
     if (product.costCalc.drawstrings) {
       formData.append('drawstrings', drawstrings.value);
+    }
+    if (product.costCalc.module) {
+      let modules = [];
+      activeModules.map(module => modules.push({name: module.name, width: module.width}))
+      formData.append('Modules', JSON.stringify(modules));
+      formData.append('Standard proportions', standardProportions);
     }
 
     try {
@@ -242,7 +248,6 @@ export const ManagerOptions = () => {
   };
 
   const addModule = () => {
-    console.log(activeModules)
     const pos = seatModule.i;
     setActiveModules((prevState) => {
       const updatedModules = [...prevState];
@@ -293,6 +298,8 @@ export const ManagerOptions = () => {
               standardProportions={standardProportions}
               seatModule={seatModule}
               setSeatModule={setSeatModule}
+              cornerModule={cornerModule}
+              setCornerModule={setCornerModule}
             />
           )}
         </div>

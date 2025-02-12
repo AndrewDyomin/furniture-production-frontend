@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import { Stage, Layer, Rect, Line, Text, Group } from 'react-konva';
 
-const FayneeMini = forwardRef(
+const Faynee = forwardRef(
   (
     {
       dimensions,
@@ -58,21 +58,38 @@ const FayneeMini = forwardRef(
     let possibleModules = useMemo(
       () => [
         {
-          id: 'FM01',
+          id: 'F01',
           name: 'модуль',
           position: { x: offsetX, y: offsetY },
-          height: 120,
+          height: 115,
           width: 100,
           mark: (position, height, width, arm, scaleFactor) => (
             <>
+              <Rect
+                x={position.x}
+                y={position.y}
+                width={width}
+                height={3 * scaleFactor}
+                stroke="black"
+                strokeWidth={1}
+                cornerRadius={2}
+              />
+              <Rect
+                x={position.x}
+                y={position.y + 3 * scaleFactor}
+                width={width}
+                height={height / 5}
+                stroke="black"
+                strokeWidth={1}
+              />
               <Line
                 points={[
                   position.x,
-                  position.y + 8 * scaleFactor,
+                  position.y + height / 5 + 3 * scaleFactor,
                   position.x + width / 2,
-                  position.y + 3 * scaleFactor,
+                  position.y + height / 5 + 8 * scaleFactor,
                   position.x + width,
-                  position.y + 8 * scaleFactor,
+                  position.y + height / 5 + 3 * scaleFactor,
                 ]}
                 stroke="black"
                 strokeWidth={1}
@@ -82,21 +99,12 @@ const FayneeMini = forwardRef(
               />
               <Rect
                 x={position.x}
-                y={position.y + 8 * scaleFactor}
+                y={position.y + height / 5 + 3 * scaleFactor}
                 width={width}
-                height={height / 6}
+                height={height - (height / 5 + 3 * scaleFactor)}
                 stroke="black"
                 strokeWidth={1}
-                cornerRadius={2}
-              />
-              <Rect
-                x={position.x}
-                y={position.y + height / 6 + 8 * scaleFactor}
-                width={width}
-                height={height - (height / 6 + 8 * scaleFactor)}
-                stroke="black"
-                strokeWidth={1}
-                cornerRadius={4}
+                cornerRadius={[0, 0, 4, 4]}
               />
             </>
           ),
@@ -105,8 +113,8 @@ const FayneeMini = forwardRef(
           id: 'ARML',
           name: 'подлокотник левый',
           position: { x: offsetX, y: offsetY },
-          height: 120,
-          width: 17.5,
+          height: 115,
+          width: 30,
           mark: (position, height, width, arm, scaleFactor) => (
             <>
               <Line
@@ -140,8 +148,8 @@ const FayneeMini = forwardRef(
           id: 'ARMR',
           name: 'подлокотник правый',
           position: { x: offsetX, y: offsetY },
-          height: 120,
-          width: 17.5,
+          height: 115,
+          width: 30,
           mark: (position, height, width, arm, scaleFactor) => (
             <>
               <Line
@@ -171,33 +179,6 @@ const FayneeMini = forwardRef(
             </>
           ),
         },
-        {
-          id: 'BKPL',
-          name: 'пристенок',
-          position: { x: offsetX, y: offsetY },
-          height: 3,
-          width: 200,
-          mark: (position, height, width, arm, scaleFactor) => {
-            if (arm) {
-              return (
-                <>
-                  <Rect
-                    x={position.x}
-                    y={position.y}
-                    width={width}
-                    height={height}
-                    stroke="black"
-                    strokeWidth={1}
-                    cornerRadius={[3, 3, 0, 0]}
-                  />
-                </>
-              );
-            } else {
-              console.warn('not enough arms');
-              return <></>;
-            }
-          },
-        },
       ],
       [offsetX, offsetY]
     );
@@ -205,7 +186,7 @@ const FayneeMini = forwardRef(
     const drawModules = () => {
       let backStrap = {};
 
-      const seatModules = activeModules.filter(module => module.id === 'FM01');
+      const seatModules = activeModules.filter(module => module.id === 'F01');
 
       if (seatModules.length !== 0) {
         let acc = 0;
@@ -223,21 +204,13 @@ const FayneeMini = forwardRef(
 
             return (
               <Group key={index}>
-                {module.id === 'BKPL'
-                  ? module.mark(
-                      module.position,
-                      height,
-                      backStrap.width,
-                      isARM,
-                      scaleFactor
-                    )
-                  : module.mark(
-                      module.position,
-                      height,
-                      width,
-                      isARM,
-                      scaleFactor
-                    )}
+                {module.mark(
+                  module.position,
+                  height,
+                  width,
+                  isARM,
+                  scaleFactor
+                )}
               </Group>
             );
           })}
@@ -246,7 +219,11 @@ const FayneeMini = forwardRef(
     };
 
     useEffect(() => {
-      if (activeModules.length !== 0 && activeModules[0].position.x !== offsetX - sofaTotalWidth / 2 && standardProportions) {
+      if (
+        activeModules.length !== 0 &&
+        activeModules[0].position.x !== offsetX - sofaTotalWidth / 2 &&
+        standardProportions
+      ) {
         const sortedModules = activeModules
           .map(item => possibleModules.find(module => module.id === item.id))
           .filter(Boolean);
@@ -261,7 +238,7 @@ const FayneeMini = forwardRef(
     ]);
 
     useEffect(() => {
-      const standardArr = ['ARML', 'FM01', 'FM01', 'ARMR', 'BKPL'];
+      const standardArr = ['ARML', 'F01', 'F01', 'ARMR'];
       if (activeModules.length === 0) {
         const sortedModules = standardArr
           .map(id => possibleModules.find(module => module.id === id))
@@ -305,16 +282,23 @@ const FayneeMini = forwardRef(
     ]);
 
     useEffect(() => {
-
-      const seatModules = activeModules.filter(module => module.id === 'FM01');
-      const seatWidth = seatModules.reduce((acc, module) => acc + module.width, 0);
-      const armsModules = activeModules.filter(module => module.id === 'ARML' || module.id === 'ARMR');
-      const armsWidth = armsModules.reduce((acc, module) => acc + module.width, 0);
+      const seatModules = activeModules.filter(module => module.id === 'F01');
+      const seatWidth = seatModules.reduce(
+        (acc, module) => acc + module.width,
+        0
+      );
+      const armsModules = activeModules.filter(
+        module => module.id === 'ARML' || module.id === 'ARMR'
+      );
+      const armsWidth = armsModules.reduce(
+        (acc, module) => acc + module.width,
+        0
+      );
       const total = seatWidth + armsWidth;
       let lastSeat = 0;
 
       activeModules.forEach((module, index) => {
-        if (module.id === 'FM01') {
+        if (module.id === 'F01') {
           lastSeat = index;
         }
       });
@@ -322,7 +306,6 @@ const FayneeMini = forwardRef(
       setSeatModule({ ...seatModules[0], i: lastSeat });
 
       if (productWidth >= 100 && standardProportions) {
-
         if (!(productWidth === total || total === 0)) {
           const newSeatWidth = productWidth - armsWidth;
           const resizedModules = activeModules.map(module => ({
@@ -330,7 +313,7 @@ const FayneeMini = forwardRef(
             width:
               module.id === 'ARML' || module.id === 'ARMR'
                 ? armsWidth / armsModules.length
-                : module.id === 'FM01'
+                : module.id === 'F01'
                 ? newSeatWidth / seatModules.length
                 : module.width,
           }));
@@ -355,11 +338,15 @@ const FayneeMini = forwardRef(
           }
           const updatedPosition = { x: currentX, y: currentY };
           return { ...module, position: updatedPosition };
-        })
+        });
 
-        let activeXCoords = activeModules.map(module => Math.round(module.position.x))
-        let resizedXCoords = resizedModules.map(module => Math.round(module.position.x));
-    
+        let activeXCoords = activeModules.map(module =>
+          Math.round(module.position.x)
+        );
+        let resizedXCoords = resizedModules.map(module =>
+          Math.round(module.position.x)
+        );
+
         if (JSON.stringify(resizedXCoords) !== JSON.stringify(activeXCoords)) {
           setActiveModules(resizedModules);
         }
@@ -458,4 +445,4 @@ const FayneeMini = forwardRef(
   }
 );
 
-export default FayneeMini;
+export default Faynee;
