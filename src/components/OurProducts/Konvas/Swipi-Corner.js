@@ -136,9 +136,9 @@ const SwipiCorner = forwardRef(
               />
               <Rect
                 x={position.x}
-                y={position.y + 3 * scaleFactor}
+                y={position.y + 26 * scaleFactor}
                 width={width}
-                height={height}
+                height={height - 26 * scaleFactor}
                 stroke="black"
                 strokeWidth={1}
                 cornerRadius={4}
@@ -152,17 +152,8 @@ const SwipiCorner = forwardRef(
           position: { x: offsetX, y: offsetY },
           height: 115,
           width: 25,
-          mark: (position, height, width, arm, scaleFactor) => (
+          mark: (position, height, width, arm, scaleFactor, angleDirection) => (
             <>
-              <Rect
-                x={position.x}
-                y={position.y}
-                width={width}
-                height={height}
-                stroke="black"
-                strokeWidth={1}
-                cornerRadius={[5, 3, 3, 5]}
-              />
               <Rect
                 x={position.x + 5 * scaleFactor}
                 y={position.y}
@@ -172,6 +163,41 @@ const SwipiCorner = forwardRef(
                 strokeWidth={1}
                 cornerRadius={[3, 3, 3, 3]}
               />
+              {angleDirection.value === '7' ? 
+                <Line
+                  points={[
+                    position.x + width,
+                    position.y,
+                    position.x + 3 * scaleFactor,
+                    position.y,
+                    position.x + 1 * scaleFactor,
+                    position.y + 1 * scaleFactor,
+                    position.x,
+                    position.y + 3 * scaleFactor,
+                    position.x,
+                    position.y + ((productDepth - 3) * scaleFactor),
+                    position.x + 1 * scaleFactor,
+                    position.y + ((productDepth - 1) * scaleFactor),
+                    position.x + 3 * scaleFactor,
+                    position.y + productDepth * scaleFactor,
+                    position.x + width + 5 * scaleFactor,
+                    position.y + productDepth * scaleFactor,
+                  ]}
+                  stroke="black"
+                  strokeWidth={1}
+                  closed={false}
+                />
+               : 
+                <Rect
+                  x={position.x}
+                  y={position.y}
+                  width={width}
+                  height={height}
+                  stroke="black"
+                  strokeWidth={1}
+                  cornerRadius={[5, 3, 3, 5]}
+                />
+              }
             </>
           ),
         },
@@ -232,13 +258,16 @@ const SwipiCorner = forwardRef(
           },
         },
       ],
-      [offsetX, offsetY]
+      [offsetX, offsetY, productDepth]
     );
 
     const drawModules = () => {
       let backStrap = {};
 
-      const seatModules = activeModules.filter(module => module.id === 'SW01' || module.id === 'SC01' || module.id === 'SC02');
+      const seatModules = activeModules.filter(
+        module =>
+          module.id === 'SW01' || module.id === 'SC01' || module.id === 'SC02'
+      );
 
       if (seatModules.length !== 0) {
         let acc = 0;
@@ -262,14 +291,16 @@ const SwipiCorner = forwardRef(
                       height,
                       backStrap.width,
                       isARM,
-                      scaleFactor
+                      scaleFactor,
+                      angleDirection
                     )
                   : module.mark(
                       module.position,
                       height,
                       width,
                       isARM,
-                      scaleFactor
+                      scaleFactor,
+                      angleDirection
                     )}
               </Group>
             );
@@ -296,10 +327,14 @@ const SwipiCorner = forwardRef(
       setActiveModules,
       sofaTotalWidth,
       standardProportions,
+      angleDirection
     ]);
 
     useEffect(() => {
-      const standardArr = angleDirection.value === '7' ? ['ARML', 'SC01', 'SW01', 'SW01', 'ARMR', 'BKPL'] : ['ARML', 'SW01', 'SW01', 'SC02', 'ARMR', 'BKPL'];
+      const standardArr =
+        angleDirection.value === '7'
+          ? ['ARML', 'SC01', 'SW01', 'SW01', 'ARMR', 'BKPL']
+          : ['ARML', 'SW01', 'SW01', 'SC02', 'ARMR', 'BKPL'];
       if (activeModules.length === 0) {
         const sortedModules = standardArr
           .map(id => possibleModules.find(module => module.id === id))
@@ -340,10 +375,14 @@ const SwipiCorner = forwardRef(
       offsetY,
       sofaTotalDepth,
       sofaTotalWidth,
+      angleDirection,
     ]);
 
     useEffect(() => {
-      const seatModules = activeModules.filter(module => module.id === 'SW01' || module.id === 'SC01' || module.id === 'SC02');
+      const seatModules = activeModules.filter(
+        module =>
+          module.id === 'SW01' || module.id === 'SC01' || module.id === 'SC02'
+      );
       const seatWidth = seatModules.reduce(
         (acc, module) => acc + module.width,
         0
@@ -423,6 +462,7 @@ const SwipiCorner = forwardRef(
       scaleFactor,
       sofaTotalDepth,
       sofaTotalWidth,
+      angleDirection
     ]);
 
     return (
