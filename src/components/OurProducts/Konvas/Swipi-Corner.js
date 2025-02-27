@@ -204,9 +204,9 @@ const SwipiCorner = forwardRef(
           position: { x: offsetX, y: offsetY },
           height: 115,
           width: 25,
-          mark: (position, height, width, arm, scaleFactor) => (
+          mark: (position, height, width, arm, scaleFactor, angleDirection) => (
             <>
-              <Rect
+              {angleDirection.value === '7' ? <Rect
                 x={position.x}
                 y={position.y}
                 width={width}
@@ -214,7 +214,29 @@ const SwipiCorner = forwardRef(
                 stroke="black"
                 strokeWidth={1}
                 cornerRadius={[3, 5, 5, 3]}
-              />
+              /> : <Line
+              points={[
+                position.x,
+                position.y,
+                position.x + width - 3 * scaleFactor,
+                position.y,
+                position.x + width - 1 * scaleFactor,
+                position.y + 1 * scaleFactor,
+                position.x + width,
+                position.y + 3 * scaleFactor,
+                position.x + width,
+                position.y + productDepth * scaleFactor - 3 * scaleFactor,
+                position.x + width - 1 * scaleFactor,
+                position.y + productDepth * scaleFactor - 1 * scaleFactor,
+                position.x + width - 3 * scaleFactor,
+                position.y + productDepth * scaleFactor,
+                position.x - 5 * scaleFactor,
+                position.y + productDepth * scaleFactor,
+              ]}
+              stroke="black"
+              strokeWidth={1}
+              closed={false}
+            />}
               <Rect
                 x={position.x}
                 y={position.y}
@@ -411,7 +433,6 @@ const SwipiCorner = forwardRef(
         newModules.splice(indexOfARML + 1, 0, activeModules[indexOfSC01]);
       }
     
-      // ❗ Теперь проверяем, действительно ли изменился порядок
       if (JSON.stringify(newModules) !== JSON.stringify(activeModules)) {
         setActiveModules(prevModules => {
           if (JSON.stringify(prevModules) !== JSON.stringify(newModules)) {
