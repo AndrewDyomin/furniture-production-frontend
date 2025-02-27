@@ -1,6 +1,5 @@
 import React, {
   useMemo,
-  useState,
   useEffect,
   forwardRef,
   useImperativeHandle,
@@ -19,21 +18,19 @@ const SwipiCorner = forwardRef(
       standardProportions,
       seatModules,
       setSeatModule,
+      cornerModule,
+      setCornerModule,
       angleDirection,
     },
     ref
   ) => {
-    const [scaleFactor, setScaleFactor] = useState(1);
 
-    useEffect(() => {
-      const value = Math.min(
+    const scaleFactor = useMemo(() => {
+      return Math.min(
         (0.7 * dimensions.width) / productWidth,
         (0.7 * dimensions.height) / productDepth
       );
-      if (value > 0 && value !== scaleFactor) {
-        setScaleFactor(value);
-      }
-    }, [dimensions, productWidth, productDepth, scaleFactor]);
+    }, [dimensions, productWidth, productDepth]);    
 
     const stageRef = useRef(null);
 
@@ -326,145 +323,106 @@ const SwipiCorner = forwardRef(
       possibleModules,
       setActiveModules,
       sofaTotalWidth,
-      standardProportions,
-      angleDirection
+      standardProportions
     ]);
 
     useEffect(() => {
       const standardArr =
         angleDirection.value === '7'
           ? ['ARML', 'SC01', 'SW01', 'SW01', 'ARMR', 'BKPL']
-          : ['ARML', 'SW01', 'SW01', 'SC02', 'ARMR', 'BKPL'];
+          : ['ARML', 'SW01', 'SW01', 'SC01', 'ARMR', 'BKPL'];
+    
       if (activeModules.length === 0) {
         const sortedModules = standardArr
           .map(id => possibleModules.find(module => module.id === id))
           .filter(Boolean);
         setActiveModules(sortedModules);
       }
-
-      if (
-        activeModules.length !== 0 &&
-        activeModules[0].position.x === offsetX
-      ) {
-        let currentX = offsetX - sofaTotalWidth / 2;
-        let currentY = offsetY - sofaTotalDepth / 2;
-
-        const positionedModules = activeModules.map((module, index) => {
-          if (index !== 0) {
-            currentX += activeModules[index - 1].width * scaleFactor;
-          }
-          if (module.id === 'BKPL') {
-            currentX =
-              offsetX -
-              sofaTotalWidth / 2 +
-              activeModules[0].width * scaleFactor;
-            currentY = offsetY - sofaTotalDepth / 2;
-          }
-          const updatedPosition = { x: currentX, y: currentY };
-
-          return { ...module, position: updatedPosition };
-        });
-        setActiveModules(positionedModules);
-      }
-    }, [
-      activeModules,
-      setActiveModules,
-      scaleFactor,
-      possibleModules,
-      offsetX,
-      offsetY,
-      sofaTotalDepth,
-      sofaTotalWidth,
-      angleDirection,
-    ]);
+    }, [activeModules, setActiveModules, possibleModules, angleDirection]);    
 
     useEffect(() => {
+      if (productWidth < 100 || activeModules.length === 0) return;
+    
       const seatModules = activeModules.filter(
-        module =>
-          module.id === 'SW01' || module.id === 'SC01' || module.id === 'SC02'
+        module => module.id === 'SW01' || module.id === 'SC01' || module.id === 'SC02'
       );
-      const seatWidth = seatModules.reduce(
-        (acc, module) => acc + module.width,
-        0
-      );
-      const armsModules = activeModules.filter(
-        module => module.id === 'ARML' || module.id === 'ARMR'
-      );
-      const armsWidth = armsModules.reduce(
-        (acc, module) => acc + module.width,
-        0
-      );
-      const total = seatWidth + armsWidth;
-      let lastSeat = 0;
-
-      activeModules.forEach((module, index) => {
-        if (module.id === 'SW01') {
-          lastSeat = index;
-        }
-      });
-
-      setSeatModule({ ...seatModules[0], i: lastSeat });
-
-      if (productWidth >= 100 && standardProportions) {
-        if (!(productWidth === total || total === 0)) {
-          const newSeatWidth = productWidth - armsWidth;
-          const resizedModules = activeModules.map(module => ({
-            ...module,
-            width:
-              module.id === 'ARML' || module.id === 'ARMR'
-                ? armsWidth / armsModules.length
-                : module.id === 'SW01'
-                ? newSeatWidth / seatModules.length
-                : module.width,
-          }));
-
-          setActiveModules(resizedModules);
-        }
-      } else if (productWidth >= 100 && !standardProportions) {
-        let currentX = offsetX - sofaTotalWidth / 2;
-        let currentY = offsetY - sofaTotalDepth / 2;
-
-        const resizedModules = activeModules.map((module, index) => {
-          if (index > 0) {
-            currentX += activeModules[index - 1].width * scaleFactor;
-          }
-
-          if (module.id === 'BKPL') {
-            currentX =
-              offsetX -
-              sofaTotalWidth / 2 +
-              activeModules[0].width * scaleFactor;
-            currentY = offsetY - sofaTotalDepth / 2;
-          }
-          const updatedPosition = { x: currentX, y: currentY };
-          return { ...module, position: updatedPosition };
-        });
-
-        let activeXCoords = activeModules.map(module =>
-          Math.round(module.position.x)
-        );
-        let resizedXCoords = resizedModules.map(module =>
-          Math.round(module.position.x)
-        );
-
-        if (JSON.stringify(resizedXCoords) !== JSON.stringify(activeXCoords)) {
-          setActiveModules(resizedModules);
-        }
+      const armsModules = activeModules.filter(module => module.id === 'ARML' || module.id === 'ARMR');
+    
+      const seatWidth = seatModules.reduce((acc, module) => acc + module.width, 0);
+      const armsWidth = armsModules.reduce((acc, module) => acc + module.width, 0);
+      const totalWidth = seatWidth + armsWidth;
+    
+      if (standardProportions && productWidth !== totalWidth) {
+        const newSeatWidth = productWidth - armsWidth;
+        const resizedModules = activeModules.map(module => ({
+          ...module,
+          width:
+            module.id === 'ARML' || module.id === 'ARMR'
+              ? armsWidth / armsModules.length
+              : seatModules.includes(module)
+              ? newSeatWidth / seatModules.length
+              : module.width,
+        }));
+    
+        setActiveModules(resizedModules);
       }
-    }, [
-      productWidth,
-      activeModules,
-      setActiveModules,
-      standardProportions,
-      setSeatModule,
-      offsetX,
-      offsetY,
-      scaleFactor,
-      sofaTotalDepth,
-      sofaTotalWidth,
-      angleDirection
-    ]);
+    }, [productWidth, activeModules, setActiveModules, standardProportions]); 
+    
+    useEffect(() => {
+      if (activeModules.length === 0 || !standardProportions) return;
+    
+      let currentX = offsetX - sofaTotalWidth / 2;
+      let currentY = offsetY - sofaTotalDepth / 2;
+    
+      const positionedModules = activeModules.map((module, index) => {
+        if (index > 0) {
+          currentX += activeModules[index - 1].width * scaleFactor;
+        }
+    
+        if (module.id === 'BKPL') {
+          currentX = offsetX - sofaTotalWidth / 2 + activeModules[0].width * scaleFactor;
+          currentY = offsetY - sofaTotalDepth / 2;
+        }
+    
+        return { ...module, position: { x: currentX, y: currentY } };
+      });
+    
+      if (JSON.stringify(positionedModules) !== JSON.stringify(activeModules)) {
+        setActiveModules(positionedModules);
+      }
+    }, [activeModules, setActiveModules, standardProportions, offsetX, offsetY, sofaTotalWidth, sofaTotalDepth, scaleFactor]);    
 
+    useEffect(() => {
+      if (activeModules.length === 0) return;
+    
+      const indexOfSC01 = activeModules.findIndex(module => module.id === 'SC01');
+      if (indexOfSC01 === -1) return;
+      
+      let newModules = [...activeModules.filter(module => module.id !== 'SC01')];
+      
+      const indexOfARML = newModules.findIndex(module => module.id === 'ARML');
+      const indexOfARMR = newModules.findIndex(module => module.id === 'ARMR');
+    
+      if (indexOfARML === -1 || indexOfARMR === -1) return;
+    
+      if (angleDirection.value !== '7') {
+        newModules.splice(indexOfARMR, 0, activeModules[indexOfSC01]);
+      } else {
+        newModules.splice(indexOfARML + 1, 0, activeModules[indexOfSC01]);
+      }
+    
+      // ❗ Теперь проверяем, действительно ли изменился порядок
+      if (JSON.stringify(newModules) !== JSON.stringify(activeModules)) {
+        setActiveModules(prevModules => {
+          if (JSON.stringify(prevModules) !== JSON.stringify(newModules)) {
+            return newModules;
+          }
+          return prevModules;
+        });
+      }
+    }, [angleDirection]);
+    
+    
     return (
       <div>
         <Stage
