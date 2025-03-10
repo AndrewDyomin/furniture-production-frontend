@@ -16,7 +16,7 @@ const SwipiCorner = forwardRef(
       activeModules,
       setActiveModules,
       standardProportions,
-      seatModules,
+      seatModule,
       setSeatModule,
       cornerModule,
       setCornerModule,
@@ -283,14 +283,14 @@ const SwipiCorner = forwardRef(
     const drawModules = () => {
       let backStrap = {};
 
-      const seatModules = activeModules.filter(
+      const sleepingArea = activeModules.filter(
         module =>
-          module.id === 'SW01' || module.id === 'SC01' || module.id === 'SC02'
+          module.id === 'SW01' || module.id === 'SC01'
       );
 
-      if (seatModules.length !== 0) {
+      if (sleepingArea.length !== 0) {
         let acc = 0;
-        seatModules.forEach(module => {
+        sleepingArea.forEach(module => {
           acc += module.width;
         });
         backStrap.width = acc * scaleFactor;
@@ -364,6 +364,17 @@ const SwipiCorner = forwardRef(
 
     useEffect(() => {
       if (productWidth < 100 || activeModules.length === 0) return;
+
+      let lastSeat = 0;
+
+      activeModules.forEach((module, index) => {
+        if (module.id === 'SW01') {
+          lastSeat = index;
+        }
+      });
+
+      setSeatModule({ ...activeModules.find(module => module.id === 'SW01'), i: lastSeat });
+      setCornerModule(activeModules.find(module => module.id === 'SC01'))
     
       const seatModules = activeModules.filter(
         module => module.id === 'SW01' || module.id === 'SC01' || module.id === 'SC02'

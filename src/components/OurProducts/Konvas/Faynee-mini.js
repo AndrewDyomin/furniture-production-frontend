@@ -17,7 +17,7 @@ const FayneeMini = forwardRef(
       activeModules,
       setActiveModules,
       standardProportions,
-      seatModules,
+      seatModule,
       setSeatModule,
     },
     ref
