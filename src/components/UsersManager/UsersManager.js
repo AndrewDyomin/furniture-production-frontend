@@ -213,11 +213,11 @@ export const UsersManager = () => {
                       className={css.field}
                     >
                       <option value="demo">demo</option>
-                      <option value="mebtown">mebtown</option>
+                      <option value="mebTown">mebtown</option>
                       <option value="misazh">misazh</option>
                       <option value="millini">millini</option>
-                      <option value="homeis">homeis</option>
-                      <option value="yura">yura</option>
+                      <option value="homeIs">homeis</option>
+                      <option value="Yura">yura</option>
                       <option value="sweethome">sweethome</option>
                       {/* Добавить другие опции, если необходимо */}
                     </Field>
