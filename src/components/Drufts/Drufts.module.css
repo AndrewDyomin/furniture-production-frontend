@@ -2,9 +2,20 @@
 .list {
     list-style: none;
     padding: 0;
-    display: flex;
+    display: grid;
     gap: 10px;
+    
+}
+
+.group {
+    display: flex;
+}
+
+.groupList {
+    display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
+    gap: 10px;
 }
 
 .item {

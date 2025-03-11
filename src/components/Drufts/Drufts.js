@@ -39,30 +39,52 @@ export const Drufts = () => {
   }, [dispatch]);
 
   const drufts = useSelector(selectAllDrufts).array;
+  let firstLetters = [];
+
+  if (drufts) {
+    [...drufts]
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .forEach(druft => {
+        !firstLetters.includes(druft.name[0].toUpperCase()) &&
+          firstLetters.push(druft.name[0].toUpperCase());
+      });
+  }
 
   return (
     <div>
-      <button onClick={openModal} className={css.btn}>{t('add druft')}</button>
+      <button onClick={openModal} className={css.btn}>
+        {t('add druft')}
+      </button>
       <div>
         <ul className={css.list}>
-          {drufts && drufts.map(druft => (
-            <li key={druft._id} className={css.item}>
-              <Link
-                to={`${druft._id}`}
-                state={{ from: location }}
-                className={css.druftLink}
-                onClick={() =>
-                  dispatch(
-                    setActiveDruft(
-                      drufts.find(el => {
-                        return el._id === druft._id;
-                      })
-                    )
-                  )
-                }
-              >
-                <p className={css.name}>{druft.name}</p>
-              </Link>
+          {firstLetters.map(letter => (
+            <li key={letter} className={css.group}>
+              <p>{letter}</p>
+              <ul className={css.groupList}>
+                {drufts &&
+                  [...drufts]
+                    .filter(druft => druft.name[0].toUpperCase() === letter)
+                    .map(druft => (
+                      <li key={druft._id} className={css.item}>
+                        <Link
+                          to={`${druft._id}`}
+                          state={{ from: location }}
+                          className={css.druftLink}
+                          onClick={() =>
+                            dispatch(
+                              setActiveDruft(
+                                drufts.find(el => {
+                                  return el._id === druft._id;
+                                })
+                              )
+                            )
+                          }
+                        >
+                          <p className={css.name}>{druft.name}</p>
+                        </Link>
+                      </li>
+                    ))}
+              </ul>
             </li>
           ))}
         </ul>
