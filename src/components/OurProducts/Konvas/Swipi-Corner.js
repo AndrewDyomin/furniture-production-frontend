@@ -399,7 +399,6 @@ const SwipiCorner = forwardRef(
         }));
     
         setActiveModules(resizedModules);
-        console.log(activeModules)
       }
     }, [productWidth, activeModules, setActiveModules, standardProportions, productWidth]); 
     
