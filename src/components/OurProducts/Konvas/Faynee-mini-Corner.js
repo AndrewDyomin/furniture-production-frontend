@@ -506,12 +506,14 @@ const FayneeMiniCorner = forwardRef(
         ...activeModules.filter(module => module.id !== 'FC01'),
       ];
 
-      let firstSeat;
+      let firstSeat = null;
       let lastSeat = 0;
 
       newModules.forEach((module, index) => {
         if (module.id === 'FM01') {
-            if (!firstSeat) {firstSeat = index};
+            if (firstSeat === null) {
+              firstSeat = index
+            };
           lastSeat = index;
         }
       });
