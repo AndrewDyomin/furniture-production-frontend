@@ -271,7 +271,6 @@ const SwipiCorner = forwardRef(
                 </>
               );
             } else {
-              console.warn('not enough arms');
               return <></>;
             }
           },
@@ -434,15 +433,24 @@ const SwipiCorner = forwardRef(
       
       let newModules = [...activeModules.filter(module => module.id !== 'SC01')];
       
-      const indexOfARML = newModules.findIndex(module => module.id === 'ARML');
-      const indexOfARMR = newModules.findIndex(module => module.id === 'ARMR');
-    
-      if (indexOfARML === -1 || indexOfARMR === -1) return;
-    
+      let firstSeat = null;
+      let lastSeat = 0;
+
+      newModules.forEach((module, index) => {
+        if (module.id === 'SW01') {
+            if (firstSeat === null) {
+              firstSeat = index
+            };
+          lastSeat = index;
+        }
+      });
+
+      if (firstSeat === -1 || lastSeat === -1) return;
+
       if (angleDirection.value !== '7') {
-        newModules.splice(indexOfARMR, 0, activeModules[indexOfSC01]);
+        newModules.splice(lastSeat + 1, 0, activeModules[indexOfSC01]);
       } else {
-        newModules.splice(indexOfARML + 1, 0, activeModules[indexOfSC01]);
+        newModules.splice(firstSeat, 0, activeModules[indexOfSC01]);
       }
     
       if (JSON.stringify(newModules) !== JSON.stringify(activeModules)) {
