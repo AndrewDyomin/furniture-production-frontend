@@ -155,7 +155,7 @@ const SwipiCorner = forwardRef(
                 x={position.x + 5 * scaleFactor}
                 y={position.y}
                 width={width - 5 * scaleFactor}
-                height={height}
+                height={115 * scaleFactor}
                 stroke="black"
                 strokeWidth={1}
                 cornerRadius={[3, 3, 3, 3]}
@@ -172,13 +172,13 @@ const SwipiCorner = forwardRef(
                     position.x,
                     position.y + 3 * scaleFactor,
                     position.x,
-                    position.y + ((productDepth - 3) * scaleFactor),
+                    position.y + (height - 3 * scaleFactor),
                     position.x + 1 * scaleFactor,
-                    position.y + ((productDepth - 1) * scaleFactor),
+                    position.y + (height - 1 * scaleFactor),
                     position.x + 3 * scaleFactor,
-                    position.y + productDepth * scaleFactor,
+                    position.y + height,
                     position.x + width + 5 * scaleFactor,
-                    position.y + productDepth * scaleFactor,
+                    position.y + height,
                   ]}
                   stroke="black"
                   strokeWidth={1}
@@ -189,7 +189,7 @@ const SwipiCorner = forwardRef(
                   x={position.x}
                   y={position.y}
                   width={width}
-                  height={height}
+                  height={115 * scaleFactor}
                   stroke="black"
                   strokeWidth={1}
                   cornerRadius={[5, 3, 3, 5]}
@@ -210,7 +210,7 @@ const SwipiCorner = forwardRef(
                 x={position.x}
                 y={position.y}
                 width={width}
-                height={height}
+                height={115 * scaleFactor}
                 stroke="black"
                 strokeWidth={1}
                 cornerRadius={[3, 5, 5, 3]}
@@ -225,13 +225,13 @@ const SwipiCorner = forwardRef(
                 position.x + width,
                 position.y + 3 * scaleFactor,
                 position.x + width,
-                position.y + productDepth * scaleFactor - 3 * scaleFactor,
+                position.y + height - 3 * scaleFactor,
                 position.x + width - 1 * scaleFactor,
-                position.y + productDepth * scaleFactor - 1 * scaleFactor,
+                position.y + height - 1 * scaleFactor,
                 position.x + width - 3 * scaleFactor,
-                position.y + productDepth * scaleFactor,
+                position.y + height,
                 position.x - 5 * scaleFactor,
-                position.y + productDepth * scaleFactor,
+                position.y + height,
               ]}
               stroke="black"
               strokeWidth={1}
@@ -241,7 +241,7 @@ const SwipiCorner = forwardRef(
                 x={position.x}
                 y={position.y}
                 width={width - 5 * scaleFactor}
-                height={height}
+                height={115 * scaleFactor}
                 stroke="black"
                 strokeWidth={1}
                 cornerRadius={[3, 3, 3, 3]}
@@ -299,7 +299,7 @@ const SwipiCorner = forwardRef(
       return (
         <Layer>
           {activeModules.map((module, index) => {
-            const height = module.height * scaleFactor;
+            const height = module.id === 'SW01' || module.id === 'BKPL' ? module.height * scaleFactor : productDepth * scaleFactor;
             const width = module.width * scaleFactor;
 
             return (
@@ -386,6 +386,7 @@ const SwipiCorner = forwardRef(
       const totalWidth = seatWidth + armsWidth;
     
       if (standardProportions && productWidth !== totalWidth) {
+
         const newSeatWidth = productWidth - armsWidth;
         const resizedModules = activeModules.map(module => ({
           ...module,
@@ -398,11 +399,12 @@ const SwipiCorner = forwardRef(
         }));
     
         setActiveModules(resizedModules);
+        console.log(activeModules)
       }
-    }, [productWidth, activeModules, setActiveModules, standardProportions]); 
+    }, [productWidth, activeModules, setActiveModules, standardProportions, productWidth]); 
     
     useEffect(() => {
-      if (activeModules.length === 0 || !standardProportions) return;
+      if (activeModules.length === 0) return;
     
       let currentX = offsetX - sofaTotalWidth / 2;
       let currentY = offsetY - sofaTotalDepth / 2;
