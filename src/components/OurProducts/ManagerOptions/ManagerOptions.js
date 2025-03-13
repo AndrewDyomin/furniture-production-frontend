@@ -336,7 +336,7 @@ export const ManagerOptions = () => {
                 className={css.sizeInput}
                 defaultValue={productDepth}
                 onChange={e =>
-                  e.target.value >= 100 &&
+                  e.target.value >= 85 &&
                   setProductDepth(Number(e.target.value))
                 }
               />
