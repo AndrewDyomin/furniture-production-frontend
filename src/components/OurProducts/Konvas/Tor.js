@@ -1,19 +1,21 @@
-import { useState, useEffect, forwardRef, useImperativeHandle, useRef } from 'react';
+import {
+  useState,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+} from 'react';
 import { Stage, Layer, Rect, Line, Text } from 'react-konva';
 
- const Tor = forwardRef(({
-  dimensions,
-  productWidth,
-  productDepth,
-}, ref) => {
+const Tor = forwardRef(({ dimensions, productWidth, productDepth }, ref) => {
   const [scaleFactor, setScaleFactor] = useState(1);
   const stageRef = useRef(null);
 
   const sofaTotalDepth = productDepth * scaleFactor;
   const sofaTotalWidth = productWidth * scaleFactor;
 
-  const armrestsWidth = 20 * scaleFactor
-  const armrestsDepth = sofaTotalDepth
+  const armrestsWidth = 20 * scaleFactor;
+  const armrestsDepth = sofaTotalDepth;
 
   const offsetX = dimensions.width / 2;
   const offsetY = dimensions.height / 2;
@@ -31,14 +33,14 @@ import { Stage, Layer, Rect, Line, Text } from 'react-konva';
   useImperativeHandle(ref, () => ({
     getImage() {
       return stageRef.current.toDataURL({ mimeType: 'image/jpeg', quality: 1 });
-    }
+    },
   }));
 
   return (
     <div>
       <Stage ref={stageRef} width={dimensions.width} height={dimensions.height}>
         <Layer>
-        <Rect
+          <Rect
             x={0}
             y={0}
             width={dimensions.width}
@@ -47,11 +49,25 @@ import { Stage, Layer, Rect, Line, Text } from 'react-konva';
           />
         </Layer>
         <Layer>
-            {/* back */}
+          {/* backplank */}
           <Rect
-            x={offsetX - (sofaTotalWidth / 2) + armrestsWidth}
-            y={offsetY - (sofaTotalDepth / 2) + 3 * scaleFactor}
-            width={sofaTotalWidth >= 100 ? sofaTotalWidth - (armrestsWidth * 2) : 10}
+            x={offsetX - sofaTotalWidth / 2 + armrestsWidth}
+            y={offsetY - sofaTotalDepth / 2}
+            width={
+              sofaTotalWidth >= 100 ? sofaTotalWidth - armrestsWidth * 2 : 10
+            }
+            height={3 * scaleFactor}
+            stroke="black"
+            strokeWidth={1}
+            cornerRadius={[3, 3, 0, 0]}
+          />
+          {/* back */}
+          <Rect
+            x={offsetX - sofaTotalWidth / 2 + armrestsWidth}
+            y={offsetY - sofaTotalDepth / 2 + 3 * scaleFactor}
+            width={
+              sofaTotalWidth >= 100 ? sofaTotalWidth - armrestsWidth * 2 : 10
+            }
             height={20 * scaleFactor}
             stroke="black"
             strokeWidth={1}
@@ -59,18 +75,20 @@ import { Stage, Layer, Rect, Line, Text } from 'react-konva';
           />
           {/* seat */}
           <Rect
-            x={offsetX - (sofaTotalWidth / 2) + armrestsWidth}
-            y={offsetY - (sofaTotalDepth / 2) + (23 * scaleFactor)}
-            width={sofaTotalWidth >= 100 ? sofaTotalWidth - (armrestsWidth * 2) : 10}
-            height={sofaTotalDepth - (23 * scaleFactor)}
+            x={offsetX - sofaTotalWidth / 2 + armrestsWidth}
+            y={offsetY - sofaTotalDepth / 2 + 23 * scaleFactor}
+            width={
+              sofaTotalWidth >= 100 ? sofaTotalWidth - armrestsWidth * 2 : 10
+            }
+            height={sofaTotalDepth - 23 * scaleFactor}
             stroke="black"
             strokeWidth={1}
             cornerRadius={3}
           />
           {/* armrests */}
           <Rect
-            x={offsetX - (sofaTotalWidth / 2)}
-            y={offsetY - (sofaTotalDepth / 2)}
+            x={offsetX - sofaTotalWidth / 2}
+            y={offsetY - sofaTotalDepth / 2}
             width={sofaTotalWidth >= 100 ? armrestsWidth : 10}
             height={armrestsDepth}
             stroke="black"
@@ -78,8 +96,8 @@ import { Stage, Layer, Rect, Line, Text } from 'react-konva';
             cornerRadius={3}
           />
           <Rect
-            x={offsetX + (sofaTotalWidth / 2) - armrestsWidth}
-            y={offsetY - (sofaTotalDepth / 2)}
+            x={offsetX + sofaTotalWidth / 2 - armrestsWidth}
+            y={offsetY - sofaTotalDepth / 2}
             width={sofaTotalWidth >= 100 ? armrestsWidth : 10}
             height={armrestsDepth}
             stroke="black"
@@ -91,9 +109,9 @@ import { Stage, Layer, Rect, Line, Text } from 'react-konva';
           <Line
             points={[
               offsetX + 50,
-              offsetY + (sofaTotalDepth / 1.4),
-              offsetX + (sofaTotalWidth / 2),
-              offsetY + (sofaTotalDepth / 1.4),
+              offsetY + sofaTotalDepth / 1.4,
+              offsetX + sofaTotalWidth / 2,
+              offsetY + sofaTotalDepth / 1.4,
             ]}
             stroke="black"
             strokeWidth={1}
@@ -102,9 +120,9 @@ import { Stage, Layer, Rect, Line, Text } from 'react-konva';
           <Line
             points={[
               offsetX - 50,
-              offsetY + (sofaTotalDepth / 1.4),
-              offsetX - (sofaTotalWidth / 2),
-              offsetY + (sofaTotalDepth / 1.4),
+              offsetY + sofaTotalDepth / 1.4,
+              offsetX - sofaTotalWidth / 2,
+              offsetY + sofaTotalDepth / 1.4,
             ]}
             stroke="black"
             strokeWidth={1}
@@ -112,7 +130,7 @@ import { Stage, Layer, Rect, Line, Text } from 'react-konva';
           />
           <Text
             x={offsetX - 50}
-            y={offsetY + (sofaTotalDepth / 1.4) - 9}
+            y={offsetY + sofaTotalDepth / 1.4 - 9}
             text={productWidth}
             width={100}
             align="center"
@@ -120,9 +138,9 @@ import { Stage, Layer, Rect, Line, Text } from 'react-konva';
           />
           <Line
             points={[
-              offsetX - (sofaTotalWidth / 1.7),
-              offsetY - (sofaTotalDepth / 2),
-              offsetX - (sofaTotalWidth / 1.7),
+              offsetX - sofaTotalWidth / 1.7,
+              offsetY - sofaTotalDepth / 2,
+              offsetX - sofaTotalWidth / 1.7,
               offsetY - 50,
             ]}
             stroke="black"
@@ -131,17 +149,17 @@ import { Stage, Layer, Rect, Line, Text } from 'react-konva';
           />
           <Line
             points={[
-              offsetX - (sofaTotalWidth / 1.7),
+              offsetX - sofaTotalWidth / 1.7,
               offsetY + 50,
-              offsetX - (sofaTotalWidth / 1.7),
-              offsetY + (sofaTotalDepth / 2),
+              offsetX - sofaTotalWidth / 1.7,
+              offsetY + sofaTotalDepth / 2,
             ]}
             stroke="black"
             strokeWidth={1}
             closed={false}
           />
           <Text
-            x={offsetX - (sofaTotalWidth / 1.7) - 9}
+            x={offsetX - sofaTotalWidth / 1.7 - 9}
             y={offsetY + 50}
             text={productDepth}
             width={100}
@@ -153,6 +171,6 @@ import { Stage, Layer, Rect, Line, Text } from 'react-konva';
       </Stage>
     </div>
   );
-})
+});
 
 export default Tor;
