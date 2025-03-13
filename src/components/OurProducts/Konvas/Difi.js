@@ -51,7 +51,7 @@ import { Stage, Layer, Rect, Line, Text } from 'react-konva';
           <Rect
             x={offsetX - (sofaTotalWidth / 2) + armrestsWidth}
             y={offsetY - (sofaTotalDepth / 2)}
-            width={sofaTotalWidth - (armrestsWidth * 2)}
+            width={sofaTotalWidth >= 100 ? sofaTotalWidth - (armrestsWidth * 2) : 10}
             height={29 * scaleFactor}
             stroke="black"
             strokeWidth={1}
@@ -60,7 +60,7 @@ import { Stage, Layer, Rect, Line, Text } from 'react-konva';
           <Rect
             x={offsetX - (sofaTotalWidth / 2) + armrestsWidth}
             y={offsetY - (sofaTotalDepth / 2)}
-            width={sofaTotalWidth - (armrestsWidth * 2)}
+            width={sofaTotalWidth >= 100 ? sofaTotalWidth - (armrestsWidth * 2) : 10}
             height={15 * scaleFactor}
             stroke="black"
             strokeWidth={1}
@@ -70,7 +70,7 @@ import { Stage, Layer, Rect, Line, Text } from 'react-konva';
           <Rect
             x={offsetX - (sofaTotalWidth / 2) + armrestsWidth}
             y={offsetY - (sofaTotalDepth / 2) + (29 * scaleFactor)}
-            width={(sofaTotalWidth - (armrestsWidth * 2)) / 2}
+            width={sofaTotalWidth >= 100 ? (sofaTotalWidth - (armrestsWidth * 2)) / 2 : 10}
             height={sofaTotalDepth - (29 * scaleFactor)}
             stroke="black"
             strokeWidth={1}
@@ -79,7 +79,7 @@ import { Stage, Layer, Rect, Line, Text } from 'react-konva';
           <Rect
             x={offsetX}
             y={offsetY - (sofaTotalDepth / 2) + (29 * scaleFactor)}
-            width={(sofaTotalWidth - (armrestsWidth * 2)) / 2}
+            width={sofaTotalWidth >= 100 ? (sofaTotalWidth - (armrestsWidth * 2)) / 2 : 10}
             height={sofaTotalDepth - (29 * scaleFactor)}
             stroke="black"
             strokeWidth={1}
@@ -89,7 +89,7 @@ import { Stage, Layer, Rect, Line, Text } from 'react-konva';
           <Rect
             x={offsetX - (sofaTotalWidth / 2)}
             y={offsetY - (sofaTotalDepth / 2)}
-            width={armrestsWidth}
+            width={sofaTotalWidth >= 100 ? armrestsWidth : 10}
             height={armrestsDepth}
             stroke="black"
             strokeWidth={1}
@@ -98,7 +98,7 @@ import { Stage, Layer, Rect, Line, Text } from 'react-konva';
           <Rect
             x={offsetX + (sofaTotalWidth / 2) - armrestsWidth}
             y={offsetY - (sofaTotalDepth / 2)}
-            width={armrestsWidth}
+            width={sofaTotalWidth >= 100 ? armrestsWidth : 10}
             height={armrestsDepth}
             stroke="black"
             strokeWidth={1}
