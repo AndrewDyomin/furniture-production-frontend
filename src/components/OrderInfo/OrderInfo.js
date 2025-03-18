@@ -69,7 +69,7 @@ export const OrderInfo = ({ id }) => {
 
   const sewnToggle = async e => {
     setIsLoading(true);
-    let orderStatus = order.orderStatus;
+    let orderStatus = order.orderStatus && order.orderStatus !== 'TRUE' ? JSON.parse(order.orderStatus).status : order.orderStatus === 'TRUE' ? 'TRUE' : '';
     let fabricStatus = order.fabricStatus;
     let sewnStatus = order.coverStatus;
     let frameStatus = order.frameStatus;
@@ -86,7 +86,7 @@ export const OrderInfo = ({ id }) => {
       } else if (e.target.name === 'frame') {
         frameStatus = order.frameStatus !== 'TRUE' ? 'TRUE' : '';
       } else if (e.target.name === 'order') {
-        orderStatus = order.orderStatus !== 'TRUE' ? 'TRUE' : '';
+        orderStatus = orderStatus !== 'TRUE' ? 'TRUE' : '';
       }
     }
 

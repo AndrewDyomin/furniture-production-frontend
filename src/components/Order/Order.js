@@ -11,6 +11,7 @@ export const Order = ({ order }) => {
   let isArchive = false;
   let fabricClassName = css.orderFabric;
   let wrapperClassName = css.wrapper;
+  const orderStatus = order.orderStatus && order.orderStatus !== 'TRUE' ? JSON.parse(order.orderStatus).status : order.orderStatus === 'TRUE' ? 'TRUE' : '';
 
   const url = useHref();
   if (url === '/furniture-production-frontend/archive') {
@@ -23,7 +24,7 @@ export const Order = ({ order }) => {
     fabricClassName = `${css.orderFabric} ${css.backgroundGreen}`;
   }
 
-  if (order.orderStatus === 'TRUE') {
+  if (orderStatus === 'TRUE') {
     wrapperClassName = `${css.wrapper} ${css.done}`;
   } else if (order.coverStatus === 'TRUE' && order.frameStatus === 'TRUE') {
     wrapperClassName = `${css.wrapper} ${css.twoPart}`;
