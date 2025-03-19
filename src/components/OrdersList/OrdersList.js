@@ -113,7 +113,7 @@ export const OrdersList = () => {
   if (user.description === 'upholsterer') {
     prefilteredOrders =
       orders.allOrdersArray && orders.allOrdersArray.length !== 0
-        ? orders.allOrdersArray.filter(order => order.orderStatus !== 'TRUE')
+        ? orders.allOrdersArray.filter(order => order.orderStatus === '')
         : [];
   }
 
