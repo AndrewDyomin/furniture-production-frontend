@@ -23,9 +23,9 @@ export const Navigation = () => {
           <NavLink className={css.link} to="/products">
             {t('catalog')}
           </NavLink>
-          <NavLink className={css.link} to="/drufts">
+          {user.description !== "guest" && <NavLink className={css.link} to="/drufts">
             {t('my drufts')}
-          </NavLink>
+          </NavLink>}
           {user.description === "administrator" && (
             <NavLink className={css.link} to="/room">{t('my room')}</NavLink>
           )}
